@@ -1,0 +1,122 @@
+import {
+  Module,
+  MiddlewareConsumer,
+  NestModule,
+  DynamicModule,
+} from '@nestjs/common';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import * as fs from 'fs';
+import * as path from 'path';
+
+// **동적으로 `src/modules/` 내부의 모든 모듈, 서비스, 컨트롤러를 로드하는 함수**
+function loadModules(): DynamicModule[] {
+  const modulesPath = path.join(__dirname, 'modules');
+
+  return fs
+    .readdirSync(modulesPath)
+    .filter((dir) => fs.statSync(path.join(modulesPath, dir)).isDirectory()) // 폴더만 선택
+    .map((dir) => {
+      try {
+        const dirUpper = dir
+          .replace('_master', '')
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join('');
+        const modulePath = path.join(modulesPath, dir, `${dirUpper}.module`);
+        const importedModule = require(modulePath);
+        const moduleName = Object.keys(importedModule)[0]; // 첫 번째 export된 모듈을 가져옴
+        return importedModule[moduleName];
+      } catch (error) {
+        console.error(`❌ Failed to import module: ${dir}`, error);
+        return null;
+      }
+    })
+    .filter((mod): mod is DynamicModule => mod !== null);
+}
+
+// **동적으로 `Providers`, `Controllers`를 로드하는 함수**
+function loadProvidersAndControllers() {
+  const modulesPath = path.join(__dirname, 'modules');
+  const providers: any[] = [];
+  const controllers: any[] = [];
+
+  fs.readdirSync(modulesPath)
+    .filter((dir) => fs.statSync(path.join(modulesPath, dir)).isDirectory())
+    .forEach((dir) => {
+      try {
+        const dirUpper = dir
+          .replace('_master', '')
+          .split('_')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join('');
+        const servicePath = path.join(modulesPath, dir, `${dirUpper}.service`);
+        const controllerPath = path.join(
+          modulesPath,
+          dir,
+          `${dirUpper}.controller`,
+        );
+
+        // 서비스 로드
+        if (
+          fs.existsSync(path.join(modulesPath, dir, `${dirUpper}.service.ts`))
+        ) {
+          const importedService = require(servicePath);
+          Object.values(importedService).forEach((service) =>
+            providers.push(service),
+          );
+        }
+
+        // 컨트롤러 로드
+        if (
+          fs.existsSync(
+            path.join(modulesPath, dir, `${dirUpper}.controller.ts`),
+          )
+        ) {
+          const importedController = require(controllerPath);
+          Object.values(importedController).forEach((controller) =>
+            controllers.push(controller),
+          );
+        }
+      } catch (error) {
+        console.error(
+          `❌ Failed to import services/controllers from: ${dir}`,
+          error,
+        );
+      }
+    });
+
+  return { providers, controllers };
+}
+
+@Module({
+  imports: [
+    TypeOrmModule.forRoot({
+      type: 'mariadb',
+      host: 'localhost',
+      port: 3306,
+      username: 'admin',
+      password: 'password',
+      database: 'acs',
+      entities: [__dirname + '/modules/**/*.entity{.ts,.js}'],
+      synchronize: false,
+    }),
+    ...loadModules(), // ✅ 자동으로 `modules/` 내부의 모든 모듈 추가
+  ],
+  providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
+  controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가
+})
+export class AppModule implements NestModule {
+  configure(consumer: MiddlewareConsumer) {
+    consumer
+      .apply((req, res, next) => {
+        res.header('Access-Control-Allow-Origin', 'http://localhost:3000');
+        res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE');
+        res.header(
+          'Access-Control-Allow-Headers',
+          'Content-Type, Authorization',
+        );
+        next();
+      })
+      .forRoutes('*');
+  }
+}

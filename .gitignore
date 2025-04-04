@@ -1,0 +1,52 @@
+# ✅ 빌드 결과물
+/node_modules
+/dist
+/build
+
+# ✅ 사용자 업로드 및 변환 파일
+/uploads
+/uploads/*
+!uploads/.gitkeep
+
+# ✅ FreeCAD, DXF 변환 임시 파일
+*.py
+*.stl
+*.dxf
+
+# ✅ 실행 로그 및 리포트
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
+report.*.json
+
+# ✅ 테스트 커버리지
+/coverage
+/.nyc_output
+
+# ✅ OS / IDE 설정
+.DS_Store
+.idea/
+.vscode/
+*.sublime-workspace
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+
+# ✅ dotenv 환경설정
+.env
+.env.*
+!.env.example
+
+# ✅ 임시, 런타임 파일
+.temp
+.tmp
+pids
+*.pid
+*.pid.lock
+*.seed
