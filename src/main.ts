@@ -2,6 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import * as express from 'express';
 import { join } from 'path';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; 
+import { AllExceptionsFilter } from './common/utils/filter/custom.filter';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -16,6 +18,18 @@ async function bootstrap() {
 
   // ✅ 정적 파일 제공 (변환된 glTF 파일 접근 가능)
   app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
+  app.useGlobalFilters(new AllExceptionsFilter());
+
+   // ✅ Swagger 설정
+  const config = new DocumentBuilder()
+    .setTitle('ACS API Docs')
+    .setDescription('API 문서.')
+    .setVersion('1.0')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document); // http://localhost:4000/docs
+
 
   const PORT = process.env.PORT || 4000;
   await app.listen(PORT);

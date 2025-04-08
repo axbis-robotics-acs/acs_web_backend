@@ -7,10 +7,12 @@ import {
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
+import { StatusModule } from './modules/statemanager/status.module';
 
 // **동적으로 `src/modules/` 내부의 모든 모듈, 서비스, 컨트롤러를 로드하는 함수**
 function loadModules(): DynamicModule[] {
-  const modulesPath = path.join(__dirname, 'modules');
+  const modulesPath = path.join(__dirname, 'modules','entity');
+  console.log(modulesPath)
 
   return fs
     .readdirSync(modulesPath)
@@ -101,6 +103,7 @@ function loadProvidersAndControllers() {
       synchronize: false,
     }),
     ...loadModules(), // ✅ 자동으로 `modules/` 내부의 모든 모듈 추가
+    StatusModule,
   ],
   providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
   controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가
@@ -115,8 +118,14 @@ export class AppModule implements NestModule {
           'Access-Control-Allow-Headers',
           'Content-Type, Authorization',
         );
+        if (req.url === '/status/stream') {
+          res.header('Cache-Control', 'no-cache');
+          res.header('Connection', 'keep-alive');
+          res.header('Content-Type', 'text/event-stream');
+        }
         next();
       })
       .forRoutes('*');
   }
 }
+
