@@ -4,9 +4,24 @@ import * as express from 'express';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger'; 
 import { AllExceptionsFilter } from './common/utils/filter/custom.filter';
+import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+
+  app.connectMicroservice<MicroserviceOptions>({
+    transport: Transport.MQTT,
+    options: {
+      url: 'mqtt://localhost:1883',
+      clientId: 'nest-subscriber-' + Math.random().toString(16).slice(2),
+      clean: true,
+      connectTimeout: 4000,
+      reconnectPeriod: 1000,
+    },
+  });
+
+  await app.startAllMicroservices();
+
 
   // ✅ CORS 허용 설정
   app.enableCors({

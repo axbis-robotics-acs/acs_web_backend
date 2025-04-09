@@ -8,6 +8,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { StatusModule } from './modules/statemanager/status.module';
+import { MqttModule } from './common/adapter/mqtt.module';
 
 // **동적으로 `src/modules/` 내부의 모든 모듈, 서비스, 컨트롤러를 로드하는 함수**
 function loadModules(): DynamicModule[] {
@@ -104,6 +105,7 @@ function loadProvidersAndControllers() {
     }),
     ...loadModules(), // ✅ 자동으로 `modules/` 내부의 모든 모듈 추가
     StatusModule,
+    MqttModule,
   ],
   providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
   controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가
