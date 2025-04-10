@@ -1,4 +1,8 @@
-import { ClientProxyFactory, Transport, ClientProxy } from '@nestjs/microservices';
+import {
+  ClientProxyFactory,
+  Transport,
+  ClientProxy,
+} from '@nestjs/microservices';
 
 export const mqttClient: ClientProxy = ClientProxyFactory.create({
   transport: Transport.MQTT,

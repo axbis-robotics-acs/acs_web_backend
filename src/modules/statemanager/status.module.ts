@@ -9,13 +9,9 @@ import { StatusEventService } from './status.service';
 import { ScheduleModule } from '@nestjs/schedule';
 
 @Module({
-  imports: [ScheduleModule.forRoot(),TypeOrmModule.forFeature([TransferControl])],
+  imports: [TypeOrmModule.forFeature([TransferControl])],
   controllers: [StatusController],
-  providers: [
-    StatusUpdaterService,
-    StatusStoreService,
-    StatusEventService,
-  ],
-  exports:[StatusStoreService],
+  providers: [StatusUpdaterService, StatusStoreService, StatusEventService],
+  exports: [StatusStoreService],
 })
 export class StatusModule {}

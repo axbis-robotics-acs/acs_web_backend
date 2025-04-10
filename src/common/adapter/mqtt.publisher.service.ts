@@ -34,22 +34,25 @@ export class MqttPublisher implements OnModuleInit, OnModuleDestroy {
   // NestJS 시스템 간 메시지용
   async publish(topic: string, payload: any): Promise<void> {
     await lastValueFrom(mqttClient.send(topic, payload));
-    console.log(`[MQTT PUB:Nest] Topic: ${topic}, Payload:`, payload);
+    // console.log(`[MQTT PUB:Nest] Topic: ${topic}, Payload:`, payload);
   }
 
   // 외부 장치로 순수 MQTT 메시지 발행
   rawPublish(topic: string, payload: any): void {
-    const message = typeof payload === 'string' ? payload : JSON.stringify(payload);
+    const message =
+      typeof payload === 'string' ? payload : JSON.stringify(payload);
     if (this.rawMqttClient?.connected) {
       this.rawMqttClient.publish(topic, message, { qos: 0 }, (err) => {
         if (err) {
           console.error(`[MQTT PUB:Raw] Failed to publish to ${topic}`, err);
         } else {
-          console.log(`[MQTT PUB:Raw] Published to ${topic}:`, message);
+          // console.log(`[MQTT PUB:Raw] Published to ${topic}:`, message);
         }
       });
     } else {
-      console.warn(`[MQTT PUB:Raw] MQTT client not connected, message not sent`);
+      console.warn(
+        `[MQTT PUB:Raw] MQTT client not connected, message not sent`,
+      );
     }
   }
 }

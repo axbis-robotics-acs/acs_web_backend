@@ -1,0 +1,540 @@
+{
+  "openapi": "3.0.0",
+  "paths": {
+    "/area": {
+      "get": {
+        "operationId": "AreaController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "area"
+        ]
+      }
+    },
+    "/carrierhist": {
+      "get": {
+        "operationId": "CarrierHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "carrierhist"
+        ]
+      }
+    },
+    "/carrier": {
+      "get": {
+        "operationId": "CarrierController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "carrier"
+        ]
+      }
+    },
+    "/const": {
+      "get": {
+        "operationId": "ConstController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "const"
+        ]
+      }
+    },
+    "/equipmenthist": {
+      "get": {
+        "operationId": "EquipmentHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "equipmenthist"
+        ]
+      }
+    },
+    "/equipment": {
+      "get": {
+        "operationId": "EquipmentController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "equipment"
+        ]
+      }
+    },
+    "/lang/getAll": {
+      "post": {
+        "operationId": "LangController_getAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Lang"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청"
+          }
+        },
+        "summary": "다국어 조회",
+        "tags": [
+          "lang"
+        ]
+      }
+    },
+    "/lang/save": {
+      "post": {
+        "operationId": "LangController_save",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "lang"
+        ]
+      }
+    },
+    "/link": {
+      "get": {
+        "operationId": "LinkController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "link"
+        ]
+      }
+    },
+    "/loginhist": {
+      "get": {
+        "operationId": "LoginHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "loginhist"
+        ]
+      }
+    },
+    "/map": {
+      "get": {
+        "operationId": "MapController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "map"
+        ]
+      }
+    },
+    "/menu": {
+      "get": {
+        "operationId": "MenuController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "menu"
+        ]
+      }
+    },
+    "/menu/getMenu": {
+      "post": {
+        "operationId": "MenuController_findMenuId",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "menu"
+        ]
+      }
+    },
+    "/menu/getSubMenu": {
+      "post": {
+        "operationId": "MenuController_findSubMenuId",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "menu"
+        ]
+      }
+    },
+    "/menurolerel": {
+      "get": {
+        "operationId": "MenuRoleRelController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "menurolerel"
+        ]
+      }
+    },
+    "/menurolerel/getMenuByRole": {
+      "post": {
+        "operationId": "MenuRoleRelController_getMenuByRole",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "menurolerel"
+        ]
+      }
+    },
+    "/node": {
+      "get": {
+        "operationId": "NodeController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "node"
+        ]
+      }
+    },
+    "/porthist": {
+      "get": {
+        "operationId": "PortHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "porthist"
+        ]
+      }
+    },
+    "/port": {
+      "get": {
+        "operationId": "PortController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "port"
+        ]
+      }
+    },
+    "/robothist": {
+      "get": {
+        "operationId": "RobotHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "robothist"
+        ]
+      }
+    },
+    "/robot": {
+      "get": {
+        "operationId": "RobotController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "robot"
+        ]
+      }
+    },
+    "/role": {
+      "get": {
+        "operationId": "RoleController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "role"
+        ]
+      }
+    },
+    "/rolerulerel": {
+      "get": {
+        "operationId": "RoleRuleRelController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rolerulerel"
+        ]
+      }
+    },
+    "/rule": {
+      "get": {
+        "operationId": "RuleController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rule"
+        ]
+      }
+    },
+    "/site": {
+      "get": {
+        "operationId": "SiteController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "site"
+        ]
+      }
+    },
+    "/transfercontrol": {
+      "get": {
+        "operationId": "TransferControlController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrol"
+        ]
+      },
+      "post": {
+        "operationId": "TransferControlController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/TransferControl"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrol"
+        ]
+      }
+    },
+    "/transfercontrol/search": {
+      "get": {
+        "operationId": "TransferControlController_searchTasks",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrol"
+        ]
+      }
+    },
+    "/transfercontrolhist": {
+      "get": {
+        "operationId": "TransferControlHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrolhist"
+        ]
+      }
+    },
+    "/file/upload": {
+      "post": {
+        "operationId": "UploadController_uploadFile",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "multipart/form-data": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "dwgFile": {
+                    "type": "string",
+                    "format": "binary"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "성공"
+          },
+          "400": {
+            "description": "잘못된 요청"
+          }
+        },
+        "summary": "도면 파일 업로드",
+        "tags": [
+          "file"
+        ]
+      }
+    },
+    "/userclass": {
+      "get": {
+        "operationId": "UserclassController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "userclass"
+        ]
+      }
+    },
+    "/user/login": {
+      "post": {
+        "operationId": "UserController_login",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/checkRole": {
+      "post": {
+        "operationId": "UserController_checkRole",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    },
+    "/user/register": {
+      "post": {
+        "operationId": "UserController_register",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "user"
+        ]
+      }
+    }
+  },
+  "info": {
+    "title": "ACS API Docs",
+    "description": "API 문서.",
+    "version": "1.0",
+    "contact": {}
+  },
+  "tags": [],
+  "servers": [],
+  "components": {
+    "schemas": {
+      "Lang": {
+        "type": "object",
+        "properties": {}
+      },
+      "TransferControl": {
+        "type": "object",
+        "properties": {}
+      }
+    }
+  }
+}

@@ -9,11 +9,15 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { StatusModule } from './modules/statemanager/status.module';
 import { MqttModule } from './common/adapter/mqtt.module';
+import { QueryRegistryModule } from './common/utils/query/query-registry.module';
+import { CommonScheduleModule } from './modules/scheduler/scheduler.module';
+import { CacheModule } from './common/utils/cache/cache.module';
+import { ScheduleModule } from '@nestjs/schedule';
 
 // **동적으로 `src/modules/` 내부의 모든 모듈, 서비스, 컨트롤러를 로드하는 함수**
 function loadModules(): DynamicModule[] {
-  const modulesPath = path.join(__dirname, 'modules','entity');
-  console.log(modulesPath)
+  const modulesPath = path.join(__dirname, 'modules', 'entity');
+  console.log(modulesPath);
 
   return fs
     .readdirSync(modulesPath)
@@ -106,6 +110,10 @@ function loadProvidersAndControllers() {
     ...loadModules(), // ✅ 자동으로 `modules/` 내부의 모든 모듈 추가
     StatusModule,
     MqttModule,
+    CacheModule,
+    QueryRegistryModule,
+    CommonScheduleModule,
+    ScheduleModule.forRoot(),
   ],
   providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
   controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가
@@ -130,4 +138,3 @@ export class AppModule implements NestModule {
       .forRoutes('*');
   }
 }
-
