@@ -20,19 +20,34 @@ export class TransferControlService {
   }
 
   async create(transferControl: TransferControl): Promise<TransferControl> {
-    return this.transfercontrolRepository.save(transferControl);
+    try {
+      const result = await this.transfercontrolRepository.save(transferControl);
+      console.log('저장 결과:', result);
+      return result;
+    } catch (error) {
+      throw new BaseException({
+        message: 'Error occurred while creating transfer control',
+        statusCode: 500,
+        debugMessage: error.message,
+      });
+    }
   }
 
   async searchTasks(searchConditions: any): Promise<TransferControl[]> {
-    const queryBuilder = this.transfercontrolRepository.createQueryBuilder('transferControl');
-  
+    const queryBuilder =
+      this.transfercontrolRepository.createQueryBuilder('transferControl');
+
     for (const key in searchConditions) {
       try {
-        if (Object.prototype.hasOwnProperty.call(searchConditions, key) && 
-            searchConditions[key] !== undefined &&
-            searchConditions[key] !== '') {
-          queryBuilder.andWhere(`transferControl.${key} = :${key}`, { [key]: searchConditions[key] });
-        } 
+        if (
+          Object.prototype.hasOwnProperty.call(searchConditions, key) &&
+          searchConditions[key] !== undefined &&
+          searchConditions[key] !== ''
+        ) {
+          queryBuilder.andWhere(`transferControl.${key} = :${key}`, {
+            [key]: searchConditions[key],
+          });
+        }
       } catch (error) {
         console.error(`Error processing key ${key}:`, error);
         console.error('Original error:', error.stack || error.message || error);

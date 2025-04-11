@@ -2,7 +2,7 @@
 --
 -- Host: localhost    Database: acs
 -- ------------------------------------------------------
--- Server version	11.4.4-MariaDB
+-- Server version	5.5.5-10.10.7-MariaDB-1:10.10.7+maria~ubu2204
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
@@ -28,6 +28,7 @@ USE acs;
 --
 -- Table structure for table `acs_area_master`
 --
+
 DROP TABLE IF EXISTS `acs_area_master`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -457,7 +458,7 @@ CREATE TABLE `acs_menu_master` (
 
 LOCK TABLES `acs_menu_master` WRITE;
 /*!40000 ALTER TABLE `acs_menu_master` DISABLE KEYS */;
-INSERT INTO `acs_menu_master` VALUES ('DASHBOARD','대시보드','/',NULL,2,0,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:56:51',NULL,'2025-02-19 09:56:51',NULL,NULL),('LANGUAGE','다국어','/language','SETTING',1,1,1,'HU',NULL,NULL,NULL,NULL,'2025-02-25 10:42:43',NULL,'2025-02-25 10:42:43',NULL,NULL),('LOGIN','로그인','/login',NULL,1,0,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:48:35','administrator','2025-01-17 17:48:35',NULL,NULL),('PERMISSION','권한관리','/permission','SETTING',3,1,1,'HU',NULL,NULL,NULL,NULL,'2025-02-25 13:25:16',NULL,'2025-02-25 13:25:16',NULL,NULL),('SETTING','설정','/settings',NULL,3,0,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:57:14',NULL,'2025-02-19 09:57:14',NULL,NULL),('SITE','사이트','/site','SETTING',2,1,1,'HU',NULL,NULL,NULL,NULL,'2025-02-25 13:24:35',NULL,'2025-02-25 13:24:35',NULL,NULL);
+INSERT INTO `acs_menu_master` VALUES ('DASHBOARD','대시보드','/',NULL,2,0,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:56:51',NULL,'2025-02-19 09:56:51',NULL,NULL),('LANGUAGE','다국어','/language','SETTING',1,1,1,'HU',NULL,NULL,NULL,NULL,'2025-02-25 10:42:43',NULL,'2025-02-25 10:42:43',NULL,NULL),('LOGIN','로그인','/login',NULL,1,0,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:48:35','administrator','2025-01-17 17:48:35',NULL,NULL),('PERMISSION','권한관리','/permission','SETTING',3,1,1,'HU',NULL,NULL,NULL,NULL,'2025-02-25 13:25:16',NULL,'2025-02-25 13:25:16',NULL,NULL),('SETTING','설정','/settings',NULL,3,0,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:57:14',NULL,'2025-02-19 09:57:14',NULL,NULL),('SITE','사이트','/site','SETTING',2,1,1,'HU',NULL,NULL,NULL,NULL,'2025-02-25 13:24:35',NULL,'2025-02-25 13:24:35',NULL,NULL),('TRANSFER','작업','/transfer',NULL,4,0,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:27:58',NULL,'2025-04-11 15:27:58',NULL,NULL),('TRANSFERCREATE','작업생성','/transfercreate','TRANSFER',4,1,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:27:58',NULL,'2025-04-11 15:27:58',NULL,NULL);
 /*!40000 ALTER TABLE `acs_menu_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -498,7 +499,7 @@ CREATE TABLE `acs_menu_role_rel` (
 
 LOCK TABLES `acs_menu_role_rel` WRITE;
 /*!40000 ALTER TABLE `acs_menu_role_rel` DISABLE KEYS */;
-INSERT INTO `acs_menu_role_rel` VALUES ('DASHBOARD','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('DASHBOARD','Guest',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('LANGUAGE','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-25 10:43:58','administrator','2025-02-25 10:43:58',NULL,NULL),('LOGIN','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('PERMISSION','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-25 13:29:24','administrator','2025-02-25 13:29:24',NULL,NULL),('SETTING','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('SETTING','Guest',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('SITE','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-25 13:29:24','administrator','2025-02-25 13:29:24',NULL,NULL);
+INSERT INTO `acs_menu_role_rel` VALUES ('DASHBOARD','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('DASHBOARD','Guest',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('LANGUAGE','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-25 10:43:58','administrator','2025-02-25 10:43:58',NULL,NULL),('LOGIN','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('PERMISSION','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-25 13:29:24','administrator','2025-02-25 13:29:24',NULL,NULL),('SETTING','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('SETTING','Guest',1,'HU',NULL,NULL,'','administrator','2025-02-20 17:44:25','administrator','2025-02-20 17:44:25',NULL,NULL),('SITE','Administrator',1,'HU',NULL,NULL,'','administrator','2025-02-25 13:29:24','administrator','2025-02-25 13:29:24',NULL,NULL),('TRANSFER','Administrator',1,'HU',NULL,NULL,'','administrator','2025-04-11 15:29:21','administrator','2025-04-11 15:29:21',NULL,NULL),('TRANSFERCREATE','Administrator',1,'HU',NULL,NULL,'','administrator','2025-04-11 15:29:21','administrator','2025-04-11 15:29:21',NULL,NULL);
 /*!40000 ALTER TABLE `acs_menu_role_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -872,7 +873,8 @@ CREATE TABLE `acs_transfer_control` (
   `transfer_id` varchar(255) NOT NULL,
   `transfer_tp` varchar(255) DEFAULT NULL,
   `assigned_robot_id` varchar(255) DEFAULT NULL,
-  `transfer_st` varchar(255) DEFAULT NULL,
+  `transfer_st` varchar(255) DEFAULT 'READY',
+  `priority_no` int(5) DEFAULT 10,
   `source_port_id` varchar(50) DEFAULT NULL COMMENT '작업 대상 포트 명칭',
   `destination_port_id` varchar(50) DEFAULT NULL COMMENT '최종 목적지 예치 포트 명칭',
   `acquire_start_at` datetime DEFAULT NULL COMMENT '물품 수령 시작 시간',
@@ -906,6 +908,7 @@ CREATE TABLE `acs_transfer_control` (
 
 LOCK TABLES `acs_transfer_control` WRITE;
 /*!40000 ALTER TABLE `acs_transfer_control` DISABLE KEYS */;
+INSERT INTO `acs_transfer_control` VALUES ('20250411074447407',NULL,'ROBOT_1',NULL,10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 16:44:47',NULL,'2025-04-11 16:44:47',NULL,NULL),('20250411164308878',NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 16:43:08',NULL,'2025-04-11 16:43:08',NULL,NULL),('5','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('6','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('7','LOAD',NULL,'UNLOADING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('8','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('9','LOAD',NULL,'COMPLETE',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB1','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB17','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB2','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB3','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB4','LOAD',NULL,'UNLOADING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB5','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB6','LOAD',NULL,'LOADING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL);
 /*!40000 ALTER TABLE `acs_transfer_control` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -995,7 +998,7 @@ CREATE TABLE `acs_user_master` (
 
 LOCK TABLES `acs_user_master` WRITE;
 /*!40000 ALTER TABLE `acs_user_master` DISABLE KEYS */;
-INSERT INTO `acs_user_master` VALUES ('admin','admin','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Administrator','HUBIS_ACS-00',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL),('admin2',NULL,'$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Guest',NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:22:18',NULL,'2025-02-19 09:22:18',NULL,NULL);
+INSERT INTO `acs_user_master` VALUES ('admin','admin','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Administrator','HUBIS_ACS-00',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL),('admin2',NULL,'$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Guest',NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:22:18',NULL,'2025-02-19 09:22:18',NULL,NULL),('operoper','operoper','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','operoper','Guest',NULL,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL);
 /*!40000 ALTER TABLE `acs_user_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1052,4 +1055,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-08 13:48:06
+-- Dump completed on 2025-04-11 16:45:45

@@ -1,12 +1,12 @@
 {
   "openapi": "3.0.0",
   "paths": {
-    "/area": {
-      "get": {
-        "operationId": "AreaController_findAll",
+    "/area/{id}": {
+      "post": {
+        "operationId": "AreaController_findByAreaId",
         "parameters": [],
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           }
         },
