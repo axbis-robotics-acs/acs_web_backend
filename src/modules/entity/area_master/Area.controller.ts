@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { AreaService } from './Area.service';
 import { Area } from './Area.entity';
 import { ApiTags } from '@nestjs/swagger';
@@ -8,9 +8,8 @@ import { ApiTags } from '@nestjs/swagger';
 export class AreaController {
   constructor(private readonly areaService: AreaService) {}
 
-  @Get()
-  async findAll(): Promise<Area[]> {
-    return this.areaService.findAll();
+  @Post(':id')
+  async findByAreaId(AreaId: string): Promise<Area | null> {
+    return this.areaService.findById(AreaId);
   }
-
 }

@@ -5,10 +5,12 @@ module.exports = {
       script: 'dist/main.js',
       instances: 1,
       autorestart: true,
-      watch: false, // production에서는 false 권장
-      max_memory_restart: '5G',
-      env: {
-        NODE_ENV: 'development',
+      watch: ['dist'], // ✅ dist 디렉토리 감시
+      watch_delay: 1000,
+      watch_options: {
+        followSymlinks: false,
+        usePolling: true,
+        interval: 1000,
       },
       env_production: {
         NODE_ENV: 'production',

@@ -6,14 +6,21 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './common/utils/filter/custom.filter';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { writeFileSync } from 'fs';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
+  const mqttScheme = 'mqtt://';
+  const mqttHost = process.env.MQTT_URL || 'localhost';
+  const mqttPort = process.env.MQTT_PORT || '1883'; // 포트도 환경변수로 관리 추천
+  const mqttUrl = `${mqttScheme}${mqttHost}:${mqttPort}`;
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.MQTT,
     options: {
-      url: 'mqtt://localhost:1883',
+      url: mqttUrl,
       clientId: 'nest-subscriber-' + Math.random().toString(16).slice(2),
       clean: true,
       connectTimeout: 4000,

@@ -13,4 +13,7 @@ export class AreaService {
   async findAll(): Promise<Area[]> {
     return this.areaRepository.find();
   }
+  async findById(area_id: string): Promise<Area | null> {
+    return this.areaRepository.findOne({ where: { area_id: area_id } });
+  }
 }

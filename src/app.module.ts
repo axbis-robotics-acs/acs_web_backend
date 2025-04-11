@@ -13,6 +13,9 @@ import { QueryRegistryModule } from './common/utils/query/query-registry.module'
 import { CommonScheduleModule } from './modules/scheduler/scheduler.module';
 import { CacheModule } from './common/utils/cache/cache.module';
 import { ScheduleModule } from '@nestjs/schedule';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 // **동적으로 `src/modules/` 내부의 모든 모듈, 서비스, 컨트롤러를 로드하는 함수**
 function loadModules(): DynamicModule[] {
@@ -99,11 +102,11 @@ function loadProvidersAndControllers() {
   imports: [
     TypeOrmModule.forRoot({
       type: 'mariadb',
-      host: 'localhost',
-      port: 3306,
-      username: 'admin',
-      password: 'password',
-      database: 'acs',
+      host: process.env.DB_HOST,
+      port: parseInt(process.env.DB_PORT || '3306', 10),
+      username: process.env.DB_USERNAME,
+      password: process.env.DB_PASSWORD,
+      database: process.env.DB_NAME,
       entities: [__dirname + '/modules/**/*.entity{.ts,.js}'],
       synchronize: false,
     }),

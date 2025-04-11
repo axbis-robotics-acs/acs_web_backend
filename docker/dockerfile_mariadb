@@ -1,0 +1,20 @@
+# Dockerfile for MariaDB
+FROM mariadb:10.10
+
+ENV MYSQL_ROOT_PASSWORD admin
+
+WORKDIR /etc/mysql
+# RUN mkdir dump
+WORKDIR /etc/mysql/docker-entrypoint-initdb.d
+
+# COPY ./db/initdb.d/dump.sql /etc/mysql/docker-entrypoint-initdb.d/dump.sql
+
+
+RUN echo '[mysqld]' >> /etc/mysql/conf.d/my.cnf
+RUN echo 'lower_case_table_names=1' >> /etc/mysql/conf.d/my.cnf
+RUN echo 'default-time-zone=+9:00' >> /etc/mysql/conf.d/my.cnf
+RUN echo 'collation-server=utf8mb4_unicode_ci' >> /etc/mysql/conf.d/my.cnf
+RUN echo 'character-set-server=utf8mb4' >> /etc/mysql/conf.d/my.cnf
+RUN echo 'skip-character-set-client-handshake' >> /etc/mysql/conf.d/my.cnf
+RUN echo 'transaction-isolation=READ-UNCOMMITTED' >> /etc/mysql/conf.d/my.cnf
+

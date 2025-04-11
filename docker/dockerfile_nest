@@ -1,0 +1,17 @@
+# Dockerfile (same directory as backend/)
+FROM node:22-alpine
+
+WORKDIR /app
+
+COPY package*.json ./
+COPY dist ./dist
+COPY ecosystem.config.js ./
+COPY .env ./
+
+# ✅ 의존성 설치
+RUN npm install
+
+# PM2 설치만 (앱 소스는 volume으로 주입됨)
+RUN npm install -g pm2
+
+CMD ["pm2-runtime", "ecosystem.config.js", "--env", "production"]

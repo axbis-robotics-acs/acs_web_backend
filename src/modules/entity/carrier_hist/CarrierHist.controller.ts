@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Post } from '@nestjs/common';
 import { CarrierHistService } from './CarrierHist.service';
 import { CarrierHist } from './CarrierHist.entity';
 import { ApiTags } from '@nestjs/swagger';
@@ -12,5 +12,4 @@ export class CarrierHistController {
   async findAll(): Promise<CarrierHist[]> {
     return this.carrierhistService.findAll();
   }
-
 }

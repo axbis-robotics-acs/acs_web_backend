@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  nest-backend:
+    build:
+      context: ../
+      dockerfile: docker/dockerfile_nest
+      args:
+        buildno: 1.0.3
+    container_name: nest-backend
+    ports:
+      - '4000:4000'
+    volumes:
+      - ../dist:/app/dist # ✅ 빌드 결과 공유
+      - ../.env:/app/.env
+      - ../ecosystem.config.js:/app/ecosystem.config.js
+    env_file:
+      - ../.env
+    command: pm2-runtime ecosystem.config.js --env production
+    restart: always
+    networks:
+      - backend-net
+
+  mariadb:
+    build:
+      context: ../
+      dockerfile: docker/dockerfile_mariadb
+      args:
+        buildno: 1.0.3
+    container_name: nest-mariadb
+    restart: unless-stopped
+    volumes:
+      - ../docker/initdb.d:/docker-entrypoint-initdb.d
+      - mariadb_data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=admin
+    ports:
+      - '3306:3306'
+    networks:
+      - backend-net
+
+volumes:
+  mariadb_data:
+
+networks:
+  backend-net:

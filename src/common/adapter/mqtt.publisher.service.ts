@@ -2,6 +2,13 @@ import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
 import { mqttClient } from './mqtt.client';
 import { lastValueFrom } from 'rxjs';
 import * as mqtt from 'mqtt';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
+const mqttScheme = 'mqtt://';
+const mqttHost = process.env.MQTT_URL || 'localhost';
+const mqttPort = process.env.MQTT_PORT || '1883'; // 포트도 환경변수로 관리 추천
+const mqttUrl = `${mqttScheme}${mqttHost}:${mqttPort}`;
 
 @Injectable()
 export class MqttPublisher implements OnModuleInit, OnModuleDestroy {
@@ -10,7 +17,7 @@ export class MqttPublisher implements OnModuleInit, OnModuleDestroy {
   async onModuleInit() {
     await mqttClient.connect();
 
-    this.rawMqttClient = mqtt.connect('mqtt://localhost:1883', {
+    this.rawMqttClient = mqtt.connect(mqttUrl, {
       clientId: 'nest-raw-pub-' + Math.random().toString(16).substr(2, 8),
       clean: true,
     });
