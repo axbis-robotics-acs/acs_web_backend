@@ -41,11 +41,15 @@ export class MqttSubscriber {
         );
         status = 'failure';
         this.logger.error(`생성을 위한 데이터: ${JSON.stringify(data)}`);
-        await this.queryRegistry.create(Robot, {
-          robot_id: data.robot_id,
-          battery_no: 0.0,
-          ...criteria,
-        });
+        await this.queryRegistry.create(
+          Robot,
+          {
+            robot_id: data.robot_id,
+            battery_no: 0.0,
+            ...criteria,
+          },
+          true,
+        );
       }
     } catch (error) {
       globalException(error);
@@ -67,6 +71,7 @@ export class MqttSubscriber {
         Robot,
         { robot_id: data.robot_id },
         { status_tx: data.status },
+        true,
       );
 
       this.logger.log(

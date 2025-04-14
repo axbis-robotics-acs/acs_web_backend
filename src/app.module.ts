@@ -109,7 +109,7 @@ function loadProvidersAndControllers() {
       database: process.env.DB_NAME,
       entities: [__dirname + '/modules/**/*.entity{.ts,.js}'],
       synchronize: false,
-      logging: false,
+      logging: true,
     }),
     ...loadModules(), // ✅ 자동으로 `modules/` 내부의 모든 모듈 추가
     StatusModule,

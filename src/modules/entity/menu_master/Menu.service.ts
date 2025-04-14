@@ -2,45 +2,73 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { In, Repository } from 'typeorm';
 import { Menu } from './Menu.entity';
+import {
+  QueryRegistry,
+  UpdateResult,
+  DeleteResult,
+} from '../../../common/utils/query/query-registry.service';
 
 @Injectable()
 export class MenuService {
   constructor(
     @InjectRepository(Menu)
     private readonly menuRepository: Repository<Menu>,
+    private readonly queryRegistryService: QueryRegistry,
   ) {}
 
   async findAll(): Promise<Menu[]> {
-    return this.menuRepository.find();
+    return this.queryRegistryService.select<Menu>(Menu, {});
   }
 
-  async findMenuId(menu_cd: string[], site_cd: string) {
-    const res = this.menuRepository.find({
-      where: {
-        menu_cd: In(menu_cd), // ✅ 배열 처리
-        site_cd,
+  async selectOne<K extends keyof Menu>(
+    where: Pick<Menu, K>,
+  ): Promise<Menu | null> {
+    const results = await this.queryRegistryService.select<Menu>(Menu, where);
+    return results.length > 0 ? results[0] : null;
+  }
+
+  async create(menuData: Menu): Promise<Menu> {
+    return this.queryRegistryService.create<Menu>(Menu, menuData, true);
+  }
+
+  async update<K extends keyof Menu>(
+    where: Pick<Menu, K>,
+    menuData: Menu,
+  ): Promise<UpdateResult> {
+    return this.queryRegistryService.update<Menu>(Menu, where, menuData, true);
+  }
+
+  async delete<K extends keyof Menu>(
+    where: Pick<Menu, K>,
+  ): Promise<DeleteResult> {
+    return this.queryRegistryService.delete<Menu>(Menu, where, true);
+  }
+
+  async findMenuId(menu_cd: string[], site_cd: string): Promise<Menu[]> {
+    return this.queryRegistryService.selectByOrder<Menu>(
+      Menu,
+      {
+        menu_cd: In(menu_cd),
+        site_cd: site_cd,
         usable_fl: 1,
       },
-      order: {
+      {
         menu_seq: 'ASC',
       },
-    });
-
-    return res;
+    );
   }
 
-  async findSubMenuId(menu_cd: string, site_cd: string) {
-    const res = this.menuRepository.find({
-      where: {
-        parent_id: menu_cd, // ✅ 배열 처리
-        site_cd,
-        usable_fl: 1, // 활성화된 메뉴만 가져오기
+  async findSubMenuId(menu_cd: string, site_cd: string): Promise<Menu[]> {
+    return this.queryRegistryService.selectByOrder<Menu>(
+      Menu,
+      {
+        parent_id: menu_cd,
+        site_cd: site_cd,
+        usable_fl: 1,
       },
-      order: {
+      {
         menu_seq: 'ASC',
       },
-    });
-
-    return res;
+    );
   }
 }

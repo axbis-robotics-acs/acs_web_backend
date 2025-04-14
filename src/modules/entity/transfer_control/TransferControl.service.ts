@@ -3,25 +3,44 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { TransferControl } from './TransferControl.entity';
 import { BaseException } from 'src/common/utils/exceptions/base.exception';
+import {
+  QueryRegistry,
+  UpdateResult,
+  DeleteResult,
+} from '../../../common/utils/query/query-registry.service';
 
 @Injectable()
 export class TransferControlService {
   constructor(
     @InjectRepository(TransferControl)
     private readonly transfercontrolRepository: Repository<TransferControl>,
+    private readonly queryRegistryService: QueryRegistry,
   ) {}
 
   async findAll(): Promise<TransferControl[]> {
-    return this.transfercontrolRepository.find();
+    return this.queryRegistryService.select<TransferControl>(
+      TransferControl,
+      {},
+    );
   }
 
-  async findByTransferid(transfer_id: string): Promise<TransferControl[]> {
-    return this.transfercontrolRepository.findBy({ transfer_id });
+  async selectOne<K extends keyof TransferControl>(
+    where: Pick<TransferControl, K>,
+  ): Promise<TransferControl | null> {
+    const results = await this.queryRegistryService.select<TransferControl>(
+      TransferControl,
+      where,
+    );
+    return results.length > 0 ? results[0] : null;
   }
 
   async create(transferControl: TransferControl): Promise<TransferControl> {
     try {
-      const result = await this.transfercontrolRepository.save(transferControl);
+      const result = await this.queryRegistryService.create<TransferControl>(
+        TransferControl,
+        transferControl,
+        true,
+      );
       console.log('저장 결과:', result);
       return result;
     } catch (error) {
@@ -33,34 +52,80 @@ export class TransferControlService {
     }
   }
 
-  async searchTasks(searchConditions: any): Promise<TransferControl[]> {
-    const queryBuilder =
-      this.transfercontrolRepository.createQueryBuilder('transferControl');
+  async update<K extends keyof TransferControl>(
+    where: Pick<TransferControl, K>,
+    transferControlData: TransferControl,
+  ): Promise<UpdateResult> {
+    try {
+      const result = await this.queryRegistryService.update<TransferControl>(
+        TransferControl,
+        where,
+        transferControlData,
+        true,
+      );
+      console.log('업데이트 결과:', result);
+      return result;
+    } catch (error) {
+      throw new BaseException({
+        message: 'Error occurred while updating transfer control',
+        statusCode: 500,
+        debugMessage: error.message,
+      });
+    }
+  }
 
-    for (const key in searchConditions) {
-      try {
+  async delete<K extends keyof TransferControl>(
+    where: Pick<TransferControl, K>,
+  ): Promise<DeleteResult> {
+    try {
+      const result = await this.queryRegistryService.delete<TransferControl>(
+        TransferControl,
+        where,
+        true,
+      );
+      console.log('삭제 결과:', result);
+      return result;
+    } catch (error) {
+      throw new BaseException({
+        message: 'Error occurred while deleting transfer control',
+        statusCode: 500,
+        debugMessage: error.message,
+      });
+    }
+  }
+
+  async findByTransferid(transfer_id: string): Promise<TransferControl[]> {
+    return this.queryRegistryService.select<TransferControl>(TransferControl, {
+      where: { transfer_id },
+    });
+  }
+
+  async searchTasks(searchConditions: any): Promise<TransferControl[]> {
+    try {
+      const where = {};
+      for (const key in searchConditions) {
         if (
           Object.prototype.hasOwnProperty.call(searchConditions, key) &&
           searchConditions[key] !== undefined &&
           searchConditions[key] !== ''
         ) {
-          queryBuilder.andWhere(`transferControl.${key} = :${key}`, {
-            [key]: searchConditions[key],
-          });
+          where[key] = searchConditions[key];
         }
-      } catch (error) {
-        console.error(`Error processing key ${key}:`, error);
-        console.error('Original error:', error.stack || error.message || error);
-
-        throw new BaseException({
-          message: 'Error occurred while processing search conditions',
-          statusCode: 500,
-          debugMessage: error.message,
-        });
       }
+      return this.queryRegistryService.select<TransferControl>(
+        TransferControl,
+        { where },
+      );
+    } catch (error) {
+      console.error(
+        'Error occurred while processing search conditions:',
+        error,
+      );
+      throw new BaseException({
+        message: 'Error occurred while processing search conditions',
+        statusCode: 500,
+        debugMessage: error.message,
+      });
     }
-    const result = await queryBuilder.getMany();
-
-    return result;
   }
 }
