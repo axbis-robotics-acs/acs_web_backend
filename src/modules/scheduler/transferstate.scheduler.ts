@@ -14,9 +14,10 @@ export class TransferStateScheduler {
 
   @Interval(3000) // ✅ 3초마다 실행
   async readTransferState() {
-    this.logger.log('TransferStateScheduler started');
-    this.logger.log(this.transferCache.entries());
     for (const [transfer_id, cached] of this.transferCache.entries()) {
+      this.logger.log(
+        `Transfer ${transfer_id}의 현재 상태 확인: ${cached.transfer_st}`,
+      );
       const latest = await this.transferControlService.selectOne({
         transfer_id: transfer_id,
       });
