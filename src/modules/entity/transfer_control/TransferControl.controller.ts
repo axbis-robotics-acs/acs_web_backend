@@ -4,12 +4,14 @@ import { TransferControl } from './TransferControl.entity';
 import { ApiTags } from '@nestjs/swagger';
 import { BaseException } from 'src/common/utils/exceptions/base.exception';
 import { getFormattedTimestampTID } from 'src/common/utils/data-format';
+import { TransferStateCacheService } from 'src/common/utils/cache/transfercontrol.cache.service';
 
 @ApiTags('transfercontrol')
 @Controller('transfercontrol')
 export class TransferControlController {
   constructor(
     private readonly transfercontrolService: TransferControlService,
+    private readonly transferCache: TransferStateCacheService,
   ) {}
 
   @Get()
@@ -30,13 +32,27 @@ export class TransferControlController {
 
       transferControl.transfer_id =
         transferControl.transfer_id || getFormattedTimestampTID();
+
       transferControl.priority_no = parseInt(
         transferControl.priority_no.toString(),
         10,
       );
 
-      console.log(transferControl);
-      return this.transfercontrolService.create(transferControl);
+      const createresult =
+        await this.transfercontrolService.create(transferControl);
+      const result = await this.transfercontrolService.selectOne({
+        transfer_id: transferControl.transfer_id,
+      });
+
+      console.log('result', result);
+
+      if (result) {
+        this.transferCache.add(transferControl.transfer_id, {
+          transfer_st: result.transfer_st,
+        });
+      }
+
+      return createresult;
     } catch (error) {
       throw new BaseException({
         message: 'Error occurred while creating transfer control',
@@ -46,10 +62,15 @@ export class TransferControlController {
     }
   }
 
-  @Get('search')
-  async searchTasks(@Query() query: any): Promise<any[]> {
+  @Post('search')
+  async searchTasks(
+    @Body() transferDto: { transfer_st: string; site_cd: string },
+  ): Promise<any[]> {
     try {
-      return this.transfercontrolService.searchTasks(query);
+      return this.transfercontrolService.searchTasks(
+        transferDto.transfer_st,
+        transferDto.site_cd,
+      );
     } catch (error) {
       throw new BaseException({
         message: 'Error occurred while searching tasks',

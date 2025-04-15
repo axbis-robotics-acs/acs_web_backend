@@ -399,11 +399,11 @@
       }
     },
     "/transfercontrol/search": {
-      "get": {
+      "post": {
         "operationId": "TransferControlController_searchTasks",
         "parameters": [],
         "responses": {
-          "200": {
+          "201": {
             "description": ""
           }
         },

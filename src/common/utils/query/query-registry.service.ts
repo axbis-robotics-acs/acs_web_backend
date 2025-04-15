@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DeepPartial, EntityManager, ObjectLiteral, In } from 'typeorm';
+import { getFormattedTimestampTID } from '../data-format';
 
 @Injectable()
 export class QueryRegistry {
@@ -17,6 +18,10 @@ export class QueryRegistry {
     let index = 0;
     for (const [field, value] of Object.entries(conditions)) {
       const paramName = `param${index++}`;
+
+      if (value === '' || value === undefined || value === null) {
+        continue; // 빈 문자열, undefined, null은 조건에서 제외
+      }
 
       // ✅ In(...) 타입일 경우
       if (
@@ -67,6 +72,15 @@ export class QueryRegistry {
 
     let index = 0;
     for (const [field, value] of Object.entries(conditions)) {
+      if (
+        value === '' ||
+        value === '' ||
+        value === undefined ||
+        value === null
+      ) {
+        continue; // 빈 문자열, undefined, null은 조건에서 제외
+      }
+
       const paramName = `param${index++}`;
       qb.andWhere(`${alias}.${field} = :${paramName}`, { [paramName]: value });
     }
@@ -89,7 +103,10 @@ export class QueryRegistry {
   ): Promise<T> {
     const result = await this.em.getRepository(entity).save(data);
     if (hist) {
-      await this.tryInsertHist(entity, result as T);
+      await this.tryInsertHist(entity, {
+        hist_id: getFormattedTimestampTID(),
+        ...(result as T),
+      });
     }
 
     return result;
@@ -107,7 +124,10 @@ export class QueryRegistry {
 
     const after = await this.selectOne(entity, where);
     if (hist && after) {
-      await this.tryInsertHist(entity, after);
+      await this.tryInsertHist(entity, {
+        hist_id: getFormattedTimestampTID(),
+        ...after,
+      });
     }
 
     return {
@@ -124,7 +144,10 @@ export class QueryRegistry {
     const before = await this.selectOne(entity, where);
     const result = await this.em.getRepository(entity).delete(where);
     if (hist && before) {
-      await this.tryInsertHist(entity, before);
+      await this.tryInsertHist(entity, {
+        hist_id: getFormattedTimestampTID(),
+        ...before,
+      });
     }
     return {
       raw: result.raw,
@@ -146,6 +169,7 @@ export class QueryRegistry {
 
       const histRepo = this.em.getRepository(histEntity);
       const histRecord = {
+        hist_id: getFormattedTimestampTID(),
         ...currentData,
       };
 

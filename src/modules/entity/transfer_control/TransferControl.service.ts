@@ -100,21 +100,15 @@ export class TransferControlService {
     });
   }
 
-  async searchTasks(searchConditions: any): Promise<TransferControl[]> {
+  async searchTasks(
+    transfer_st: string,
+    site_cd: string,
+  ): Promise<TransferControl[]> {
     try {
-      const where = {};
-      for (const key in searchConditions) {
-        if (
-          Object.prototype.hasOwnProperty.call(searchConditions, key) &&
-          searchConditions[key] !== undefined &&
-          searchConditions[key] !== ''
-        ) {
-          where[key] = searchConditions[key];
-        }
-      }
+      console.log(transfer_st, site_cd);
       return this.queryRegistryService.select<TransferControl>(
         TransferControl,
-        { where },
+        { transfer_st: transfer_st, site_cd: site_cd },
       );
     } catch (error) {
       console.error(
