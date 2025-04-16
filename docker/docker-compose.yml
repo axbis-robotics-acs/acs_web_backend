@@ -16,6 +16,8 @@ services:
       - ../ecosystem.config.js:/app/ecosystem.config.js
     env_file:
       - ../.env
+    environment:
+      - TZ=Asia/Seoul
     command: pm2-runtime ecosystem.config.js --env production
     restart: always
     networks:
@@ -34,6 +36,7 @@ services:
       - mariadb_data:/var/lib/mysql
     environment:
       - MYSQL_ROOT_PASSWORD=admin
+      - TZ=Asia/Seoul
     ports:
       - '3306:3306'
     networks:

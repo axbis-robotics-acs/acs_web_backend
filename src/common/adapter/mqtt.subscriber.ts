@@ -1,3 +1,4 @@
+// File Name: mqtt.subscriber.ts
 import { Controller, Logger } from '@nestjs/common';
 import { EventPattern, Payload, Ctx, MqttContext } from '@nestjs/microservices';
 import { MqttPublisher } from './mqtt.publisher.service';
@@ -7,6 +8,12 @@ import { Robot } from 'src/modules/entity/robot_master/Robot.entity';
 import { CommonCriteriaInput } from '../utils/query/common.criteria';
 import { globalException } from '../utils/exceptions/global.exception';
 import { HeartbeatCacheService } from '../utils/cache/heartbeat.cache.service';
+import { MqttCacheService } from '../utils/cache/mqtt.cache.service';
+import {
+  middlewareConnectionResponseTopic,
+  middlewareTaskResponseTopic,
+  robotStatusRequestTopic,
+} from './mqtt.client';
 
 @Controller()
 export class MqttSubscriber {
@@ -16,9 +23,10 @@ export class MqttSubscriber {
     private readonly mqttPublisher: MqttPublisher,
     private readonly queryRegistry: QueryRegistry,
     private readonly heartbeatCacheService: HeartbeatCacheService,
+    private readonly mqttCacheService: MqttCacheService,
   ) {} // ✅ 서비스 주입
 
-  @EventPattern('robot/status/request')
+  @EventPattern(robotStatusRequestTopic)
   async handleRobotStatus(@Payload() data: any, @Ctx() context: MqttContext) {
     const criteria = CommonCriteriaInput.build(
       'HU',
@@ -61,42 +69,16 @@ export class MqttSubscriber {
     });
   }
 
-  @EventPattern('robot/command')
-  async handleRobotCommand(@Payload() data: any, @Ctx() context: MqttContext) {
-    this.logger.log(`📥 [robot/command] 명령 수신: ${JSON.stringify(data)}`);
-
-    if (data.command === 'update') {
-      // 여기서 명령 처리 로직 수행
-      const result = await this.queryRegistry.update(
-        Robot,
-        { robot_id: data.robot_id },
-        { status_tx: data.status },
-        true,
-      );
-
-      this.logger.log(
-        ` [robot/command] 명령 처리 결과: ${JSON.stringify(result)}`,
-      );
-    } else if (data.command === 'delete') {
-      // 여기서 명령 처리 로직 수행
-      const result = await this.queryRegistry.delete(Robot, {
-        robot_id: data.robot_id,
-      });
-
-      this.logger.log(
-        ` [robot/command] 명령 처리 결과: ${JSON.stringify(result)}`,
-      );
-    }
-  }
-
-  @EventPattern('robot/+/log') // 와일드카드 토픽도 가능
+  @EventPattern(middlewareTaskResponseTopic) // 와일드카드 토픽도 가능
   handleRobotLog(@Payload() data: any, @Ctx() context: MqttContext) {
     const topic = context.getTopic();
-    this.logger.log(`📥 [${topic}] 로봇 로그 수신: ${JSON.stringify(data)}`);
+    this.logger.log(
+      `📥 [${topic}] middleware task 수신: ${JSON.stringify(data)}`,
+    );
     // topic에서 로봇 ID 추출해서 처리 가능
   }
 
-  @EventPattern('middleware/connection/response')
+  @EventPattern(middlewareConnectionResponseTopic)
   handleMiddleWareConnection(
     @Payload() data: any,
     @Ctx() context: MqttContext,
@@ -111,15 +93,20 @@ export class MqttSubscriber {
     this.logger.log(
       `📥 [middleware/connection] 응답 수신: ${JSON.stringify(data)}`,
     );
+    this.mqttCacheService.add('connectionCount', 10);
 
     const rtt = this.heartbeatCacheService.getRttFromTid(tid, update_time);
     if (rtt !== null) {
-      this.logger.log(`📶 RTT 측정 완료 - TID: ${tid}, RTT: ${rtt}ms`);
+      this.logger.log(`📶 RTT 측정 완료 - TID: ${tid}, RTT: ${rtt}`);
     }
 
-    this.mqttPublisher.rawPublish('middleware/connection/rtt', {
-      rtt: rtt,
-    });
+    this.mqttPublisher.rawPublish(
+      'middleware/connection/rtt',
+      {
+        rtt: rtt,
+      },
+      0,
+    );
   }
 
   private async sendFeedback(topic: string, data: any) {
@@ -128,9 +115,23 @@ export class MqttSubscriber {
       update_time: getFormattedTimestampTID(),
     };
 
-    this.mqttPublisher.rawPublish(topic, responsePayload);
+    this.mqttPublisher.rawPublish(topic, responsePayload, 0);
     this.logger.log(
       `📤 응답 전송 [${topic}]: ${JSON.stringify(responsePayload)}`,
     );
+  }
+
+  @EventPattern('$SYS/broker/clients/connected')
+  async onClientConnected(@Payload() payload: any) {
+    this.sendTopicInfoOnce();
+  }
+
+  private async sendTopicInfoOnce() {
+    const topics = {
+      robotStatusRequestTopic: robotStatusRequestTopic,
+      middlewareTaskResponseTopic: middlewareTaskResponseTopic,
+      middlewareConnectionResponseTopic: middlewareConnectionResponseTopic,
+    };
+    this.mqttPublisher.rawPublish('acs/datastore/topics', topics, 1);
   }
 }

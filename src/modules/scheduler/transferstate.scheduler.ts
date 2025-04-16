@@ -12,7 +12,7 @@ export class TransferStateScheduler {
     private readonly transferControlService: TransferControlService,
   ) {}
 
-  @Interval(3000) // ✅ 3초마다 실행
+  @Interval(500) // ✅ 3초마다 실행
   async readTransferState() {
     for (const [transfer_id, cached] of this.transferCache.entries()) {
       this.logger.log(

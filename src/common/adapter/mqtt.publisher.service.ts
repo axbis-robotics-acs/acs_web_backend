@@ -1,14 +1,7 @@
 import { Injectable, OnModuleInit, OnModuleDestroy } from '@nestjs/common';
-import { mqttClient } from './mqtt.client';
+import { mqttClient, mqttConfig, mqttUrl } from './mqtt.client';
 import { lastValueFrom } from 'rxjs';
 import * as mqtt from 'mqtt';
-import * as dotenv from 'dotenv';
-dotenv.config();
-
-const mqttScheme = 'mqtt://';
-const mqttHost = process.env.MQTT_URL || 'localhost';
-const mqttPort = process.env.MQTT_PORT || '1883'; // 포트도 환경변수로 관리 추천
-const mqttUrl = `${mqttScheme}${mqttHost}:${mqttPort}`;
 
 @Injectable()
 export class MqttPublisher implements OnModuleInit, OnModuleDestroy {
@@ -18,8 +11,7 @@ export class MqttPublisher implements OnModuleInit, OnModuleDestroy {
     await mqttClient.connect();
 
     this.rawMqttClient = mqtt.connect(mqttUrl, {
-      clientId: 'nest-raw-pub-' + Math.random().toString(16).substr(2, 8),
-      clean: true,
+      ...mqttConfig('mqtt-raw-pub'),
     });
 
     this.rawMqttClient.on('connect', () => {
@@ -45,11 +37,12 @@ export class MqttPublisher implements OnModuleInit, OnModuleDestroy {
   }
 
   // 외부 장치로 순수 MQTT 메시지 발행
-  rawPublish(topic: string, payload: any): void {
+  rawPublish(topic: string, payload: any, qos: number): void {
     const message =
       typeof payload === 'string' ? payload : JSON.stringify(payload);
+    const qosLevel = qos as 0 | 1 | 2;
     if (this.rawMqttClient?.connected) {
-      this.rawMqttClient.publish(topic, message, { qos: 0 }, (err) => {
+      this.rawMqttClient.publish(topic, message, { qos: qosLevel }, (err) => {
         if (err) {
           console.error(`[MQTT PUB:Raw] Failed to publish to ${topic}`, err);
         } else {

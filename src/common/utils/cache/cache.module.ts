@@ -2,10 +2,15 @@
 import { Module } from '@nestjs/common';
 import { HeartbeatCacheService } from './heartbeat.cache.service';
 import { TransferStateCacheService } from './transfercontrol.cache.service';
+import { MqttCacheService } from './mqtt.cache.service';
 
 @Module({
-  providers: [HeartbeatCacheService, TransferStateCacheService],
-  exports: [HeartbeatCacheService, TransferStateCacheService], // ✅ 다른 모듈에서 사용 가능하도록 export
+  providers: [
+    HeartbeatCacheService,
+    TransferStateCacheService,
+    MqttCacheService,
+  ],
+  exports: [HeartbeatCacheService, TransferStateCacheService, MqttCacheService], // ✅ 다른 모듈에서 사용 가능하도록 export
 })
 export class CacheModule {}
 // src/common/utils/cache/heartbeat.cache.service.ts
