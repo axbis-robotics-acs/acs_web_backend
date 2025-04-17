@@ -13,7 +13,7 @@ export class QueryRegistry {
   ): Promise<T[]> {
     const repo = this.em.getRepository(entity);
     const alias = repo.metadata.tableName;
-    const qb = repo.createQueryBuilder(alias);
+    const qb = repo.createQueryBuilder(alias).distinct(true);
 
     let index = 0;
     for (const [field, value] of Object.entries(conditions)) {
@@ -68,7 +68,7 @@ export class QueryRegistry {
   ): Promise<T[]> {
     const repo = this.em.getRepository(entity);
     const alias = repo.metadata.tableName;
-    const qb = repo.createQueryBuilder(alias);
+    const qb = repo.createQueryBuilder(alias).distinct(true);
 
     let index = 0;
     for (const [field, value] of Object.entries(conditions)) {
@@ -99,12 +99,12 @@ export class QueryRegistry {
   async create<T extends ObjectLiteral>(
     entity: { new (): T },
     data: DeepPartial<T>,
-    hist: boolean = false,
+    hist: boolean,
   ): Promise<T> {
     const result = await this.em.getRepository(entity).save(data);
     if (hist) {
       await this.tryInsertHist(entity, {
-        hist_id: getFormattedTimestampTID(),
+        hist_id: getFormattedTimestampTID() + result.transfer_id,
         ...(result as T),
       });
     }
@@ -116,7 +116,7 @@ export class QueryRegistry {
     entity: { new (): T },
     where: Partial<T>,
     updateData: Partial<T>,
-    hist: boolean = false,
+    hist: boolean,
   ): Promise<UpdateResult> {
     const result = await this.em
       .getRepository(entity)

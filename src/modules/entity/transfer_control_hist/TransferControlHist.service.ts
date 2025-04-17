@@ -7,6 +7,7 @@ import {
   UpdateResult,
   DeleteResult,
 } from '../../../common/utils/query/query-registry.service';
+import { BaseException } from 'src/common/utils/exceptions/base.exception';
 
 @Injectable()
 export class TransferControlHistService {
@@ -63,5 +64,54 @@ export class TransferControlHistService {
       where,
       true,
     );
+  }
+
+  async searchTasks(
+    transfer_st: string,
+    site_cd: string,
+  ): Promise<TransferControlHist[]> {
+    try {
+      const tableName = this.transfercontrolhistRepository.metadata.tableName;
+
+      const whereClauses: string[] = [];
+      const params: any[] = [];
+
+      if (
+        transfer_st !== '' &&
+        transfer_st !== null &&
+        transfer_st !== undefined
+      ) {
+        whereClauses.push('transfer_st = ?');
+        params.push(transfer_st);
+      }
+
+      if (site_cd !== '' && site_cd !== null && site_cd !== undefined) {
+        whereClauses.push('site_cd = ?');
+        params.push(site_cd);
+      }
+
+      const whereSQL =
+        whereClauses.length > 0 ? `WHERE ${whereClauses.join(' AND ')}` : '';
+
+      const query = `
+        SELECT * FROM (
+          SELECT * FROM ${tableName}
+          ${whereSQL}
+          ORDER BY create_at DESC
+        ) AS t
+        GROUP BY transfer_id
+        ORDER BY create_at DESC
+      `;
+
+      const raw = await this.transfercontrolhistRepository.query(query, params);
+
+      return raw.map((row) => this.transfercontrolhistRepository.create(row));
+    } catch (error) {
+      throw new BaseException({
+        message: 'Error occurred while searching tasks',
+        statusCode: 500,
+        debugMessage: error.message,
+      });
+    }
   }
 }

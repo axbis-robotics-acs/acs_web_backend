@@ -24,6 +24,204 @@ FLUSH PRIVILEGES;
 CREATE DATABASE IF NOT EXISTS acs CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE acs;
 
+
+--
+-- Table structure for table `acs_site_master`
+--
+
+DROP TABLE IF EXISTS `acs_site_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_site_master` (
+  `site_cd` varchar(50) NOT NULL COMMENT '사이트 고유 코드',
+  `site_nm` varchar(255) NOT NULL COMMENT '사이트 명칭',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`site_cd`),
+  UNIQUE KEY `IDX_8915b3298faa3cae7b44603e0b` (`site_nm`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_site_master`
+--
+
+LOCK TABLES `acs_site_master` WRITE;
+/*!40000 ALTER TABLE `acs_site_master` DISABLE KEYS */;
+INSERT INTO `acs_site_master` VALUES ('HU','HUBIS',1,'2025-01-17 17:36:21.000000','2025-01-17 17:36:21.000000',NULL,NULL,NULL,'','administrator','administrator',NULL);
+/*!40000 ALTER TABLE `acs_site_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_role_master`
+--
+
+DROP TABLE IF EXISTS `acs_role_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_role_master` (
+  `role_cd` varchar(50) NOT NULL COMMENT '역할 코드',
+  `role_nm` varchar(255) NOT NULL COMMENT '역할 이름',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`role_cd`,`site_cd`),
+  KEY `role_site_cd_fk` (`site_cd`),
+  CONSTRAINT `role_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Role 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_role_master`
+--
+
+LOCK TABLES `acs_role_master` WRITE;
+/*!40000 ALTER TABLE `acs_role_master` DISABLE KEYS */;
+INSERT INTO `acs_role_master` VALUES ('Administrator','admin',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:09','administrator','2025-01-17 17:39:09',NULL,NULL),('Guest','guest',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:09','administrator','2025-01-17 17:39:09',NULL,NULL);
+/*!40000 ALTER TABLE `acs_role_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `acs_rule_master`
+--
+
+DROP TABLE IF EXISTS `acs_rule_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_rule_master` (
+  `rule_cd` varchar(50) NOT NULL COMMENT '규칙 코드',
+  `rule_nm` varchar(255) NOT NULL COMMENT '규칙 이름',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`rule_cd`,`site_cd`),
+  KEY `rule_site_cd_fk` (`site_cd`),
+  CONSTRAINT `rule_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Rule 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_rule_master`
+--
+
+LOCK TABLES `acs_rule_master` WRITE;
+/*!40000 ALTER TABLE `acs_rule_master` DISABLE KEYS */;
+INSERT INTO `acs_rule_master` VALUES ('MENU_001','MENU_UPDATE',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:47:43','administrator','2025-01-17 17:47:43',NULL,NULL);
+/*!40000 ALTER TABLE `acs_rule_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `acs_userclass_master`
+--
+
+DROP TABLE IF EXISTS `acs_userclass_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_userclass_master` (
+  `class_cd` varchar(50) NOT NULL COMMENT '그룹 코드',
+  `class_nm` varchar(255) NOT NULL COMMENT '그룹 명칭',
+  `role_cd` varchar(50) NOT NULL COMMENT '그룹에 할당된 역할 코드',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`class_cd`,`site_cd`),
+  KEY `userclass_role_cd_fk` (`role_cd`),
+  KEY `userclass_site_cd_fk` (`site_cd`),
+  CONSTRAINT `userclass_role_cd_fk` FOREIGN KEY (`role_cd`) REFERENCES `acs_role_master` (`role_cd`) ON UPDATE CASCADE,
+  CONSTRAINT `userclass_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User Group 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_userclass_master`
+--
+
+LOCK TABLES `acs_userclass_master` WRITE;
+/*!40000 ALTER TABLE `acs_userclass_master` DISABLE KEYS */;
+INSERT INTO `acs_userclass_master` VALUES ('HUBIS_ACS-00','HUBIS_ACS','Administrator',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:28','administrator','2025-01-17 17:39:28',NULL,NULL);
+/*!40000 ALTER TABLE `acs_userclass_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
+--
+-- Table structure for table `acs_user_master`
+--
+
+DROP TABLE IF EXISTS `acs_user_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_user_master` (
+  `account_id` varchar(255) NOT NULL COMMENT '계정 ID',
+  `user_nm` varchar(255) DEFAULT NULL COMMENT '사용자 이름',
+  `password_tx` varchar(255) NOT NULL COMMENT '암호화된 비밀번호',
+  `email_nm` varchar(255) DEFAULT NULL COMMENT '이메일 주소',
+  `role_cd` varchar(50) NOT NULL DEFAULT 'Guest' COMMENT '그룹에 할당된 역할 코드',
+  `class_cd` varchar(50) DEFAULT NULL COMMENT '유저가 속한 그룹정보',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`account_id`,`site_cd`),
+  KEY `user_role_cd_fk` (`role_cd`),
+  KEY `user_site_cd_fk` (`site_cd`),
+  KEY `user_class_cd_fk` (`class_cd`),
+  CONSTRAINT `user_class_cd_fk` FOREIGN KEY (`class_cd`) REFERENCES `acs_userclass_master` (`class_cd`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `user_role_cd_fk` FOREIGN KEY (`role_cd`) REFERENCES `acs_role_master` (`role_cd`) ON UPDATE CASCADE,
+  CONSTRAINT `user_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User Master 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_user_master`
+--
+
+LOCK TABLES `acs_user_master` WRITE;
+/*!40000 ALTER TABLE `acs_user_master` DISABLE KEYS */;
+INSERT INTO `acs_user_master` VALUES ('admin','admin','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Administrator','HUBIS_ACS-00',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL),('admin2',NULL,'$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Guest',NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:22:18',NULL,'2025-02-19 09:22:18',NULL,NULL),('operoper','operoper','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','operoper','Guest',NULL,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL);
+/*!40000 ALTER TABLE `acs_user_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `acs_area_master`
 --
@@ -256,6 +454,33 @@ CREATE TABLE `acs_equipment_master` (
 
 LOCK TABLES `acs_equipment_master` WRITE;
 /*!40000 ALTER TABLE `acs_equipment_master` DISABLE KEYS */;
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P2', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P3', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P4', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P5', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P6', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P7', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P8', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO acs.acs_equipment_master
+(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('Q1', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
 /*!40000 ALTER TABLE `acs_equipment_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -544,7 +769,30 @@ CREATE TABLE `acs_node_master` (
 
 LOCK TABLES `acs_node_master` WRITE;
 /*!40000 ALTER TABLE `acs_node_master` DISABLE KEYS */;
-INSERT INTO `acs_node_master` VALUES ('NODE_01','NODE_01','1','2','0',NULL,NULL,123,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_02','NODE_02','1','2','0',NULL,NULL,123,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_01', 'NODE_01', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, '', 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_02', 'NODE_02', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, '', 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_03', 'NODE_03', '3', '4', '90', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_04', 'NODE_04', '5', '6', '-90', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:37:44.000', NULL, '2025-04-17 15:37:44.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_05', 'NODE_05', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_06', 'NODE_06', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_07', 'NODE_07', '3', '4', '-180', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
+INSERT INTO acs.acs_node_master
+(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('NODE_08', 'NODE_08', '5', '6', '180', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:37:44.000', NULL, '2025-04-17 15:37:44.000', NULL, NULL);
 /*!40000 ALTER TABLE `acs_node_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -628,6 +876,24 @@ CREATE TABLE `acs_port_master` (
 
 LOCK TABLES `acs_port_master` WRITE;
 /*!40000 ALTER TABLE `acs_port_master` DISABLE KEYS */;
+INSERT INTO acs.acs_port_master
+(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1-1', 'Muitl', 'RUNNING', 'P1', 'NODE_01', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
+INSERT INTO acs.acs_port_master
+(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1-2', 'Muitl', 'RUNNING', 'P1', 'NODE_02', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
+INSERT INTO acs.acs_port_master
+(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1-3', 'Muitl', 'RUNNING', 'P1', 'NODE_03', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
+INSERT INTO acs.acs_port_master
+(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1-4', 'Muitl', 'RUNNING', 'P1', 'NODE_04', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
+INSERT INTO acs.acs_port_master
+(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1-5', 'Muitl', 'RUNNING', 'P1', 'NODE_05', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
+INSERT INTO acs.acs_port_master
+(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('P1-6', 'Muitl', 'RUNNING', 'P1', 'NODE_06', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
 /*!40000 ALTER TABLE `acs_port_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -683,7 +949,10 @@ CREATE TABLE `acs_robot_master` (
   `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
   `model_nm` varchar(255) DEFAULT NULL COMMENT '모델명',
   `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `location_nm` varchar(50) NOT NULL COMMENT '로봇의 현재 위치 정보',
+  `wait_location_nm` varchar(50) DEFAULT NULL COMMENT '로봇의 고정 대기위치 | 빈 경우 동적 대기',
   `battery_no` double NOT NULL DEFAULT 0 COMMENT '로봇의 배터리 정보',
+  `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -697,6 +966,7 @@ CREATE TABLE `acs_robot_master` (
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
   PRIMARY KEY (`robot_id`,`site_cd`),
   KEY `robot_site_cd_fk` (`site_cd`),
+  KEY `robot_map_uuid_fk` (`map_uuid`),
   CONSTRAINT `robot_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='robot Master 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -707,46 +977,16 @@ CREATE TABLE `acs_robot_master` (
 
 LOCK TABLES `acs_robot_master` WRITE;
 /*!40000 ALTER TABLE `acs_robot_master` DISABLE KEYS */;
-INSERT INTO `acs_robot_master` VALUES ('ROBOT_01','LIFT','OMRON_LD_90x','idle',0,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:45:38','administrator','2025-01-17 17:45:38',NULL,NULL);
+INSERT INTO acs.acs_robot_master
+(robot_id, robot_tp, model_nm, status_tx, battery_no, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('ROBOT_01', 'LIFT', 'OMRON_LD_90x', 'idle', 0.0, 1, 'HU', NULL, NULL, '', 'administrator', '2025-01-17 17:45:38.000', 'administrator', '2025-01-17 17:45:38.000', NULL, NULL);
+INSERT INTO acs.acs_robot_master
+(robot_id, robot_tp, model_nm, status_tx, battery_no, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('ROBOT_02', 'LIFT', 'EPT', 'idle', 0.0, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-04-10 11:27:50.000', 'administrator', '2025-04-10 11:27:50.000', NULL, NULL);
 /*!40000 ALTER TABLE `acs_robot_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `acs_role_master`
---
 
-DROP TABLE IF EXISTS `acs_role_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `acs_role_master` (
-  `role_cd` varchar(50) NOT NULL COMMENT '역할 코드',
-  `role_nm` varchar(255) NOT NULL COMMENT '역할 이름',
-  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
-  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
-  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
-  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
-  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
-  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
-  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
-  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
-  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
-  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
-  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`role_cd`,`site_cd`),
-  KEY `role_site_cd_fk` (`site_cd`),
-  CONSTRAINT `role_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Role 정보';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `acs_role_master`
---
-
-LOCK TABLES `acs_role_master` WRITE;
-/*!40000 ALTER TABLE `acs_role_master` DISABLE KEYS */;
-INSERT INTO `acs_role_master` VALUES ('Administrator','admin',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:09','administrator','2025-01-17 17:39:09',NULL,NULL),('Guest','guest',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:09','administrator','2025-01-17 17:39:09',NULL,NULL);
-/*!40000 ALTER TABLE `acs_role_master` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `acs_role_rule_rel`
@@ -788,77 +1028,8 @@ INSERT INTO `acs_role_rule_rel` VALUES ('Administrator','MENU_001',1,'HU',NULL,N
 /*!40000 ALTER TABLE `acs_role_rule_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `acs_rule_master`
---
 
-DROP TABLE IF EXISTS `acs_rule_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `acs_rule_master` (
-  `rule_cd` varchar(50) NOT NULL COMMENT '규칙 코드',
-  `rule_nm` varchar(255) NOT NULL COMMENT '규칙 이름',
-  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
-  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
-  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
-  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
-  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
-  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
-  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
-  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
-  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
-  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
-  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`rule_cd`,`site_cd`),
-  KEY `rule_site_cd_fk` (`site_cd`),
-  CONSTRAINT `rule_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Rule 정보';
-/*!40101 SET character_set_client = @saved_cs_client */;
 
---
--- Dumping data for table `acs_rule_master`
---
-
-LOCK TABLES `acs_rule_master` WRITE;
-/*!40000 ALTER TABLE `acs_rule_master` DISABLE KEYS */;
-INSERT INTO `acs_rule_master` VALUES ('MENU_001','MENU_UPDATE',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:47:43','administrator','2025-01-17 17:47:43',NULL,NULL);
-/*!40000 ALTER TABLE `acs_rule_master` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `acs_site_master`
---
-
-DROP TABLE IF EXISTS `acs_site_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `acs_site_master` (
-  `site_cd` varchar(50) NOT NULL COMMENT '사이트 고유 코드',
-  `site_nm` varchar(255) NOT NULL COMMENT '사이트 명칭',
-  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
-  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
-  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
-  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
-  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
-  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
-  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
-  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
-  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
-  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`site_cd`),
-  UNIQUE KEY `IDX_8915b3298faa3cae7b44603e0b` (`site_nm`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `acs_site_master`
---
-
-LOCK TABLES `acs_site_master` WRITE;
-/*!40000 ALTER TABLE `acs_site_master` DISABLE KEYS */;
-INSERT INTO `acs_site_master` VALUES ('HU','HUBIS',1,'2025-01-17 17:36:21.000000','2025-01-17 17:36:21.000000',NULL,NULL,NULL,'','administrator','administrator',NULL);
-/*!40000 ALTER TABLE `acs_site_master` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Table structure for table `acs_transfer_control`
@@ -957,90 +1128,7 @@ LOCK TABLES `acs_transfer_control_hist` WRITE;
 /*!40000 ALTER TABLE `acs_transfer_control_hist` ENABLE KEYS */;
 UNLOCK TABLES;
 
---
--- Table structure for table `acs_user_master`
---
 
-DROP TABLE IF EXISTS `acs_user_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `acs_user_master` (
-  `account_id` varchar(255) NOT NULL COMMENT '계정 ID',
-  `user_nm` varchar(255) DEFAULT NULL COMMENT '사용자 이름',
-  `password_tx` varchar(255) NOT NULL COMMENT '암호화된 비밀번호',
-  `email_nm` varchar(255) DEFAULT NULL COMMENT '이메일 주소',
-  `role_cd` varchar(50) NOT NULL DEFAULT 'Guest' COMMENT '그룹에 할당된 역할 코드',
-  `class_cd` varchar(50) DEFAULT NULL COMMENT '유저가 속한 그룹정보',
-  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
-  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
-  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
-  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
-  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
-  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
-  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
-  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
-  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
-  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
-  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`account_id`,`site_cd`),
-  KEY `user_role_cd_fk` (`role_cd`),
-  KEY `user_site_cd_fk` (`site_cd`),
-  KEY `user_class_cd_fk` (`class_cd`),
-  CONSTRAINT `user_class_cd_fk` FOREIGN KEY (`class_cd`) REFERENCES `acs_userclass_master` (`class_cd`) ON DELETE SET NULL ON UPDATE CASCADE,
-  CONSTRAINT `user_role_cd_fk` FOREIGN KEY (`role_cd`) REFERENCES `acs_role_master` (`role_cd`) ON UPDATE CASCADE,
-  CONSTRAINT `user_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User Master 정보';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `acs_user_master`
---
-
-LOCK TABLES `acs_user_master` WRITE;
-/*!40000 ALTER TABLE `acs_user_master` DISABLE KEYS */;
-INSERT INTO `acs_user_master` VALUES ('admin','admin','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Administrator','HUBIS_ACS-00',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL),('admin2',NULL,'$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','srchoi_2@hubis.ai','Guest',NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-02-19 09:22:18',NULL,'2025-02-19 09:22:18',NULL,NULL),('operoper','operoper','$2b$10$1J94HgnbcbSK/qe/NwasceQIq6x/fJQbVCTjcKVSUjfKGm.fCPaqW','operoper','Guest',NULL,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:39:54','administrator','2025-01-17 17:39:54',NULL,NULL);
-/*!40000 ALTER TABLE `acs_user_master` ENABLE KEYS */;
-UNLOCK TABLES;
-
---
--- Table structure for table `acs_userclass_master`
---
-
-DROP TABLE IF EXISTS `acs_userclass_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `acs_userclass_master` (
-  `class_cd` varchar(50) NOT NULL COMMENT '그룹 코드',
-  `class_nm` varchar(255) NOT NULL COMMENT '그룹 명칭',
-  `role_cd` varchar(50) NOT NULL COMMENT '그룹에 할당된 역할 코드',
-  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
-  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
-  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
-  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
-  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
-  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
-  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
-  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
-  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
-  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
-  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`class_cd`,`site_cd`),
-  KEY `userclass_role_cd_fk` (`role_cd`),
-  KEY `userclass_site_cd_fk` (`site_cd`),
-  CONSTRAINT `userclass_role_cd_fk` FOREIGN KEY (`role_cd`) REFERENCES `acs_role_master` (`role_cd`) ON UPDATE CASCADE,
-  CONSTRAINT `userclass_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='User Group 정보';
-/*!40101 SET character_set_client = @saved_cs_client */;
-
---
--- Dumping data for table `acs_userclass_master`
---
-
-LOCK TABLES `acs_userclass_master` WRITE;
-/*!40000 ALTER TABLE `acs_userclass_master` DISABLE KEYS */;
-INSERT INTO `acs_userclass_master` VALUES ('HUBIS_ACS-00','HUBIS_ACS','Administrator',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:39:28','administrator','2025-01-17 17:39:28',NULL,NULL);
-/*!40000 ALTER TABLE `acs_userclass_master` ENABLE KEYS */;
-UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'acs'
