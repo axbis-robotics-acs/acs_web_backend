@@ -6,8 +6,8 @@ import { TransferStateCacheService } from 'src/common/utils/cache/transfercontro
 import { MicroTransferControlHistService } from './MicroTransferControlHist.service';
 import { MicroTransferControlHist } from './MicroTransferControlHist.entity';
 
-@ApiTags('transfercontrol')
-@Controller('transfercontrol')
+@ApiTags('microtransfercontrol')
+@Controller('microtransfercontrol')
 export class MicroTransferControlHistHistController {
   constructor(
     private readonly MicroTransferControlHistService: MicroTransferControlHistService,
