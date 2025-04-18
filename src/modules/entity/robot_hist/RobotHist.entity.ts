@@ -15,13 +15,13 @@ export class RobotHist {
   @Column({ type: 'varchar', length: 255, nullable: true })
   robot_id: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   robot_tp: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   model_nm: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   status_tx: string;
 
   @Column({ nullable: true, default: 0 })
@@ -36,19 +36,19 @@ export class RobotHist {
   @Column({ type: 'varchar', length: 255, nullable: true })
   description_tx: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   prev_activity_tx: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   activity_tx: string;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   creator_by: string;
 
   @CreateDateColumn()
   create_at: Date;
 
-  @Column({ type: 'varchar', length: 255, nullable: true })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   modifier_by: string;
 
   @UpdateDateColumn()

@@ -231,8 +231,8 @@ DROP TABLE IF EXISTS `acs_area_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_area_master` (
   `area_id` varchar(20) NOT NULL COMMENT '영역 ID',
-  `area_nm` varchar(255) DEFAULT NULL COMMENT '영역 명칭',
-  `area_tp` varchar(255) DEFAULT NULL COMMENT '영역 타입',
+  `area_nm` varchar(50) DEFAULT NULL COMMENT '영역 명칭',
+  `area_tp` varchar(50) DEFAULT NULL COMMENT '영역 타입',
   `point_cnt` varchar(255) DEFAULT NULL COMMENT '영역 포인트 개수',
   `point_val` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '포인트 정보',
   `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
@@ -275,8 +275,8 @@ DROP TABLE IF EXISTS `acs_carrier_hist`;
 CREATE TABLE `acs_carrier_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `carrier_id` varchar(255) DEFAULT NULL COMMENT 'carrier ID',
-  `carrier_tp` varchar(255) DEFAULT NULL COMMENT 'carrier 타입',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `carrier_tp` varchar(50) DEFAULT NULL COMMENT 'carrier 타입',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -312,8 +312,8 @@ DROP TABLE IF EXISTS `acs_carrier_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_carrier_master` (
   `carrier_id` varchar(255) NOT NULL COMMENT 'carrier ID',
-  `carrier_tp` varchar(255) DEFAULT NULL COMMENT 'carrier 타입',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `carrier_tp` varchar(50) DEFAULT NULL COMMENT 'carrier 타입',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
   `port_id` varchar(50) NOT NULL COMMENT '포트 명칭',
     `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -352,8 +352,8 @@ DROP TABLE IF EXISTS `acs_const_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_const_master` (
   `constant_cd` varchar(255) NOT NULL COMMENT '상수 코드',
-  `constant_tp` varchar(255) NOT NULL COMMENT '상수 타입',
-  `constant_nm` varchar(255) NOT NULL COMMENT '상수 명칭',
+  `constant_tp` varchar(50) NOT NULL COMMENT '상수 타입',
+  `constant_nm` varchar(50) NOT NULL COMMENT '상수 명칭',
   `constant_val` varchar(255) NOT NULL COMMENT '상수 값',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -392,8 +392,8 @@ DROP TABLE IF EXISTS `acs_equipment_hist`;
 CREATE TABLE `acs_equipment_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `equipment_id` varchar(255) DEFAULT NULL COMMENT '설비 명칭',
-  `equipment_tp` varchar(255) DEFAULT NULL COMMENT '설비 타입',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `equipment_tp` varchar(50) DEFAULT NULL COMMENT '설비 타입',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -531,7 +531,7 @@ DROP TABLE IF EXISTS `acs_link_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_link_master` (
   `link_id` varchar(255) NOT NULL COMMENT '링크 ID',
-  `link_nm` varchar(255) DEFAULT NULL COMMENT '링크 명칭',
+  `link_nm` varchar(50) DEFAULT NULL COMMENT '링크 명칭',
   `degree_val` varchar(255) DEFAULT NULL COMMENT '연결 방향',
   `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
@@ -572,8 +572,8 @@ DROP TABLE IF EXISTS `acs_login_hist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_login_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
-  `user_nm` varchar(255) DEFAULT NULL COMMENT '사용자 이름',
-  `role_cd` varchar(255) NOT NULL COMMENT '역할 코드',
+  `user_nm` varchar(50) DEFAULT NULL COMMENT '사용자 이름',
+  `role_cd` varchar(50) NOT NULL COMMENT '역할 코드',
   `access_by` datetime NOT NULL DEFAULT current_timestamp() COMMENT '접속 시간',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -734,8 +734,8 @@ DROP TABLE IF EXISTS `acs_node_master`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_node_master` (
-  `node_id` varchar(20) NOT NULL COMMENT '노드 ID',
-  `node_nm` varchar(255) DEFAULT NULL COMMENT '노드 명칭',
+  `node_id` varchar(255) NOT NULL COMMENT '노드 ID',
+  `node_nm` varchar(50) DEFAULT NULL COMMENT '노드 명칭',
   `pos_x_val` varchar(255) DEFAULT NULL COMMENT 'X 좌표',
   `pos_y_val` varchar(255) DEFAULT NULL COMMENT 'Y 좌표',
   `degree_val` varchar(255) DEFAULT NULL COMMENT '정위치 회전 각도',
@@ -805,10 +805,10 @@ DROP TABLE IF EXISTS `acs_port_hist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_port_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
-  `port_id` varchar(255) DEFAULT NULL COMMENT '포트 명칭',
-  `port_tp` varchar(255) DEFAULT NULL COMMENT '포트 타입',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
-  `equipment_id` varchar(255) DEFAULT NULL COMMENT '포트의 설비',
+  `port_id` varchar(50) DEFAULT NULL COMMENT '포트 명칭',
+  `port_tp` varchar(50) DEFAULT NULL COMMENT '포트 타입',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `equipment_id` varchar(50) DEFAULT NULL COMMENT '포트의 설비',
   `node_id` varchar(255) DEFAULT NULL COMMENT '포트의 위치정보',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -845,8 +845,8 @@ DROP TABLE IF EXISTS `acs_port_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_port_master` (
   `port_id` varchar(50) NOT NULL COMMENT '포트 명칭',
-  `port_tp` varchar(255) DEFAULT NULL COMMENT '포트 타입',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `port_tp` varchar(50) DEFAULT NULL COMMENT '포트 타입',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
   `equipment_id` varchar(50) NOT NULL COMMENT '포트의 설비',
   `node_id` varchar(20) DEFAULT NULL COMMENT '포트의 위치정보',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
@@ -907,9 +907,9 @@ DROP TABLE IF EXISTS `acs_robot_hist`;
 CREATE TABLE `acs_robot_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `robot_id` varchar(255) DEFAULT NULL COMMENT '로봇 ID',
-  `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
-  `model_nm` varchar(255) DEFAULT NULL COMMENT '모델명',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `robot_tp` varchar(50) DEFAULT NULL COMMENT '로봇 타입',
+  `model_nm` varchar(50) DEFAULT NULL COMMENT '모델명',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
   `battery_no` double DEFAULT 0 COMMENT '로봇의 배터리 정보',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -941,18 +941,15 @@ UNLOCK TABLES;
 -- Table structure for table `acs_robot_master`
 --
 
-DROP TABLE IF EXISTS `acs_robot_master`;
-/*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_robot_master` (
   `robot_id` varchar(255) NOT NULL COMMENT '로봇 ID',
-  `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
-  `model_nm` varchar(255) DEFAULT NULL COMMENT '모델명',
-  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `robot_tp` varchar(50) DEFAULT NULL COMMENT '로봇 타입',
+  `model_nm` varchar(50) DEFAULT NULL COMMENT '모델명',
+  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
   `location_nm` varchar(50) NOT NULL COMMENT '로봇의 현재 위치 정보',
   `wait_location_nm` varchar(50) DEFAULT NULL COMMENT '로봇의 고정 대기위치 | 빈 경우 동적 대기',
   `battery_no` double NOT NULL DEFAULT 0 COMMENT '로봇의 배터리 정보',
-  `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
+  `map_uuid` bigint(11) DEFAULT NULL COMMENT '맵 고유 ID',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -967,6 +964,7 @@ CREATE TABLE `acs_robot_master` (
   PRIMARY KEY (`robot_id`,`site_cd`),
   KEY `robot_site_cd_fk` (`site_cd`),
   KEY `robot_map_uuid_fk` (`map_uuid`),
+  CONSTRAINT `robot_map_uuid_fk` FOREIGN KEY (`map_uuid`) REFERENCES `acs_map_master` (`map_uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `robot_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='robot Master 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1028,9 +1026,6 @@ INSERT INTO `acs_role_rule_rel` VALUES ('Administrator','MENU_001',1,'HU',NULL,N
 /*!40000 ALTER TABLE `acs_role_rule_rel` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
-
-
 --
 -- Table structure for table `acs_transfer_control`
 --
@@ -1040,9 +1035,9 @@ DROP TABLE IF EXISTS `acs_transfer_control`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_transfer_control` (
   `transfer_id` varchar(255) NOT NULL COMMENT '작업 ID',
-  `transfer_tp` varchar(255) DEFAULT NULL COMMENT '작업 타입',
-  `assigned_robot_id` varchar(255) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
-  `transfer_st` varchar(255) DEFAULT 'READY' COMMENT '작업 상태',
+  `transfer_tp` varchar(50) DEFAULT NULL COMMENT '작업 타입',
+  `assigned_robot_id` varchar(50) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
+  `transfer_st` varchar(20) DEFAULT 'READY' COMMENT '작업 상태',
   `priority_no` int(5) DEFAULT 10 COMMENT '작업 우선 순위',
   `source_port_id` varchar(50) DEFAULT NULL COMMENT '작업 대상 포트 명칭',
   `destination_port_id` varchar(50) DEFAULT NULL COMMENT '최종 목적지 예치 포트 명칭',
@@ -1092,12 +1087,12 @@ DROP TABLE IF EXISTS `acs_transfer_control_hist`;
 CREATE TABLE `acs_transfer_control_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `transfer_id` varchar(255) DEFAULT NULL COMMENT '작업 ID',
-  `transfer_tp` varchar(255) DEFAULT NULL COMMENT '작업 타입',
-  `assigned_robot_id` varchar(255) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
-  `transfer_st` varchar(255) DEFAULT NULL COMMENT '작업 상태',
+  `transfer_tp` varchar(50) DEFAULT NULL COMMENT '작업 타입',
+  `assigned_robot_id` varchar(50) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
+  `transfer_st` varchar(20) DEFAULT NULL COMMENT '작업 상태',
   `priority_no` int(5) DEFAULT 10 COMMENT '작업 우선 순위',
-  `source_port_id` varchar(255) DEFAULT NULL COMMENT '작업 대상 포트 명칭',
-  `destination_port_id` varchar(255) DEFAULT NULL COMMENT '최종 목적지 예치 포트 명칭',
+  `source_port_id` varchar(50) DEFAULT NULL COMMENT '작업 대상 포트 명칭',
+  `destination_port_id` varchar(50) DEFAULT NULL COMMENT '최종 목적지 예치 포트 명칭',
   `acquire_start_at` datetime DEFAULT NULL COMMENT '물품 수령 시작 시간',
   `acquire_end_at` datetime DEFAULT NULL COMMENT '물품 수령 완료 시간',
   `deposit_start_at` datetime DEFAULT NULL COMMENT '물품 예치 시작 시간',
@@ -1129,6 +1124,100 @@ LOCK TABLES `acs_transfer_control_hist` WRITE;
 UNLOCK TABLES;
 
 
+--
+-- Table structure for table `acs_micro_transfer_control`
+--
+
+DROP TABLE IF EXISTS `acs_micro_transfer_control`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+
+CREATE TABLE `acs_micro_transfer_control` (
+  `micro_transfer_id` varchar(255) NOT NULL COMMENT '세부작업 ID',
+  `transfer_id` varchar(255) NOT NULL COMMENT '그룹 작업 ID',
+  `micro_transfer_tp` varchar(50) DEFAULT NULL COMMENT '세부작업 타입',
+  `assigned_robot_id` varchar(50) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
+  `micro_transfer_st` varchar(20) DEFAULT 'READY' COMMENT '세부작업 상태',
+  `priority_no` int(5) DEFAULT 10 COMMENT '세부작업 우선 순위',
+  `from_tx` varchar(50) DEFAULT NULL COMMENT '세부작업의 시작지위치',
+  `to_tx` varchar(50) DEFAULT NULL COMMENT '세부작업의 목적지위치',
+  `micro_transfer_start_at` datetime DEFAULT NULL COMMENT '세부작업의 시작 시간',
+  `micro_transfer_end_at` datetime DEFAULT NULL COMMENT '세부작업의 완료 시간',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`micro_transfer_id`,`transfer_id`,`site_cd`),
+  KEY `micro_transfer_site_cd_fk` (`site_cd`),
+  KEY `micro_transfer_transfer_id_fk` (`transfer_id`),
+  KEY `group_transfer_id_index` (`transfer_id`,`modify_at`) USING BTREE,
+  CONSTRAINT `micro_transfer_transfer_id_fk` FOREIGN KEY (`transfer_id`) REFERENCES `acs_transfer_control` (`transfer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `micro_transfer_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='micro_transfer runtime 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_micro_transfer_control`
+--
+
+LOCK TABLES `acs_micro_transfer_control` WRITE;
+/*!40000 ALTER TABLE `acs_micro_transfer_control` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_micro_transfer_control` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_micro_transfer_control_hist`
+--
+
+DROP TABLE IF EXISTS `acs_micro_transfer_control_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+
+CREATE TABLE `acs_micro_transfer_control_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `micro_transfer_id` varchar(255) NOT NULL COMMENT '세부작업 ID',
+  `transfer_id` varchar(255) NOT NULL COMMENT '그룹 작업 ID',
+  `micro_transfer_tp` varchar(50) DEFAULT NULL COMMENT '세부작업 타입',
+  `assigned_robot_id` varchar(50) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
+  `micro_transfer_st` varchar(20) DEFAULT 'READY' COMMENT '세부작업 상태',
+  `priority_no` int(5) DEFAULT 10 COMMENT '세부작업 우선 순위',
+  `from_tx` varchar(50) DEFAULT NULL COMMENT '세부작업의 시작지위치',
+  `to_tx` varchar(50) DEFAULT NULL COMMENT '세부작업의 목적지위치',
+  `micro_transfer_start_at` datetime DEFAULT NULL COMMENT '세부작업의 시작 시간',
+  `micro_transfer_end_at` datetime DEFAULT NULL COMMENT '세부작업의 완료 시간',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`),
+  KEY `micro_transfer_hist_site_cd_fk` (`site_cd`),
+  KEY `micro_transfer_hist_id_index` (`micro_transfer_id`,`modify_at`) USING BTREE,
+  CONSTRAINT `micro_transfer_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='micro_transfer runtime 변경 기록 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_micro_transfer_control_hist`
+--
+
+LOCK TABLES `acs_micro_transfer_control_hist` WRITE;
+/*!40000 ALTER TABLE `acs_micro_transfer_control_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_micro_transfer_control_hist` ENABLE KEYS */;
+UNLOCK TABLES;
 
 --
 -- Dumping routines for database 'acs'

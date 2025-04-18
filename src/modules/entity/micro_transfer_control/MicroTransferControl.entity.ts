@@ -7,13 +7,37 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'acs_role_rule_rel' })
-export class RoleRuleRel {
-  @PrimaryColumn({ type: 'varchar', length: 50, nullable: false })
-  role_cd: string;
+@Entity({ name: 'acs_micro_transfer_control' })
+export class MicroTransferControl {
+  @PrimaryColumn({ type: 'varchar', length: 255, nullable: false })
+  micro_transfer_id: string;
 
-  @PrimaryColumn({ type: 'varchar', length: 50, nullable: false })
-  rule_cd: string;
+  @PrimaryColumn({ type: 'varchar', length: 255, nullable: false })
+  transfer_id: string;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  micro_transfer_tp: string;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  assigned_robot_id: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true, default: 'READY' })
+  micro_transfer_st: string;
+
+  @Column({ type: 'int', width: 5, default: 10 })
+  priority_no: number;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  from_tx: string;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  to_tx: string;
+
+  @Column({ type: 'datetime', nullable: true })
+  micro_transfer_start_at: Date;
+
+  @Column({ type: 'datetime', nullable: true })
+  micro_transfer_end_at: Date;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

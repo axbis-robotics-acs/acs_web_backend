@@ -7,22 +7,40 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'acs_robot_master' })
-export class Robot {
-  @PrimaryColumn({ type: 'varchar', length: 255, nullable: false })
-  robot_id: string;
+@Entity({ name: 'acs_micro_transfer_control' })
+export class MicroTransferControlHist {
+  @PrimaryColumn({ nullable: false })
+  hist_id: number;
+
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  micro_transfer_id: string;
+
+  @Column({ type: 'varchar', length: 255, nullable: false })
+  transfer_id: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
-  robot_tp: string;
+  micro_transfer_tp: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
-  model_nm: string;
+  assigned_robot_id: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true, default: 'READY' })
+  micro_transfer_st: string;
+
+  @Column({ type: 'int', width: 5, default: 10 })
+  priority_no: number;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
-  status_tx: string;
+  from_tx: string;
 
-  @Column({ nullable: false, default: 0 })
-  battery_no: number;
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  to_tx: string;
+
+  @Column({ type: 'datetime', nullable: true })
+  micro_transfer_start_at: Date;
+
+  @Column({ type: 'datetime', nullable: true })
+  micro_transfer_end_at: Date;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;
