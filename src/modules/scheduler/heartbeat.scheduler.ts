@@ -1,16 +1,16 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, Interval } from '@nestjs/schedule';
-import { MqttPublisher } from 'src/common/adapter/mqtt.publisher.service';
 import { getFormattedTimestampTID } from 'src/common/utils/data-format';
 import { HeartbeatCacheService } from './../../common/utils/cache/heartbeat.cache.service';
 import { MqttCacheService } from 'src/common/utils/cache/mqtt.cache.service';
+import { MqttService } from 'src/common/adapter/mqtt.service';
 
 @Injectable()
 export class HeartbeatScheduler {
   private readonly logger = new Logger(HeartbeatScheduler.name);
 
   constructor(
-    private readonly mqttPublisher: MqttPublisher,
+    private readonly mqttPublisher: MqttService,
     private readonly heartbeatCacheService: HeartbeatCacheService,
     private readonly mqttCacheService: MqttCacheService,
   ) {}
@@ -43,6 +43,6 @@ export class HeartbeatScheduler {
 
     // this.logger.log(`📡 Heartbeat 전송: ${JSON.stringify(message)}`);
 
-    this.mqttPublisher.rawPublish('middleware/connection/request', message, 0);
+    this.mqttPublisher.publish('middleware/connection/request', message, 0);
   }
 }

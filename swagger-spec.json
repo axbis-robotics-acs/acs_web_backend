@@ -236,6 +236,56 @@
         ]
       }
     },
+    "/microtransfercontrol": {
+      "get": {
+        "operationId": "MicroTransferControlHistHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "microtransfercontrol"
+        ]
+      },
+      "post": {
+        "operationId": "MicroTransferControlHistHistController_create",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MicroTransferControlHist"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "microtransfercontrol"
+        ]
+      }
+    },
+    "/microtransfercontrol/search": {
+      "post": {
+        "operationId": "MicroTransferControlHistHistController_searchTasks",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "microtransfercontrol"
+        ]
+      }
+    },
     "/node": {
       "get": {
         "operationId": "NodeController_findAll",
@@ -426,6 +476,20 @@
         ]
       }
     },
+    "/transfercontrolhist/search": {
+      "post": {
+        "operationId": "TransferControlHistController_searchTasks",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrolhist"
+        ]
+      }
+    },
     "/file/upload": {
       "post": {
         "operationId": "UploadController_uploadFile",
@@ -515,6 +579,20 @@
           "user"
         ]
       }
+    },
+    "/mqtt/publish": {
+      "post": {
+        "operationId": "MqttController_publishMessage",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Mqtt"
+        ]
+      }
     }
   },
   "info": {
@@ -528,6 +606,14 @@
   "components": {
     "schemas": {
       "Lang": {
+        "type": "object",
+        "properties": {}
+      },
+      "MicroTransferControl": {
+        "type": "object",
+        "properties": {}
+      },
+      "MicroTransferControlHist": {
         "type": "object",
         "properties": {}
       },

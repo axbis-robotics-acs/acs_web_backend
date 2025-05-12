@@ -1,12 +1,14 @@
 import { Module } from '@nestjs/common';
 import { MqttSubscriber } from './mqtt.subscriber';
-import { MqttPublisher } from './mqtt.publisher.service';
 import { CacheModule } from '../utils/cache/cache.module';
+import { MqttService } from './mqtt.service';
+import { MqttsecurityService } from './mqtt.security.service';
+import { MqttController } from './mqtt.controller';
 
 @Module({
   imports: [CacheModule],
-  controllers: [MqttSubscriber],
-  providers: [MqttPublisher],
-  exports: [MqttPublisher],
+  controllers: [MqttSubscriber, MqttController],
+  providers: [MqttService, MqttsecurityService],
+  exports: [MqttService, MqttsecurityService],
 })
 export class MqttModule {}

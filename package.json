@@ -38,7 +38,7 @@
     "dwg2dxf": "^1.0.0",
     "express": "^5.0.1",
     "form-data": "^4.0.2",
-    "mqtt": "^5.10.4",
+    "mqtt": "^5.13.0",
     "multer": "^1.4.5-lts.1",
     "mysql2": "^3.12.0",
     "reflect-metadata": "^0.2.2",

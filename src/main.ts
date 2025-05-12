@@ -4,22 +4,18 @@ import * as express from 'express';
 import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './common/utils/filter/custom.filter';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { writeFileSync } from 'fs';
 import * as dotenv from 'dotenv';
-import { mqttConfig, mqttUrl } from './common/adapter/mqtt.client';
+import {
+  mqttOmronServerOptions,
+  mqttServerOptions,
+} from './common/adapter/mqtt.config';
 dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.MQTT,
-    options: {
-      url: mqttUrl,
-      ...mqttConfig('mqtt-client-sub'),
-    },
-  });
+  app.connectMicroservice(mqttOmronServerOptions); // 외부 omron 통신
+  app.connectMicroservice(mqttServerOptions); // 내부 middleware 통신
 
   await app.startAllMicroservices();
 
