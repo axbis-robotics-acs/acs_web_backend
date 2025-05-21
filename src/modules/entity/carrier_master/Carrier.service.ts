@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Carrier } from './Carrier.entity';
-import { QueryRegistry, UpdateResult, DeleteResult } from '../../../common/utils/query/query-registry.service';
+import {
+  QueryRegistry,
+  UpdateResult,
+  DeleteResult,
+} from '../../../common/query/query-registry.service';
 
 @Injectable()
 export class CarrierService {
@@ -16,8 +20,13 @@ export class CarrierService {
     return this.queryRegistryService.select<Carrier>(Carrier, {});
   }
 
-  async selectOne<K extends keyof Carrier>(where: Pick<Carrier, K>): Promise<Carrier | null> {
-    const results = await this.queryRegistryService.select<Carrier>(Carrier, where);
+  async selectOne<K extends keyof Carrier>(
+    where: Pick<Carrier, K>,
+  ): Promise<Carrier | null> {
+    const results = await this.queryRegistryService.select<Carrier>(
+      Carrier,
+      where,
+    );
     return results.length > 0 ? results[0] : null;
   }
 
@@ -25,11 +34,21 @@ export class CarrierService {
     return this.queryRegistryService.create<Carrier>(Carrier, carrier, true);
   }
 
-  async update<K extends keyof Carrier>(where: Pick<Carrier, K>, carrier: Carrier): Promise<UpdateResult> {
-    return this.queryRegistryService.update<Carrier>(Carrier, where, carrier, true);
+  async update<K extends keyof Carrier>(
+    where: Pick<Carrier, K>,
+    carrier: Carrier,
+  ): Promise<UpdateResult> {
+    return this.queryRegistryService.update<Carrier>(
+      Carrier,
+      where,
+      carrier,
+      true,
+    );
   }
 
-  async delete<K extends keyof Carrier>(where: Pick<Carrier, K>): Promise<DeleteResult> {
+  async delete<K extends keyof Carrier>(
+    where: Pick<Carrier, K>,
+  ): Promise<DeleteResult> {
     return this.queryRegistryService.delete<Carrier>(Carrier, where, true);
   }
 }

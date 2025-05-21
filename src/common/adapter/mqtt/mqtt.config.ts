@@ -43,13 +43,13 @@ export const mqttInternalPublisherConfig = (clientId) => {
   };
 };
 
-export const mqttServerOptions: MqttOptions = {
-  transport: Transport.MQTT,
-  options: {
-    url: mqttUrl,
-    ...mqttInternalSubscribeConfig('subscribe_internal'),
-  },
-};
+// export const mqttServerOptions: MqttOptions = {
+//   transport: Transport.MQTT,
+//   options: {
+//     url: mqttUrl,
+//     ...mqttInternalSubscribeConfig('subscribe_internal'),
+//   },
+// };
 
 //////  OMRON Setting
 
@@ -79,10 +79,10 @@ export const mqttOmronPublisherOptions = {
   secureProtocol: 'TLSv1_2_method',
 };
 
-export const mqttOmronServerOptions: MqttOptions = {
-  transport: Transport.MQTT,
-  options: {
-    url: mqttsUrl,
-    ...mqttOmronSubscribeOptions,
-  },
-};
+// export const mqttOmronServerOptions: MqttOptions = {
+//   transport: Transport.MQTT,
+//   options: {
+//     url: mqttsUrl,
+//     ...mqttOmronSubscribeOptions,
+//   },
+// };

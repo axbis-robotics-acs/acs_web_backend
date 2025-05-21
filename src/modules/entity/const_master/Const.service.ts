@@ -2,7 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Const } from './Const.entity';
-import { QueryRegistry, UpdateResult, DeleteResult } from '../../../common/utils/query/query-registry.service';
+import {
+  QueryRegistry,
+  UpdateResult,
+  DeleteResult,
+} from '../../../common/query/query-registry.service';
 
 @Injectable()
 export class ConstService {
@@ -16,7 +20,9 @@ export class ConstService {
     return this.queryRegistryService.select<Const>(Const, {});
   }
 
-  async selectOne<K extends keyof Const>(where: Pick<Const, K>): Promise<Const | null> {
+  async selectOne<K extends keyof Const>(
+    where: Pick<Const, K>,
+  ): Promise<Const | null> {
     const results = await this.queryRegistryService.select<Const>(Const, where);
     return results.length > 0 ? results[0] : null;
   }
@@ -25,11 +31,21 @@ export class ConstService {
     return this.queryRegistryService.create<Const>(Const, constData, true);
   }
 
-  async update<K extends keyof Const>(where: Pick<Const, K>, constData: Const): Promise<UpdateResult> {
-    return this.queryRegistryService.update<Const>(Const, where, constData, true);
+  async update<K extends keyof Const>(
+    where: Pick<Const, K>,
+    constData: Const,
+  ): Promise<UpdateResult> {
+    return this.queryRegistryService.update<Const>(
+      Const,
+      where,
+      constData,
+      true,
+    );
   }
 
-  async delete<K extends keyof Const>(where: Pick<Const, K>): Promise<DeleteResult> {
+  async delete<K extends keyof Const>(
+    where: Pick<Const, K>,
+  ): Promise<DeleteResult> {
     return this.queryRegistryService.delete<Const>(Const, where, true);
   }
 }

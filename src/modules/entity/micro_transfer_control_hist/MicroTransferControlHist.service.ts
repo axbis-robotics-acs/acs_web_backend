@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { BaseException } from 'src/common/utils/exceptions/base.exception';
+import { BaseException } from 'src/common/exceptions/base.exception';
 import {
   QueryRegistry,
   UpdateResult,
   DeleteResult,
-} from '../../../common/utils/query/query-registry.service';
+} from '../../../common/query/query-registry.service';
 import { MicroTransferControlHist } from './MicroTransferControlHist.entity';
 
 @Injectable()

@@ -48,3 +48,9 @@ export function formatDuration(ms: number): string {
     return `${(ms / 1000).toFixed(3)}s`;
   }
 }
+
+export function generateTimestampId(): number {
+  const base = Date.now(); // 밀리초 단위 timestamp (13자리)
+  const precise = Math.floor((performance.now() % 1) * 1000); // 소수점 이하 ms → 0~999
+  return Number(`${base}${precise.toString().padStart(3, '0')}`); // 최대 16자리
+}

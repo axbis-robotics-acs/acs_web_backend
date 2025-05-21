@@ -1,10 +1,11 @@
 // status.controller.ts
 import { Controller, Sse, MessageEvent, Post, Body } from '@nestjs/common';
-import { MqttsecurityService } from './mqtt.security.service';
+import { MqttPublishService } from './mqtt.publisher.service';
 
 @Controller('mqtt')
 export class MqttController {
-  constructor(private readonly mqttPublisher: MqttsecurityService) {}
+  constructor(private readonly mqttPublisher: MqttPublishService) {}
+
   @Post('publish')
   publishMessage(@Body() body: { topic: string; message: string }) {
     // Publish logic here
@@ -14,7 +15,7 @@ export class MqttController {
       command: body.message,
     };
 
-    this.mqttPublisher.publish(body.topic, message, 0);
+    this.mqttPublisher.publishOmron(body.topic, message, 0);
     return { success: true };
   }
 }

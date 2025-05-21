@@ -1,24 +1,25 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Cron, CronExpression, Interval } from '@nestjs/schedule';
-import { getFormattedTimestampTID } from 'src/common/utils/data-format';
-import { HeartbeatCacheService } from './../../common/utils/cache/heartbeat.cache.service';
-import { MqttCacheService } from 'src/common/utils/cache/mqtt.cache.service';
-import { MqttService } from 'src/common/adapter/mqtt.service';
+import { getFormattedTimestampTID } from 'src/common/utils/date.format';
+import { HeartbeatCacheService } from '../../common/cache/heartbeat.cache.service';
+import { MqttCacheService } from 'src/common/cache/mqtt.cache.service';
+import { MqttPublishService } from '../../common/adapter/mqtt/mqtt.publisher.service';
+import { ElasticLogService } from 'src/common/adapter/elk/elastic.log.service';
 
 @Injectable()
 export class HeartbeatScheduler {
-  private readonly logger = new Logger(HeartbeatScheduler.name);
-
   constructor(
-    private readonly mqttPublisher: MqttService,
+    private readonly mqttPublisher: MqttPublishService,
     private readonly heartbeatCacheService: HeartbeatCacheService,
     private readonly mqttCacheService: MqttCacheService,
+    private readonly elasticLogger: ElasticLogService,
   ) {}
 
   @Interval(3000) // ✅ 3초마다 실행
   async sendHeartbeat() {
     const tid = getFormattedTimestampTID();
     const updateTime = getFormattedTimestampTID();
+    const topic = 'middleware/connection/request';
 
     let connectionCount = this.mqttCacheService.get<number>('connectionCount');
 
@@ -29,20 +30,22 @@ export class HeartbeatScheduler {
     } else {
       connectionCount = 0;
     }
-    console.log(`connectionCount: ${connectionCount}`);
+    // console.log(`connectionCount: ${connectionCount}`);
     // 캐시에 업데이트된 카운트 저장
     this.heartbeatCacheService.add('request', tid);
     this.mqttCacheService.add('connectionCount', connectionCount);
 
     const available = connectionCount > 0;
     const message = {
-      tid,
-      update_time: updateTime,
-      available: available,
+      publish_msg: {
+        tid,
+        update_time: updateTime,
+        available: available,
+      },
+      topic: topic,
     };
 
-    // this.logger.log(`📡 Heartbeat 전송: ${JSON.stringify(message)}`);
-
-    this.mqttPublisher.publish('middleware/connection/request', message, 0);
+    this.elasticLogger.logMessage(message);
+    this.mqttPublisher.publishInternal(topic, message, 0);
   }
 }

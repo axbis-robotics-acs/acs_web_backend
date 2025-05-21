@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { CacheModule } from 'src/common/utils/cache/cache.module';
+import { CacheModule } from 'src/common/cache/cache.module';
 import { MicroTransferControlHist } from './MicroTransferControlHist.entity';
 import { MicroTransferControlHistService } from './MicroTransferControlHist.service';
 import { MicroTransferControlHistHistController } from './MicroTransferControlHist.controller';

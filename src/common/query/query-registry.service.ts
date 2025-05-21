@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { DeepPartial, EntityManager, ObjectLiteral, In } from 'typeorm';
-import { getFormattedTimestampTID } from '../data-format';
+import { getFormattedTimestampTID } from '../utils/date.format';
 
 @Injectable()
 export class QueryRegistry {

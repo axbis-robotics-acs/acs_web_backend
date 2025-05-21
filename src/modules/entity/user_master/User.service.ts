@@ -7,7 +7,7 @@ import {
   QueryRegistry,
   UpdateResult,
   DeleteResult,
-} from '../../../common/utils/query/query-registry.service';
+} from '../../../common/query/query-registry.service';
 
 @Injectable()
 export class UserService {

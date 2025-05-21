@@ -8,12 +8,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fs from 'fs';
 import * as path from 'path';
 import { StatusModule } from './modules/statemanager/status.module';
-import { MqttModule } from './common/adapter/mqtt.module';
-import { QueryRegistryModule } from './common/utils/query/query-registry.module';
+import { MqttModule } from './common/adapter/mqtt/mqtt.module';
+import { QueryRegistryModule } from './common/query/query-registry.module';
 import { CommonScheduleModule } from './modules/scheduler/scheduler.module';
-import { CacheModule } from './common/utils/cache/cache.module';
+import { CacheModule } from './common/cache/cache.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
+import { HandlerModule } from './common/handler/handler.module';
+import { ElasticModule } from './common/adapter/elk/elastic.module';
 
 dotenv.config();
 
@@ -118,6 +120,8 @@ function loadProvidersAndControllers() {
     QueryRegistryModule,
     CommonScheduleModule,
     ScheduleModule.forRoot(),
+    HandlerModule,
+    ElasticModule,
   ],
   providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
   controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가

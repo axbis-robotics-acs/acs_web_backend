@@ -8,5 +8,6 @@ import { LoginHistController } from './LoginHist.controller';
   imports: [TypeOrmModule.forFeature([LoginHist])],
   providers: [LoginHistService],
   controllers: [LoginHistController],
+  exports: [LoginHistService],
 })
 export class LoginHistModule {}

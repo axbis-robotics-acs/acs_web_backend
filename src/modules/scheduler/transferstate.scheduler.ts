@@ -1,7 +1,7 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { Cron, CronExpression, Interval } from '@nestjs/schedule';
 import { TransferControlService } from '../entity/transfer_control/TransferControl.service';
-import { TransferStateCacheService } from 'src/common/utils/cache/transfercontrol.cache.service';
+import { TransferStateCacheService } from 'src/common/cache/transfercontrol.cache.service';
 
 @Injectable()
 export class TransferStateScheduler {

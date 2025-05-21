@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { parseTimestamp, formatDuration } from '../data-format';
+import { parseTimestamp, formatDuration } from '../utils/date.format';
 
 @Injectable()
 export class HeartbeatCacheService {

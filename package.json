@@ -21,8 +21,10 @@
     "dev": "nodemon --watch src --ext ts,json --exec \"npm run build && docker exec nest-backend pm2 restart nest-backend\""
   },
   "dependencies": {
+    "@elastic/elasticsearch": "^9.0.1",
     "@nestjs/common": "^11.0.1",
     "@nestjs/core": "^11.0.1",
+    "@nestjs/elasticsearch": "^11.1.0",
     "@nestjs/microservices": "^11.0.14",
     "@nestjs/platform-express": "^11.0.1",
     "@nestjs/schedule": "^5.0.1",

@@ -2,7 +2,7 @@ import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { TransferControlHistService } from './TransferControlHist.service';
 import { TransferControlHist } from './TransferControlHist.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { BaseException } from 'src/common/utils/exceptions/base.exception';
+import { BaseException } from 'src/common/exceptions/base.exception';
 
 @ApiTags('transfercontrolhist')
 @Controller('transfercontrolhist')

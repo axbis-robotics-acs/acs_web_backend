@@ -462,6 +462,20 @@
         ]
       }
     },
+    "/mqtt/publish": {
+      "post": {
+        "operationId": "MqttController_publishMessage",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Mqtt"
+        ]
+      }
+    },
     "/transfercontrolhist": {
       "get": {
         "operationId": "TransferControlHistController_findAll",
@@ -577,20 +591,6 @@
         },
         "tags": [
           "user"
-        ]
-      }
-    },
-    "/mqtt/publish": {
-      "post": {
-        "operationId": "MqttController_publishMessage",
-        "parameters": [],
-        "responses": {
-          "201": {
-            "description": ""
-          }
-        },
-        "tags": [
-          "Mqtt"
         ]
       }
     }

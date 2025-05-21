@@ -13,4 +13,7 @@ export class LoginHistController {
     return this.loginhistService.findAll();
   }
 
+  async save(loginHist: LoginHist): Promise<LoginHist> {
+    return this.loginhistService.create(loginHist);
+  }
 }
