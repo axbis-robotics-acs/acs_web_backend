@@ -39,9 +39,9 @@ report.*.json
 .settings/
 
 # ✅ dotenv 환경설정
-.env
-.env.*
-!.env.example
+!/.env
+/.env.*
+/.env.example
 
 # ✅ 임시, 런타임 파일
 .temp
