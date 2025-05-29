@@ -49,7 +49,8 @@ export class MqttClientService implements OnModuleInit {
       // TODO: 메시지 처리
       this.internalSubService.handleMessage(topic, payload);
     });
-    this.internalSubscriberClient.subscribe('web/response');
+    const topics = ['web/response', 'web/backend/connection/response'];
+    this.internalSubscriberClient.subscribe(topics);
   }
 
   private connectOmronPublisher() {

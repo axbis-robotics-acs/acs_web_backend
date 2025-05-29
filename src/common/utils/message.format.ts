@@ -10,6 +10,8 @@ export interface MessageHeader {
   requestId: string;
   workId: string;
   transactionId: string;
+  siteId?: string;
+  userId?: string;
 }
 
 export interface MessageFormat {
@@ -39,10 +41,10 @@ export const buildSuccessMessage = (
 export const buildSuccessMessageFromJson = (
   data: Partial<MessageFormat>,
 ): MessageFormat => ({
-  header: {
-    requestId: data.header?.requestId ?? 'UI',
-    workId: data.header?.workId ?? '',
-    transactionId: data.header?.transactionId ?? getFormattedTimestampTID(),
+  header: data.header ?? {
+    requestId: 'ui',
+    workId: '',
+    transactionId: getFormattedTimestampTID(),
   },
   dataSet: data.dataSet ?? {},
 });

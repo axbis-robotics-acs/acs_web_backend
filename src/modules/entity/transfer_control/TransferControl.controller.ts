@@ -48,14 +48,16 @@ export class TransferControlController {
           requestId: 'ui',
           workId: 'create_transfer_control',
           transactionId: transactionId,
+          siteId: transferControl.site_cd ?? 'HU',
+          userId: 'administrator',
         },
         dataSet: {
           transferId: transferControl.transfer_id,
-          transferSt: transferControl.transfer_st ?? '',
+          transferSt: transferControl.transfer_st ?? 'READY',
           transferPriority: transferControl.priority_no ?? '',
           transferRobot: transferControl.assigned_robot_id ?? '',
           transferSource: transferControl.source_port_id ?? '',
-          transferDestination: transferControl.destination_port_id,
+          transferDestination: transferControl.destination_port_id ?? '',
         },
       });
 

@@ -1,6 +1,5 @@
 import {
   Entity,
-  PrimaryGeneratedColumn,
   PrimaryColumn,
   Column,
   CreateDateColumn,
@@ -21,8 +20,14 @@ export class Robot {
   @Column({ type: 'varchar', length: 50, nullable: true })
   status_tx: string;
 
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  transfer_id: string;
+
   @Column({ nullable: false, default: 0 })
   battery_no: number;
+
+  @Column({ type: 'varchar', length: 255, nullable: true })
+  charge_rule_id: string;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

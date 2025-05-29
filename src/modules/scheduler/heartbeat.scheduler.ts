@@ -5,6 +5,7 @@ import { HeartbeatCacheService } from '../../common/cache/heartbeat.cache.servic
 import { MqttCacheService } from 'src/common/cache/mqtt.cache.service';
 import { MqttPublishService } from '../../common/adapter/mqtt/mqtt.publisher.service';
 import { ElasticLogService } from 'src/common/adapter/elk/elastic.log.service';
+import { buildSuccessMessageFromJson } from 'src/common/utils/message.format';
 
 @Injectable()
 export class HeartbeatScheduler {
@@ -18,12 +19,11 @@ export class HeartbeatScheduler {
   @Interval(3000) // ✅ 3초마다 실행
   async sendHeartbeat() {
     const tid = getFormattedTimestampTID();
-    const updateTime = getFormattedTimestampTID();
-    const topic = 'middleware/connection/request';
+    const topic = 'web/backend/connection/request';
 
     let connectionCount = this.mqttCacheService.get<number>('connectionCount');
 
-    if (connectionCount == null || typeof connectionCount !== 'number') {
+    if (connectionCount == null || isNaN(connectionCount)) {
       connectionCount = 10;
     } else if (connectionCount > 0) {
       connectionCount--;
@@ -33,17 +33,27 @@ export class HeartbeatScheduler {
     // console.log(`connectionCount: ${connectionCount}`);
     // 캐시에 업데이트된 카운트 저장
     this.heartbeatCacheService.add('request', tid);
+    if (connectionCount === 0) {
+      this.mqttCacheService.add('refreshConnection', false);
+    }
+
     this.mqttCacheService.add('connectionCount', connectionCount);
 
-    const available = connectionCount > 0;
-    const message = {
-      publish_msg: {
-        tid,
-        update_time: updateTime,
-        available: available,
+    const available =
+      this.mqttCacheService.get<boolean>('refreshConnection') || false;
+    const message = buildSuccessMessageFromJson({
+      header: {
+        requestId: 'ui',
+        workId: 'heartbeat',
+        transactionId: tid,
+        siteId: 'HU',
+        userId: '',
       },
-      topic: topic,
-    };
+      dataSet: {
+        available: available,
+        connectionCount: connectionCount,
+      },
+    });
 
     this.elasticLogger.logMessage(message);
     this.mqttPublisher.publishInternal(topic, message, 0);
