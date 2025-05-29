@@ -904,13 +904,17 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `acs_robot_hist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
+-- acs.acs_robot_hist definition
+
 CREATE TABLE `acs_robot_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `robot_id` varchar(255) DEFAULT NULL COMMENT '로봇 ID',
-  `robot_tp` varchar(50) DEFAULT NULL COMMENT '로봇 타입',
-  `model_nm` varchar(50) DEFAULT NULL COMMENT '모델명',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
+  `model_nm` varchar(255) DEFAULT NULL COMMENT '모델명',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `transfer_id` varchar(255) DEFAULT NULL,
   `battery_no` double DEFAULT 0 COMMENT '로봇의 배터리 정보',
+  `charge_rule_id` varchar(255) DEFAULT NULL,
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -941,14 +945,18 @@ UNLOCK TABLES;
 -- Table structure for table `acs_robot_master`
 --
 
+-- acs.acs_robot_master definition
+
 CREATE TABLE `acs_robot_master` (
   `robot_id` varchar(255) NOT NULL COMMENT '로봇 ID',
-  `robot_tp` varchar(50) DEFAULT NULL COMMENT '로봇 타입',
-  `model_nm` varchar(50) DEFAULT NULL COMMENT '모델명',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
+  `model_nm` varchar(255) DEFAULT NULL COMMENT '모델명',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `transfer_id` varchar(255) DEFAULT NULL COMMENT '할당 작업 Id',
   `location_nm` varchar(50) NOT NULL COMMENT '로봇의 현재 위치 정보',
   `wait_location_nm` varchar(50) DEFAULT NULL COMMENT '로봇의 고정 대기위치 | 빈 경우 동적 대기',
   `battery_no` double NOT NULL DEFAULT 0 COMMENT '로봇의 배터리 정보',
+  `charge_rule_id` varchar(255) DEFAULT NULL,
   `map_uuid` bigint(11) DEFAULT NULL COMMENT '맵 고유 ID',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
