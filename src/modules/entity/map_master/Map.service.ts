@@ -43,4 +43,16 @@ export class MapService {
   ): Promise<DeleteResult> {
     return this.queryRegistryService.delete<Map>(Map, where, true);
   }
+
+  async findLatestVersion(
+    siteCd: string,
+    mapNm: string,
+  ): Promise<string | null> {
+    const latestMap = await this.mapRepository.findOne({
+      where: { site_cd: siteCd, map_nm: mapNm },
+      order: { map_ver: 'DESC' },
+    });
+
+    return latestMap ? latestMap.map_ver : null;
+  }
 }

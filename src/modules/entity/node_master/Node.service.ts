@@ -31,6 +31,11 @@ export class NodeService {
     return this.queryRegistryService.create<Node>(Node, nodeData, true);
   }
 
+  async createAll(nodeData: Node[]): Promise<void> {
+    console.log('Creating nodes:', nodeData);
+    await this.nodeRepository.save<Node>(nodeData);
+  }
+
   async update<K extends keyof Node>(
     where: Pick<Node, K>,
     nodeData: Node,

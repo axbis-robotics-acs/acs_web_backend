@@ -231,8 +231,8 @@ DROP TABLE IF EXISTS `acs_area_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_area_master` (
   `area_id` varchar(20) NOT NULL COMMENT '영역 ID',
-  `area_nm` varchar(50) DEFAULT NULL COMMENT '영역 명칭',
-  `area_tp` varchar(50) DEFAULT NULL COMMENT '영역 타입',
+  `area_nm` varchar(255) DEFAULT NULL COMMENT '영역 명칭',
+  `area_tp` varchar(255) DEFAULT NULL COMMENT '영역 타입',
   `point_cnt` varchar(255) DEFAULT NULL COMMENT '영역 포인트 개수',
   `point_val` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '포인트 정보',
   `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
@@ -275,8 +275,8 @@ DROP TABLE IF EXISTS `acs_carrier_hist`;
 CREATE TABLE `acs_carrier_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `carrier_id` varchar(255) DEFAULT NULL COMMENT 'carrier ID',
-  `carrier_tp` varchar(50) DEFAULT NULL COMMENT 'carrier 타입',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `carrier_tp` varchar(255) DEFAULT NULL COMMENT 'carrier 타입',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -312,10 +312,10 @@ DROP TABLE IF EXISTS `acs_carrier_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_carrier_master` (
   `carrier_id` varchar(255) NOT NULL COMMENT 'carrier ID',
-  `carrier_tp` varchar(50) DEFAULT NULL COMMENT 'carrier 타입',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `carrier_tp` varchar(255) DEFAULT NULL COMMENT 'carrier 타입',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
   `port_id` varchar(50) NOT NULL COMMENT '포트 명칭',
-    `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
   `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
@@ -352,8 +352,8 @@ DROP TABLE IF EXISTS `acs_const_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_const_master` (
   `constant_cd` varchar(255) NOT NULL COMMENT '상수 코드',
-  `constant_tp` varchar(50) NOT NULL COMMENT '상수 타입',
-  `constant_nm` varchar(50) NOT NULL COMMENT '상수 명칭',
+  `constant_tp` varchar(255) NOT NULL COMMENT '상수 타입',
+  `constant_nm` varchar(255) NOT NULL COMMENT '상수 명칭',
   `constant_val` varchar(255) NOT NULL COMMENT '상수 값',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -378,7 +378,7 @@ CREATE TABLE `acs_const_master` (
 
 LOCK TABLES `acs_const_master` WRITE;
 /*!40000 ALTER TABLE `acs_const_master` DISABLE KEYS */;
-INSERT INTO `acs_const_master` VALUES ('FLEET_01','TRAFFIC','FLEET_01','true',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:42:39','administrator','2025-01-17 17:42:39',NULL,NULL);
+INSERT INTO `acs_const_master` VALUES ('FLEET_01','TRAFFIC','FLEET_01','true',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:42:39','administrator','2025-01-17 17:42:39',NULL,NULL),('WORK_001','WORK','WORKABLE_ROBOT_BATTERY','30',1,'HU',NULL,NULL,NULL,'administrator','2025-05-26 09:19:12','administrator','2025-05-26 09:19:12',NULL,NULL);
 /*!40000 ALTER TABLE `acs_const_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -392,8 +392,8 @@ DROP TABLE IF EXISTS `acs_equipment_hist`;
 CREATE TABLE `acs_equipment_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `equipment_id` varchar(255) DEFAULT NULL COMMENT '설비 명칭',
-  `equipment_tp` varchar(50) DEFAULT NULL COMMENT '설비 타입',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `equipment_tp` varchar(255) DEFAULT NULL COMMENT '설비 타입',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -454,33 +454,7 @@ CREATE TABLE `acs_equipment_master` (
 
 LOCK TABLES `acs_equipment_master` WRITE;
 /*!40000 ALTER TABLE `acs_equipment_master` DISABLE KEYS */;
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P2', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P3', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P4', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P5', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P6', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P7', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P8', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
-INSERT INTO acs.acs_equipment_master
-(equipment_id, equipment_tp, status_tx, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('Q1', 'Muitl', 'RUNNING', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:35:43.000', NULL, '2025-04-17 15:35:43.000', NULL, NULL);
+INSERT INTO `acs_equipment_master` VALUES ('P1','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P2','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P3','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P4','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P5','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P6','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P7','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('P8','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL),('Q1','Muitl','RUNNING',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:35:43',NULL,'2025-04-17 15:35:43',NULL,NULL);
 /*!40000 ALTER TABLE `acs_equipment_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -531,7 +505,7 @@ DROP TABLE IF EXISTS `acs_link_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_link_master` (
   `link_id` varchar(255) NOT NULL COMMENT '링크 ID',
-  `link_nm` varchar(50) DEFAULT NULL COMMENT '링크 명칭',
+  `link_nm` varchar(255) DEFAULT NULL COMMENT '링크 명칭',
   `degree_val` varchar(255) DEFAULT NULL COMMENT '연결 방향',
   `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
@@ -572,8 +546,8 @@ DROP TABLE IF EXISTS `acs_login_hist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_login_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
-  `user_nm` varchar(50) DEFAULT NULL COMMENT '사용자 이름',
-  `role_cd` varchar(50) NOT NULL COMMENT '역할 코드',
+  `user_nm` varchar(255) DEFAULT NULL COMMENT '사용자 이름',
+  `role_cd` varchar(255) NOT NULL COMMENT '역할 코드',
   `access_by` datetime NOT NULL DEFAULT current_timestamp() COMMENT '접속 시간',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -598,6 +572,7 @@ CREATE TABLE `acs_login_hist` (
 
 LOCK TABLES `acs_login_hist` WRITE;
 /*!40000 ALTER TABLE `acs_login_hist` DISABLE KEYS */;
+INSERT INTO `acs_login_hist` VALUES (1747196386965461,'admin','Administrator','2025-05-14 13:19:46',1,'HU','Login Successful','Login','Login','system','2025-05-14 13:19:46','system','2025-05-14 13:19:46','20250514131946965','2025-05-14 13:19:46'),(1747198190199928,'admin','Administrator','2025-05-14 13:49:50',1,'HU','Login Successful','Login','Login','system','2025-05-14 13:49:50','system','2025-05-14 13:49:50','20250514134950199','2025-05-14 13:49:50'),(1747643893303792,'admin','Administrator','2025-05-19 17:38:13',1,'HU','Login Successful','Login','Login','system','2025-05-19 17:38:13','system','2025-05-19 17:38:13','20250519173813303','2025-05-19 17:38:13'),(1747718639873960,'admin','Administrator','2025-05-20 14:23:59',1,'HU','Login Successful','Login','Login','system','2025-05-20 14:23:59','system','2025-05-20 14:23:59','20250520142359873','2025-05-20 14:23:59'),(1747805975154662,'admin','Administrator','2025-05-21 14:39:35',1,'HU','Login Successful','Login','Login','system','2025-05-21 14:39:35','system','2025-05-21 14:39:35','20250521143935154','2025-05-21 14:39:35'),(1747875162784561,'admin','Administrator','2025-05-22 09:52:42',1,'HU','Login Successful','Login','Login','system','2025-05-22 09:52:42','system','2025-05-22 09:52:42','20250522095242784','2025-05-22 09:52:42'),(1748233905477208,'admin','Administrator','2025-05-26 13:31:45',1,'HU','Login Successful','Login','Login','system','2025-05-26 13:31:45','system','2025-05-26 13:31:45','20250526133145477','2025-05-26 13:31:45'),(1748234182818129,'admin','Administrator','2025-05-26 13:36:22',1,'HU','Login Successful','Login','Login','system','2025-05-26 13:36:22','system','2025-05-26 13:36:22','20250526133622818','2025-05-26 13:36:22'),(1749450783801079,'admin','Administrator','2025-06-09 15:33:03',1,'HU','Login Successful','Login','Login','system','2025-06-09 15:33:03','system','2025-06-09 15:33:03','20250609153303801','2025-06-09 15:33:03');
 /*!40000 ALTER TABLE `acs_login_hist` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -613,7 +588,7 @@ CREATE TABLE `acs_map_master` (
   `map_nm` varchar(255) DEFAULT NULL COMMENT '맵 명칭',
   `map_val` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '맵 정보',
   `map_res` tinyint(2) NOT NULL DEFAULT 1 COMMENT '맵 해상도',
-  `map_ver` varchar(255) DEFAULT NULL COMMENT '맵 버전',
+  `map_ver` varchar(255) NOT NULL COMMENT '맵 버전',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -625,8 +600,8 @@ CREATE TABLE `acs_map_master` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`map_uuid`,`site_cd`),
-  UNIQUE KEY `map_nm_site_cd_uq` (`map_nm`,`site_cd`),
+  PRIMARY KEY (`map_uuid`,`site_cd`,`map_ver`),
+  UNIQUE KEY `map_nm_site_cd_uq` (`map_nm`,`map_ver`,`site_cd`),
   KEY `map_site_cd_fk` (`site_cd`),
   CONSTRAINT `map_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='map Master 정보';
@@ -638,7 +613,7 @@ CREATE TABLE `acs_map_master` (
 
 LOCK TABLES `acs_map_master` WRITE;
 /*!40000 ALTER TABLE `acs_map_master` DISABLE KEYS */;
-INSERT INTO `acs_map_master` VALUES (123,'map_01','{ \"map_uuid\":\"123123\",\"map_nm\":\"test\"}',1,'0.1.0',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:40:46','administrator','2025-01-17 17:40:46',NULL,NULL);
+INSERT INTO `acs_map_master` VALUES (123,'map_01','{ \"map_uuid\":\"123123\",\"map_nm\":\"test\"}',1,'0.1.0',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:40:46','administrator','2025-01-17 17:40:46',NULL,NULL),(1749453097920,'20250410_axbis_test','2D-Map\nMinPos: -1120 -9040\nMaxPos: 10300 3120\nNumPoints: 17190\nPointsAreSorted: true\nResolution: 20\nLineMinPos: -953 -8962\nLineMaxPos: 10259 3057\nNumLines: 84\nLinesAreSorted: true\nCairnInfo: Params \"MotionLimitsSector1\" \"Normal\" 300 -400 500 300 35\nCairnInfo: Params \"Standby_1\" \"Buffering\" false\nCairnInfo: Params \"Standby_2\" \"Buffering\" false\nCairnInfo: Params \"Standby_3\" \"Buffering\" false\nCairn: ForbiddenArea 0 0 90.000000 \"\" ICON \"사무구역_2\" -5315 -10287 -2051 -6889\nCairn: ForbiddenArea 0 0 -90.000000 \"\" ICON \"사무구역_1\" -3021 4463 2183 10341\nCairn: MotionLimitsSector 0 0 0.000000 \"\" ICON \"MotionLimitsSector1\" -1089 -9295 7010 3362 4 -1089 -9295 7010 -9350 7010 3362 -1063 3338\nCairn: ForbiddenLine -830 -1506 0.000000 \"\" ICON \"Forbidden Line1\" -830 -1506 -830 -2149\nCairn: FeedbackHandler 0 0 0.000000 \"\" ICON \"Custom Responses\" 0 0 0 0\nCairn: RobotArrivalHandler 0 0 0.000000 \"\" ICON \"Queuing Manager\" 0 0 0 0\nCairn: DockLynx 284 -1886 180.000000 \"\" ICON \"LD_250_dock\"\nCairn: GoalWithHeading 515 -4237 0.000000 \"\" ICON \"Goal_1\"\nCairn: DockLynx 695 -30 180.000000 \"\" ICON \"LD_90_dock\"\nCairn: ForbiddenArea 0 0 0.000000 \"\" ICON \"Forbidden Area1\" 1140 -3131 2704 -2929\nCairn: StandbyGoalWithHeading 1240 1059 -90.000000 \"\" ICON \"Standby_1\"\nCairn: StandbyGoalWithHeading 2446 -3995 0.000000 \"\" ICON \"Standby_2\"\nCairn: GoalWithHeading 2765 -1238 90.000000 \"\" ICON \"test_home\"\nCairn: GoalWithHeading 2828 2114 90.000000 \"\" ICON \"test_goal\"\nCairn: OneWaySector 0 0 -90.000000 \"\" ICON \"One-Way(일방 통행)1\" 2926 -384 3147 1134\nCairn: DockLynx 2950 -1431 -179.400000 \"\" ICON \"LD/Lynx 도크1\"\nCairn: StandbyGoalWithHeading 3118 -591 90.000000 \"\" ICON \"Standby_3\"\nCairn: GoalWithHeading 3118 876 180.000000 \"\" ICON \"Goal1\"\nCairn: GoalWithHeading 4499 -3995 180.000000 \"\" ICON \"Goal_2\"\nCairn: ForbiddenArea 0 0 0.000000 \"\" ICON \"그룹장실\" 4853 -8999 10288 -5175\nCairn: ForbiddenArea 0 0 -90.000000 \"\" ICON \"입구\" 5671 -971 8928 834',1,'1.0',1,'HU','loaded map','loadmap','loadmap','administrator','2025-06-09 16:11:37','administrator','2025-06-09 16:11:37','20250609161137921','2025-06-09 16:11:37');
 /*!40000 ALTER TABLE `acs_map_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -734,8 +709,8 @@ DROP TABLE IF EXISTS `acs_node_master`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_node_master` (
-  `node_id` varchar(255) NOT NULL COMMENT '노드 ID',
-  `node_nm` varchar(50) DEFAULT NULL COMMENT '노드 명칭',
+  `node_id` varchar(20) NOT NULL COMMENT '노드 ID',
+  `node_nm` varchar(255) DEFAULT NULL COMMENT '노드 명칭',
   `pos_x_val` varchar(255) DEFAULT NULL COMMENT 'X 좌표',
   `pos_y_val` varchar(255) DEFAULT NULL COMMENT 'Y 좌표',
   `degree_val` varchar(255) DEFAULT NULL COMMENT '정위치 회전 각도',
@@ -769,33 +744,9 @@ CREATE TABLE `acs_node_master` (
 
 LOCK TABLES `acs_node_master` WRITE;
 /*!40000 ALTER TABLE `acs_node_master` DISABLE KEYS */;
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_01', 'NODE_01', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, '', 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_02', 'NODE_02', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, '', 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_03', 'NODE_03', '3', '4', '90', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_04', 'NODE_04', '5', '6', '-90', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:37:44.000', NULL, '2025-04-17 15:37:44.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_05', 'NODE_05', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_06', 'NODE_06', '1', '2', '0', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_07', 'NODE_07', '3', '4', '-180', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-01-17 17:44:13.000', 'administrator', '2025-01-17 17:44:13.000', NULL, NULL);
-INSERT INTO acs.acs_node_master
-(node_id, node_nm, pos_x_val, pos_y_val, degree_val, occpyied_robot_id, area_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('NODE_08', 'NODE_08', '5', '6', '180', NULL, NULL, 123, 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:37:44.000', NULL, '2025-04-17 15:37:44.000', NULL, NULL);
+INSERT INTO `acs_node_master` VALUES ('NODE_01','NODE_01','1','2','0',NULL,NULL,123,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_02','NODE_02','1','2','0',NULL,NULL,123,1,'HU',NULL,NULL,'','administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_03','NODE_03','3','4','90',NULL,NULL,123,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_04','NODE_04','5','6','-90',NULL,NULL,123,1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:37:44',NULL,'2025-04-17 15:37:44',NULL,NULL),('NODE_05','NODE_05','1','2','0',NULL,NULL,123,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_06','NODE_06','1','2','0',NULL,NULL,123,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_07','NODE_07','3','4','-180',NULL,NULL,123,1,'HU',NULL,NULL,NULL,'administrator','2025-01-17 17:44:13','administrator','2025-01-17 17:44:13',NULL,NULL),('NODE_08','NODE_08','5','6','180',NULL,NULL,123,1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:37:44',NULL,'2025-04-17 15:37:44',NULL,NULL);
 /*!40000 ALTER TABLE `acs_node_master` ENABLE KEYS */;
 UNLOCK TABLES;
-
 --
 -- Table structure for table `acs_port_hist`
 --
@@ -805,10 +756,10 @@ DROP TABLE IF EXISTS `acs_port_hist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_port_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
-  `port_id` varchar(50) DEFAULT NULL COMMENT '포트 명칭',
-  `port_tp` varchar(50) DEFAULT NULL COMMENT '포트 타입',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
-  `equipment_id` varchar(50) DEFAULT NULL COMMENT '포트의 설비',
+  `port_id` varchar(255) DEFAULT NULL COMMENT '포트 명칭',
+  `port_tp` varchar(255) DEFAULT NULL COMMENT '포트 타입',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
+  `equipment_id` varchar(255) DEFAULT NULL COMMENT '포트의 설비',
   `node_id` varchar(255) DEFAULT NULL COMMENT '포트의 위치정보',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
@@ -845,8 +796,8 @@ DROP TABLE IF EXISTS `acs_port_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_port_master` (
   `port_id` varchar(50) NOT NULL COMMENT '포트 명칭',
-  `port_tp` varchar(50) DEFAULT NULL COMMENT '포트 타입',
-  `status_tx` varchar(50) DEFAULT NULL COMMENT '상태',
+  `port_tp` varchar(255) DEFAULT NULL COMMENT '포트 타입',
+  `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
   `equipment_id` varchar(50) NOT NULL COMMENT '포트의 설비',
   `node_id` varchar(20) DEFAULT NULL COMMENT '포트의 위치정보',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
@@ -876,24 +827,7 @@ CREATE TABLE `acs_port_master` (
 
 LOCK TABLES `acs_port_master` WRITE;
 /*!40000 ALTER TABLE `acs_port_master` DISABLE KEYS */;
-INSERT INTO acs.acs_port_master
-(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1-1', 'Muitl', 'RUNNING', 'P1', 'NODE_01', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
-INSERT INTO acs.acs_port_master
-(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1-2', 'Muitl', 'RUNNING', 'P1', 'NODE_02', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
-INSERT INTO acs.acs_port_master
-(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1-3', 'Muitl', 'RUNNING', 'P1', 'NODE_03', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
-INSERT INTO acs.acs_port_master
-(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1-4', 'Muitl', 'RUNNING', 'P1', 'NODE_04', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
-INSERT INTO acs.acs_port_master
-(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1-5', 'Muitl', 'RUNNING', 'P1', 'NODE_05', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
-INSERT INTO acs.acs_port_master
-(port_id, port_tp, status_tx, equipment_id, node_id, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('P1-6', 'Muitl', 'RUNNING', 'P1', 'NODE_06', 1, 'HU', NULL, NULL, NULL, NULL, '2025-04-17 15:36:40.000', NULL, '2025-04-17 15:36:40.000', NULL, NULL);
+INSERT INTO `acs_port_master` VALUES ('P1-1','Muitl','RUNNING','P1','NODE_01',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:36:40',NULL,'2025-04-17 15:36:40',NULL,NULL),('P1-2','Muitl','RUNNING','P1','NODE_02',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:36:40',NULL,'2025-04-17 15:36:40',NULL,NULL),('P1-3','Muitl','RUNNING','P1','NODE_03',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:36:40',NULL,'2025-04-17 15:36:40',NULL,NULL),('P1-4','Muitl','RUNNING','P1','NODE_04',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:36:40',NULL,'2025-04-17 15:36:40',NULL,NULL),('P1-5','Muitl','RUNNING','P1','NODE_05',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:36:40',NULL,'2025-04-17 15:36:40',NULL,NULL),('P1-6','Muitl','RUNNING','P1','NODE_06',1,'HU',NULL,NULL,NULL,NULL,'2025-04-17 15:36:40',NULL,'2025-04-17 15:36:40',NULL,NULL);
 /*!40000 ALTER TABLE `acs_port_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -904,8 +838,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `acs_robot_hist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
--- acs.acs_robot_hist definition
-
 CREATE TABLE `acs_robot_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `robot_id` varchar(255) DEFAULT NULL COMMENT '로봇 ID',
@@ -945,8 +877,9 @@ UNLOCK TABLES;
 -- Table structure for table `acs_robot_master`
 --
 
--- acs.acs_robot_master definition
-
+DROP TABLE IF EXISTS `acs_robot_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_robot_master` (
   `robot_id` varchar(255) NOT NULL COMMENT '로봇 ID',
   `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
@@ -983,16 +916,9 @@ CREATE TABLE `acs_robot_master` (
 
 LOCK TABLES `acs_robot_master` WRITE;
 /*!40000 ALTER TABLE `acs_robot_master` DISABLE KEYS */;
-INSERT INTO acs.acs_robot_master
-(robot_id, robot_tp, model_nm, status_tx, battery_no, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('ROBOT_01', 'LIFT', 'OMRON_LD_90x', 'idle', 0.0, 1, 'HU', NULL, NULL, '', 'administrator', '2025-01-17 17:45:38.000', 'administrator', '2025-01-17 17:45:38.000', NULL, NULL);
-INSERT INTO acs.acs_robot_master
-(robot_id, robot_tp, model_nm, status_tx, battery_no, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
-VALUES('ROBOT_02', 'LIFT', 'EPT', 'idle', 0.0, 1, 'HU', NULL, NULL, NULL, 'administrator', '2025-04-10 11:27:50.000', 'administrator', '2025-04-10 11:27:50.000', NULL, NULL);
+INSERT INTO `acs_robot_master` VALUES ('ROBOT_01','LIFT','OMRON_LD_90x','running',NULL,'NODE_01',NULL,100,NULL,123,1,'HU',NULL,'TaskService','TaskService','administrator','2025-01-17 17:45:38','','2025-06-09 09:55:33','20250609095532978','2025-06-09 09:55:33'),('ROBOT_02','LIFT','EPT','idle',NULL,'NODE_01',NULL,100,NULL,123,0,'HU',NULL,NULL,NULL,'administrator','2025-04-10 11:27:50','administrator','2025-04-10 11:27:50',NULL,NULL);
 /*!40000 ALTER TABLE `acs_robot_master` ENABLE KEYS */;
 UNLOCK TABLES;
-
-
 
 --
 -- Table structure for table `acs_role_rule_rel`
@@ -1081,7 +1007,7 @@ CREATE TABLE `acs_transfer_control` (
 
 LOCK TABLES `acs_transfer_control` WRITE;
 /*!40000 ALTER TABLE `acs_transfer_control` DISABLE KEYS */;
-INSERT INTO `acs_transfer_control` VALUES ('20250411074447407',NULL,'ROBOT_1',NULL,10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 16:44:47',NULL,'2025-04-11 16:44:47',NULL,NULL),('20250411164308878',NULL,NULL,NULL,10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 16:43:08',NULL,'2025-04-11 16:43:08',NULL,NULL),('20250415093728769',NULL,NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-15 09:37:28',NULL,'2025-04-15 09:37:28',NULL,NULL),('20250415132235207',NULL,NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-15 13:22:35',NULL,'2025-04-15 13:22:35',NULL,NULL),('20250415132359426',NULL,NULL,'COMPLETE',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-15 13:23:59',NULL,'2025-04-15 13:23:59',NULL,NULL),('20250415132643210',NULL,NULL,'COMPLETE',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-15 13:26:43',NULL,'2025-04-15 13:26:43',NULL,NULL),('5','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('6','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('7','LOAD',NULL,'UNLOADING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('8','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('9','LOAD',NULL,'COMPLETE',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB1','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB17','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB2','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB3','LOAD',NULL,'READY',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB4','LOAD',NULL,'UNLOADING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB5','LOAD',NULL,'RUNNING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL),('JOB6','LOAD',NULL,'LOADING',10,NULL,NULL,NULL,NULL,NULL,NULL,1,'HU',NULL,NULL,NULL,NULL,'2025-04-11 15:36:41',NULL,'2025-04-11 15:36:41',NULL,NULL);
+INSERT INTO `acs_transfer_control` VALUES ('20250526134218548',NULL,NULL,'queued',10,'P1-3','P1-4',NULL,NULL,NULL,NULL,1,'HU',NULL,'TaskService','TaskService','administrator','2025-05-26 13:42:18','','2025-06-09 09:56:28','20250609095628030','2025-06-09 09:56:28'),('202505261342185481',NULL,'ROBOT_01','running',10,'P1-3','P1-4',NULL,NULL,NULL,NULL,1,'HU',NULL,'TaskService','TaskService','administrator','2025-05-26 13:42:18','','2025-06-09 09:55:33','20250609095532978','2025-06-09 09:55:33');
 /*!40000 ALTER TABLE `acs_transfer_control` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -1131,7 +1057,6 @@ LOCK TABLES `acs_transfer_control_hist` WRITE;
 /*!40000 ALTER TABLE `acs_transfer_control_hist` ENABLE KEYS */;
 UNLOCK TABLES;
 
-
 --
 -- Table structure for table `acs_micro_transfer_control`
 --
@@ -1139,7 +1064,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `acs_micro_transfer_control`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-
 CREATE TABLE `acs_micro_transfer_control` (
   `micro_transfer_id` varchar(255) NOT NULL COMMENT '세부작업 ID',
   `transfer_id` varchar(255) NOT NULL COMMENT '그룹 작업 ID',
@@ -1166,8 +1090,8 @@ CREATE TABLE `acs_micro_transfer_control` (
   KEY `micro_transfer_site_cd_fk` (`site_cd`),
   KEY `micro_transfer_transfer_id_fk` (`transfer_id`),
   KEY `group_transfer_id_index` (`transfer_id`,`modify_at`) USING BTREE,
-  CONSTRAINT `micro_transfer_transfer_id_fk` FOREIGN KEY (`transfer_id`) REFERENCES `acs_transfer_control` (`transfer_id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `micro_transfer_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  CONSTRAINT `micro_transfer_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `micro_transfer_transfer_id_fk` FOREIGN KEY (`transfer_id`) REFERENCES `acs_transfer_control` (`transfer_id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='micro_transfer runtime 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1187,7 +1111,6 @@ UNLOCK TABLES;
 DROP TABLE IF EXISTS `acs_micro_transfer_control_hist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-
 CREATE TABLE `acs_micro_transfer_control_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `micro_transfer_id` varchar(255) NOT NULL COMMENT '세부작업 ID',
@@ -1225,6 +1148,88 @@ CREATE TABLE `acs_micro_transfer_control_hist` (
 LOCK TABLES `acs_micro_transfer_control_hist` WRITE;
 /*!40000 ALTER TABLE `acs_micro_transfer_control_hist` DISABLE KEYS */;
 /*!40000 ALTER TABLE `acs_micro_transfer_control_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_zone_master`
+--
+
+DROP TABLE IF EXISTS `acs_zone_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_zone_master` (
+  `zone_id` varchar(20) NOT NULL COMMENT '구역의 고유 ID',
+  `zone_nm` varchar(255) DEFAULT NULL COMMENT '구역 이름',
+  `zone_tp` varchar(255) DEFAULT NULL COMMENT '구역 타입',
+  `point_cnt` varchar(255) DEFAULT NULL COMMENT '좌표 개수',
+  `point_val` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '포인트 정보(JSON)',
+  `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`zone_id`,`map_uuid`,`site_cd`),
+  KEY `zone_site_cd_fk` (`site_cd`),
+  KEY `zone_map_uuid_fk` (`map_uuid`),
+  CONSTRAINT `zone_map_uuid_fk` FOREIGN KEY (`map_uuid`) REFERENCES `acs_map_master` (`map_uuid`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `zone_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='map zone Master정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_zone_master`
+--
+
+LOCK TABLES `acs_zone_master` WRITE;
+/*!40000 ALTER TABLE `acs_zone_master` DISABLE KEYS */;
+INSERT INTO `acs_zone_master` VALUES ('Test_Zone','Test_Zone','block','4','[{\"x\":8.0,\"y\":18.0},{\"x\":12.0,\"y\":18.0},{\"x\":12.0,\"y\":22.0},{\"x\":8.0,\"y\":22.0}]',123,1,'HU',NULL,NULL,NULL,NULL,'2025-06-05 17:35:43',NULL,'2025-06-05 17:35:43',NULL,NULL);
+/*!40000 ALTER TABLE `acs_zone_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_zone_master_hist`
+--
+
+DROP TABLE IF EXISTS `acs_zone_master_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_zone_master_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `zone_id` varchar(20) NOT NULL COMMENT '영역 ID',
+  `zone_nm` varchar(255) DEFAULT NULL COMMENT '영역 명칭',
+  `zone_tp` varchar(255) DEFAULT NULL COMMENT '영역 타입',
+  `point_cnt` varchar(255) DEFAULT NULL COMMENT '영역 포인트 개수',
+  `point_val` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '포인트 정보',
+  `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='map zone Master Hist정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_zone_master_hist`
+--
+
+LOCK TABLES `acs_zone_master_hist` WRITE;
+/*!40000 ALTER TABLE `acs_zone_master_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_zone_master_hist` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

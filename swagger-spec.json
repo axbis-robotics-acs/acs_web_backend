@@ -593,6 +593,20 @@
           "user"
         ]
       }
+    },
+    "/map/import-map": {
+      "post": {
+        "operationId": "MapParserController_importMapFile",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "MapParser"
+        ]
+      }
     }
   },
   "info": {

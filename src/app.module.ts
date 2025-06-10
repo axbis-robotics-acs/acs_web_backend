@@ -16,6 +16,7 @@ import { ScheduleModule } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
 import { HandlerModule } from './common/handler/handler.module';
 import { ElasticModule } from './common/adapter/elk/elastic.module';
+import { MapParserModule } from './modules/map/map.parser.module';
 
 dotenv.config();
 
@@ -122,6 +123,7 @@ function loadProvidersAndControllers() {
     ScheduleModule.forRoot(),
     HandlerModule,
     ElasticModule,
+    MapParserModule,
   ],
   providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
   controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가
