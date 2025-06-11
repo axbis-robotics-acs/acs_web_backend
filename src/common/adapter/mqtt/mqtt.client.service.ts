@@ -49,7 +49,11 @@ export class MqttClientService implements OnModuleInit {
       // TODO: 메시지 처리
       this.internalSubService.handleMessage(topic, payload);
     });
-    const topics = ['web/response', 'web/backend/connection/response'];
+    const topics = [
+      'web/response',
+      'web/backend/connection/response',
+      'web/backend/positionchange',
+    ];
     this.internalSubscriberClient.subscribe(topics);
   }
 

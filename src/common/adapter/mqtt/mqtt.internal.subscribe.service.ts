@@ -4,11 +4,13 @@ import { ElasticLogService } from 'src/common/adapter/elk/elastic.log.service';
 import { getFormattedTimestampTID } from 'src/common/utils/date.format';
 import { MqttCacheService } from 'src/common/cache/mqtt.cache.service';
 import { HeartbeatCacheService } from 'src/common/cache/heartbeat.cache.service';
+import { PositionManager } from 'src/common/handler/position.manager';
 
 @Injectable()
 export class MqttInternalSubService {
   constructor(
     private readonly responseManager: ResponseManager,
+    private readonly positionManager: PositionManager,
     private readonly elas: ElasticLogService,
     private readonly mqttCacheService: MqttCacheService,
     private readonly heatbeatCacheService: HeartbeatCacheService,
@@ -40,6 +42,8 @@ export class MqttInternalSubService {
             payload: payload.toString(),
           });
         }
+      } else if (topic === 'web/backend/positionchange') {
+        this.positionManager.handlePositionChange(topic, message);
       }
     } catch (error) {
       console.log(
