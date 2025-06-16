@@ -60,6 +60,41 @@ INSERT INTO `acs_site_master` VALUES ('HU','HUBIS',1,'2025-01-17 17:36:21.000000
 /*!40000 ALTER TABLE `acs_site_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `acs_site_hist`
+--
+
+DROP TABLE IF EXISTS `acs_site_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_site_hist` (
+  `hist_id` bigint(20) not null comment '일련 번호',
+  `site_cd` varchar(50) NOT NULL COMMENT '사이트 고유 코드',
+  `site_nm` varchar(255) NOT NULL COMMENT '사이트 명칭',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+ ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_site_hist`
+--
+
+LOCK TABLES `acs_site_hist` WRITE;
+/*!40000 ALTER TABLE `acs_site_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_site_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
 --
 -- Table structure for table `acs_role_master`
 --
@@ -266,6 +301,45 @@ INSERT INTO `acs_area_master` VALUES ('area_01','area_01','traffic','3','{ \"poi
 UNLOCK TABLES;
 
 --
+-- Table structure for table `acs_area_hist`
+--
+
+DROP TABLE IF EXISTS `acs_area_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_area_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `area_id` varchar(20) NOT NULL COMMENT '영역 ID',
+  `area_nm` varchar(255) DEFAULT NULL COMMENT '영역 명칭',
+  `area_tp` varchar(255) DEFAULT NULL COMMENT '영역 타입',
+  `point_cnt` varchar(255) DEFAULT NULL COMMENT '영역 포인트 개수',
+  `point_val` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin NOT NULL DEFAULT '' COMMENT '포인트 정보',
+  `map_uuid` bigint(11) NOT NULL COMMENT '맵 고유 ID',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='map area Master 이력 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_area_hist`
+--
+
+LOCK TABLES `acs_area_hist` WRITE;
+/*!40000 ALTER TABLE `acs_area_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_area_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `acs_carrier_hist`
 --
 
@@ -288,9 +362,7 @@ CREATE TABLE `acs_carrier_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `carrier_hist_site_cd_fk` (`site_cd`),
-  CONSTRAINT `carrier_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='carrier 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -382,6 +454,45 @@ INSERT INTO `acs_const_master` VALUES ('FLEET_01','TRAFFIC','FLEET_01','true',1,
 /*!40000 ALTER TABLE `acs_const_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
+
+--
+-- Table structure for table `acs_const_hist`
+--
+
+DROP TABLE IF EXISTS `acs_const_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_const_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `constant_cd` varchar(255) NOT NULL COMMENT '상수 코드',
+  `constant_tp` varchar(255) NOT NULL COMMENT '상수 타입',
+  `constant_nm` varchar(255) NOT NULL COMMENT '상수 명칭',
+  `constant_val` varchar(255) NOT NULL COMMENT '상수 값',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Constant Master 이력 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_const_hist`
+--
+
+LOCK TABLES `acs_const_hist` WRITE;
+/*!40000 ALTER TABLE `acs_const_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_const_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 --
 -- Table structure for table `acs_equipment_hist`
 --
@@ -405,9 +516,7 @@ CREATE TABLE `acs_equipment_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `equipment_hist_site_cd_fk` (`site_cd`),
-  CONSTRAINT `equipment_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='equipment 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -497,6 +606,42 @@ INSERT INTO `acs_lang_master` VALUES ('OPENING_01','KR','대시보드',1,'HU',NU
 UNLOCK TABLES;
 
 --
+-- Table structure for table `acs_lang_hist`
+--
+
+DROP TABLE IF EXISTS `acs_lang_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_lang_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `lang_cd` varchar(50) NOT NULL COMMENT '다국어 코드',
+  `lang_tp` varchar(50) NOT NULL COMMENT '다국어 타입',
+  `lang_val` varchar(255) NOT NULL COMMENT '다국어 값',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Language Master 이력 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_lang_hist`
+--
+
+LOCK TABLES `acs_lang_hist` WRITE;
+/*!40000 ALTER TABLE `acs_lang_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_lang_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `acs_link_master`
 --
 
@@ -560,9 +705,7 @@ CREATE TABLE `acs_login_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `login_hist_site_cd_fk` (`site_cd`),
-  CONSTRAINT `login_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='로그인 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -614,6 +757,44 @@ CREATE TABLE `acs_map_master` (
 LOCK TABLES `acs_map_master` WRITE;
 /*!40000 ALTER TABLE `acs_map_master` DISABLE KEYS */;
 INSERT INTO `acs_map_master` VALUES (123,'map_01','{ \"map_uuid\":\"123123\",\"map_nm\":\"test\"}',1,'0.1.0',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:40:46','administrator','2025-01-17 17:40:46',NULL,NULL),(1749453097920,'20250410_axbis_test','2D-Map\nMinPos: -1120 -9040\nMaxPos: 10300 3120\nNumPoints: 17190\nPointsAreSorted: true\nResolution: 20\nLineMinPos: -953 -8962\nLineMaxPos: 10259 3057\nNumLines: 84\nLinesAreSorted: true\nCairnInfo: Params \"MotionLimitsSector1\" \"Normal\" 300 -400 500 300 35\nCairnInfo: Params \"Standby_1\" \"Buffering\" false\nCairnInfo: Params \"Standby_2\" \"Buffering\" false\nCairnInfo: Params \"Standby_3\" \"Buffering\" false\nCairn: ForbiddenArea 0 0 90.000000 \"\" ICON \"사무구역_2\" -5315 -10287 -2051 -6889\nCairn: ForbiddenArea 0 0 -90.000000 \"\" ICON \"사무구역_1\" -3021 4463 2183 10341\nCairn: MotionLimitsSector 0 0 0.000000 \"\" ICON \"MotionLimitsSector1\" -1089 -9295 7010 3362 4 -1089 -9295 7010 -9350 7010 3362 -1063 3338\nCairn: ForbiddenLine -830 -1506 0.000000 \"\" ICON \"Forbidden Line1\" -830 -1506 -830 -2149\nCairn: FeedbackHandler 0 0 0.000000 \"\" ICON \"Custom Responses\" 0 0 0 0\nCairn: RobotArrivalHandler 0 0 0.000000 \"\" ICON \"Queuing Manager\" 0 0 0 0\nCairn: DockLynx 284 -1886 180.000000 \"\" ICON \"LD_250_dock\"\nCairn: GoalWithHeading 515 -4237 0.000000 \"\" ICON \"Goal_1\"\nCairn: DockLynx 695 -30 180.000000 \"\" ICON \"LD_90_dock\"\nCairn: ForbiddenArea 0 0 0.000000 \"\" ICON \"Forbidden Area1\" 1140 -3131 2704 -2929\nCairn: StandbyGoalWithHeading 1240 1059 -90.000000 \"\" ICON \"Standby_1\"\nCairn: StandbyGoalWithHeading 2446 -3995 0.000000 \"\" ICON \"Standby_2\"\nCairn: GoalWithHeading 2765 -1238 90.000000 \"\" ICON \"test_home\"\nCairn: GoalWithHeading 2828 2114 90.000000 \"\" ICON \"test_goal\"\nCairn: OneWaySector 0 0 -90.000000 \"\" ICON \"One-Way(일방 통행)1\" 2926 -384 3147 1134\nCairn: DockLynx 2950 -1431 -179.400000 \"\" ICON \"LD/Lynx 도크1\"\nCairn: StandbyGoalWithHeading 3118 -591 90.000000 \"\" ICON \"Standby_3\"\nCairn: GoalWithHeading 3118 876 180.000000 \"\" ICON \"Goal1\"\nCairn: GoalWithHeading 4499 -3995 180.000000 \"\" ICON \"Goal_2\"\nCairn: ForbiddenArea 0 0 0.000000 \"\" ICON \"그룹장실\" 4853 -8999 10288 -5175\nCairn: ForbiddenArea 0 0 -90.000000 \"\" ICON \"입구\" 5671 -971 8928 834',1,'1.0',1,'HU','loaded map','loadmap','loadmap','administrator','2025-06-09 16:11:37','administrator','2025-06-09 16:11:37','20250609161137921','2025-06-09 16:11:37');
+INSERT INTO acs.acs_map_master
+(map_uuid, map_nm, map_val, map_res, map_ver, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES(1749455970907, '20250410_axbis_test', '2D-Map
+MinPos: -1120 -9040
+MaxPos: 10300 3120
+NumPoints: 17190
+PointsAreSorted: true
+Resolution: 20
+LineMinPos: -953 -8962
+LineMaxPos: 10259 3057
+NumLines: 84
+LinesAreSorted: true
+CairnInfo: Params "MotionLimitsSector1" "Normal" 300 -400 500 300 35
+CairnInfo: Params "Standby_1" "Buffering" false
+CairnInfo: Params "Standby_2" "Buffering" false
+CairnInfo: Params "Standby_3" "Buffering" false
+Cairn: ForbiddenArea 0 0 90.000000 "" ICON "사무구역_2" -5315 -10287 -2051 -6889
+Cairn: ForbiddenArea 0 0 -90.000000 "" ICON "사무구역_1" -3021 4463 2183 10341
+Cairn: MotionLimitsSector 0 0 0.000000 "" ICON "MotionLimitsSector1" -1089 -9295 7010 3362 4 -1089 -9295 7010 -9350 7010 3362 -1063 3338
+Cairn: ForbiddenLine -830 -1506 0.000000 "" ICON "Forbidden Line1" -830 -1506 -830 -2149
+Cairn: FeedbackHandler 0 0 0.000000 "" ICON "Custom Responses" 0 0 0 0
+Cairn: RobotArrivalHandler 0 0 0.000000 "" ICON "Queuing Manager" 0 0 0 0
+Cairn: DockLynx 284 -1886 180.000000 "" ICON "LD_250_dock"
+Cairn: GoalWithHeading 515 -4237 0.000000 "" ICON "Goal_1"
+Cairn: DockLynx 695 -30 180.000000 "" ICON "LD_90_dock"
+Cairn: ForbiddenArea 0 0 0.000000 "" ICON "Forbidden Area1" 1140 -3131 2704 -2929
+Cairn: StandbyGoalWithHeading 1240 1059 -90.000000 "" ICON "Standby_1"
+Cairn: StandbyGoalWithHeading 2446 -3995 0.000000 "" ICON "Standby_2"
+Cairn: GoalWithHeading 2765 -1238 90.000000 "" ICON "test_home"
+Cairn: GoalWithHeading 2828 2114 90.000000 "" ICON "test_goal"
+Cairn: OneWaySector 0 0 -90.000000 "" ICON "One-Way(일방 통행)1" 2926 -384 3147 1134
+Cairn: DockLynx 2950 -1431 -179.400000 "" ICON "LD/Lynx 도크1"
+Cairn: StandbyGoalWithHeading 3118 -591 90.000000 "" ICON "Standby_3"
+Cairn: GoalWithHeading 3118 876 180.000000 "" ICON "Goal1"
+Cairn: GoalWithHeading 4499 -3995 180.000000 "" ICON "Goal_2"
+Cairn: ForbiddenArea 0 0 0.000000 "" ICON "그룹장실" 4853 -8999 10288 -5175
+Cairn: ForbiddenArea 0 0 -90.000000 "" ICON "입구" 5671 -971 8928 834', 1, '2.0', 1, 'HU', 'loaded map', 'loadmap', 'loadmap', 'administrator', '2025-06-09 16:59:30.000', 'administrator', '2025-06-09 16:59:30.000', '20250609165930908', '2025-06-09 16:59:30.000');
+
 /*!40000 ALTER TABLE `acs_map_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -702,6 +883,41 @@ INSERT INTO `acs_menu_role_rel` VALUES ('DASHBOARD','Administrator',1,'HU',NULL,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `acs_menu_role_rel_hist`
+--
+
+DROP TABLE IF EXISTS `acs_menu_role_rel_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_menu_role_rel_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `menu_cd` varchar(50) NOT NULL COMMENT '메뉴 고유 코드',
+  `role_cd` varchar(50) NOT NULL COMMENT '규칙 코드',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Menu_Role 관계 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_menu_role_rel_hist`
+--
+
+LOCK TABLES `acs_menu_role_rel_hist` WRITE;
+/*!40000 ALTER TABLE `acs_menu_role_rel_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_menu_role_rel_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `acs_node_master`
 --
 
@@ -772,9 +988,7 @@ CREATE TABLE `acs_port_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `port_hist_site_cd_fk` (`site_cd`),
-  CONSTRAINT `port_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='port 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -840,13 +1054,17 @@ DROP TABLE IF EXISTS `acs_robot_hist`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_robot_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
-  `robot_id` varchar(255) DEFAULT NULL COMMENT '로봇 ID',
+  `robot_id` varchar(255) NOT NULL COMMENT '로봇 ID',
   `robot_tp` varchar(255) DEFAULT NULL COMMENT '로봇 타입',
   `model_nm` varchar(255) DEFAULT NULL COMMENT '모델명',
   `status_tx` varchar(255) DEFAULT NULL COMMENT '상태',
-  `transfer_id` varchar(255) DEFAULT NULL,
-  `battery_no` double DEFAULT 0 COMMENT '로봇의 배터리 정보',
+  `transfer_id` varchar(255) DEFAULT NULL COMMENT '할당 작업 Id',
+  `location_nm` varchar(50) NOT NULL COMMENT '로봇의 현재 위치 정보',
+  `wait_location_nm` varchar(50) DEFAULT NULL COMMENT '로봇의 고정 대기위치 | 빈 경우 동적 대기',
+  `detection_fl` tinyint(1) NOT NULL DEFAULT 0 COMMENT '화물 감지 여부', 
+  `battery_no` double NOT NULL DEFAULT 0 COMMENT '로봇의 배터리 정보',
   `charge_rule_id` varchar(255) DEFAULT NULL,
+  `map_uuid` bigint(11) DEFAULT NULL COMMENT '맵 고유 ID',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -858,9 +1076,7 @@ CREATE TABLE `acs_robot_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `robot_hist_site_cd_fk` (`site_cd`),
-  CONSTRAINT `robot_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='robot 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -888,6 +1104,7 @@ CREATE TABLE `acs_robot_master` (
   `transfer_id` varchar(255) DEFAULT NULL COMMENT '할당 작업 Id',
   `location_nm` varchar(50) NOT NULL COMMENT '로봇의 현재 위치 정보',
   `wait_location_nm` varchar(50) DEFAULT NULL COMMENT '로봇의 고정 대기위치 | 빈 경우 동적 대기',
+  `detection_fl` tinyint(1) NOT NULL DEFAULT 0 COMMENT '화물 감지 여부', 
   `battery_no` double NOT NULL DEFAULT 0 COMMENT '로봇의 배터리 정보',
   `charge_rule_id` varchar(255) DEFAULT NULL,
   `map_uuid` bigint(11) DEFAULT NULL COMMENT '맵 고유 ID',
@@ -916,7 +1133,6 @@ CREATE TABLE `acs_robot_master` (
 
 LOCK TABLES `acs_robot_master` WRITE;
 /*!40000 ALTER TABLE `acs_robot_master` DISABLE KEYS */;
-INSERT INTO `acs_robot_master` VALUES ('ROBOT_01','LIFT','OMRON_LD_90x','running',NULL,'NODE_01',NULL,100,NULL,123,1,'HU',NULL,'TaskService','TaskService','administrator','2025-01-17 17:45:38','','2025-06-09 09:55:33','20250609095532978','2025-06-09 09:55:33'),('ROBOT_02','LIFT','EPT','idle',NULL,'NODE_01',NULL,100,NULL,123,0,'HU',NULL,NULL,NULL,'administrator','2025-04-10 11:27:50','administrator','2025-04-10 11:27:50',NULL,NULL);
 /*!40000 ALTER TABLE `acs_robot_master` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -958,6 +1174,41 @@ LOCK TABLES `acs_role_rule_rel` WRITE;
 /*!40000 ALTER TABLE `acs_role_rule_rel` DISABLE KEYS */;
 INSERT INTO `acs_role_rule_rel` VALUES ('Administrator','MENU_001',1,'HU',NULL,NULL,'','administrator','2025-01-17 17:47:55','administrator','2025-01-17 17:47:55',NULL,NULL);
 /*!40000 ALTER TABLE `acs_role_rule_rel` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_role_rule_rel_hist`
+--
+
+DROP TABLE IF EXISTS `acs_role_rule_rel_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_role_rule_rel_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `role_cd` varchar(50) NOT NULL COMMENT '역할 코드',
+  `rule_cd` varchar(50) NOT NULL COMMENT '규칙 코드',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Role-Rule 관계 이력 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_role_rule_rel_hist`
+--
+
+LOCK TABLES `acs_role_rule_rel_hist` WRITE;
+/*!40000 ALTER TABLE `acs_role_rule_rel_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_role_rule_rel_hist` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -1042,9 +1293,7 @@ CREATE TABLE `acs_transfer_control_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `transfer_hist_site_cd_fk` (`site_cd`),
-  CONSTRAINT `transfer_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='transfer runtime 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1134,10 +1383,7 @@ CREATE TABLE `acs_micro_transfer_control_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`),
-  KEY `micro_transfer_hist_site_cd_fk` (`site_cd`),
-  KEY `micro_transfer_hist_id_index` (`micro_transfer_id`,`modify_at`) USING BTREE,
-  CONSTRAINT `micro_transfer_hist_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+  PRIMARY KEY (`hist_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='micro_transfer runtime 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -1194,13 +1440,13 @@ INSERT INTO `acs_zone_master` VALUES ('Test_Zone','Test_Zone','block','4','[{\"x
 UNLOCK TABLES;
 
 --
--- Table structure for table `acs_zone_master_hist`
+-- Table structure for table `acs_zone_hist`
 --
 
-DROP TABLE IF EXISTS `acs_zone_master_hist`;
+DROP TABLE IF EXISTS `acs_zone_hist`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `acs_zone_master_hist` (
+CREATE TABLE `acs_zone_hist` (
   `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
   `zone_id` varchar(20) NOT NULL COMMENT '영역 ID',
   `zone_nm` varchar(255) DEFAULT NULL COMMENT '영역 명칭',
@@ -1224,12 +1470,89 @@ CREATE TABLE `acs_zone_master_hist` (
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `acs_zone_master_hist`
+-- Dumping data for table `acs_zone_hist`
 --
 
-LOCK TABLES `acs_zone_master_hist` WRITE;
-/*!40000 ALTER TABLE `acs_zone_master_hist` DISABLE KEYS */;
-/*!40000 ALTER TABLE `acs_zone_master_hist` ENABLE KEYS */;
+LOCK TABLES `acs_zone_hist` WRITE;
+/*!40000 ALTER TABLE `acs_zone_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_zone_hist` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_alarm_master`
+--
+
+DROP TABLE IF EXISTS `acs_alarm_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_alarm_master` (
+  `alarm_cd` varchar(20) NOT NULL COMMENT '알람의 고유 ID',
+  `alarm_nm` varchar(255) DEFAULT NULL COMMENT '알람 이름',
+  `alarm_tp` varchar(255) DEFAULT NULL COMMENT '알람 타입',
+  `alarm_lv` varchar(255) DEFAULT NULL COMMENT '알람 수준',
+  `alarm_val` varchar(255) NOT NULL DEFAULT '' COMMENT '알람 내용',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`alarm_cd`,`site_cd`),
+  KEY `alarm_site_cd_fk` (`site_cd`),
+  CONSTRAINT `alarm_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Alarm Master정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_alarm_master`
+--
+
+LOCK TABLES `acs_alarm_master` WRITE;
+/*!40000 ALTER TABLE `acs_alarm_master` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_alarm_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `acs_alarm_master_hist`
+--
+
+DROP TABLE IF EXISTS `acs_alarm_hist`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_alarm_hist` (
+  `hist_id` bigint(20) NOT NULL COMMENT '일련 번호',
+  `alarm_id` varchar(20) NOT NULL COMMENT '알람 ID',
+  `alarm_nm` varchar(255) DEFAULT NULL COMMENT '알람 명칭',
+  `alarm_tp` varchar(255) DEFAULT NULL COMMENT '알람 타입',
+  `alarm_lv` varchar(255) DEFAULT NULL COMMENT '알람 수준',
+  `alarm_val` varchar(255) NOT NULL DEFAULT '' COMMENT '알람 내용',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`hist_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='Alarm Master Hist정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_alarm_hist`
+--
+
+LOCK TABLES `acs_alarm_hist` WRITE;
+/*!40000 ALTER TABLE `acs_alarm_hist` DISABLE KEYS */;
+/*!40000 ALTER TABLE `acs_alarm_hist` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --

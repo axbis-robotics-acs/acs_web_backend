@@ -23,11 +23,23 @@ export class Robot {
   @Column({ type: 'varchar', length: 255, nullable: true })
   transfer_id: string;
 
-  @Column({ nullable: false, default: 0 })
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  location_nm: string;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  wait_location_nm: string;
+
+  @Column({ type: 'tinyint', width: 1, nullable: false, default: 0 })
+  detection_fl: number;
+
+  @Column({ type: 'double', nullable: false, default: 0 })
   battery_no: number;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
   charge_rule_id: string;
+
+  @Column({ nullable: true })
+  map_uuid: number;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

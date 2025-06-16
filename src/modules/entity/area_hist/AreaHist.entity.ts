@@ -7,39 +7,27 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'acs_robot_hist' })
-export class RobotHist {
+@Entity({ name: 'acs_area_hist' })
+export class AreaHist {
   @PrimaryColumn({ nullable: false })
   hist_id: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  robot_tp: string;
+  @Column({ type: 'varchar', length: 20, nullable: false })
+  area_id: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
-  model_nm: string;
+  area_nm: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
-  status_tx: string;
+  area_tp: string;
 
   @Column({ type: 'varchar', length: 255, nullable: true })
-  transfer_id: string;
+  point_cnt: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
-  location_nm: string;
+  @Column({ type: 'text', nullable: false, default: '' })
+  point_val: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  wait_location_nm: string;
-
-  @Column({ type: 'tinyint', width: 1, nullable: false, default: 0 })
-  detection_fl: number;
-
-  @Column({ type: 'double', nullable: false, default: 0 })
-  battery_no: number;
-
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  charge_rule_id: string;
-
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   map_uuid: number;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
@@ -51,19 +39,19 @@ export class RobotHist {
   @Column({ type: 'varchar', length: 255, nullable: true })
   description_tx: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   prev_activity_tx: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   activity_tx: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   creator_by: string;
 
   @CreateDateColumn()
   create_at: Date;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
+  @Column({ type: 'varchar', length: 255, nullable: true })
   modifier_by: string;
 
   @UpdateDateColumn()

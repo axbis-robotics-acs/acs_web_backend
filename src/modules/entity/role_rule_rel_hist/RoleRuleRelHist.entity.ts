@@ -7,40 +7,16 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'acs_robot_hist' })
-export class RobotHist {
+@Entity({ name: 'acs_role_rule_rel_hist' })
+export class RoleRuleRelHist {
   @PrimaryColumn({ nullable: false })
   hist_id: number;
 
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  robot_tp: string;
-
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  model_nm: string;
-
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  status_tx: string;
-
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  transfer_id: string;
+  @Column({ type: 'varchar', length: 50, nullable: false })
+  role_cd: string;
 
   @Column({ type: 'varchar', length: 50, nullable: false })
-  location_nm: string;
-
-  @Column({ type: 'varchar', length: 50, nullable: true })
-  wait_location_nm: string;
-
-  @Column({ type: 'tinyint', width: 1, nullable: false, default: 0 })
-  detection_fl: number;
-
-  @Column({ type: 'double', nullable: false, default: 0 })
-  battery_no: number;
-
-  @Column({ type: 'varchar', length: 255, nullable: true })
-  charge_rule_id: string;
-
-  @Column({ nullable: true })
-  map_uuid: number;
+  rule_cd: string;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

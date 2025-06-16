@@ -1,6 +1,48 @@
 {
   "openapi": "3.0.0",
   "paths": {
+    "/alarmhist": {
+      "get": {
+        "operationId": "AlarmHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "alarmhist"
+        ]
+      }
+    },
+    "/alarm/{id}": {
+      "post": {
+        "operationId": "AlarmController_findByAlarmId",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "alarm"
+        ]
+      }
+    },
+    "/areahist": {
+      "get": {
+        "operationId": "AreaHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "areahist"
+        ]
+      }
+    },
     "/area/{id}": {
       "post": {
         "operationId": "AreaController_findByAreaId",
@@ -43,6 +85,20 @@
         ]
       }
     },
+    "/consthist": {
+      "get": {
+        "operationId": "ConstHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "consthist"
+        ]
+      }
+    },
     "/const": {
       "get": {
         "operationId": "ConstController_findAll",
@@ -82,6 +138,20 @@
         },
         "tags": [
           "equipment"
+        ]
+      }
+    },
+    "/langhist": {
+      "get": {
+        "operationId": "LangHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "langhist"
         ]
       }
     },
@@ -236,6 +306,20 @@
         ]
       }
     },
+    "/menurolerelHist": {
+      "get": {
+        "operationId": "MenuRoleRelHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "menurolerelHist"
+        ]
+      }
+    },
     "/microtransfercontrol": {
       "get": {
         "operationId": "MicroTransferControlHistHistController_findAll",
@@ -384,6 +468,20 @@
         ]
       }
     },
+    "/rolerulerelHist": {
+      "get": {
+        "operationId": "RoleRuleRelHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "rolerulerelHist"
+        ]
+      }
+    },
     "/rule": {
       "get": {
         "operationId": "RuleController_findAll",
@@ -395,6 +493,20 @@
         },
         "tags": [
           "rule"
+        ]
+      }
+    },
+    "/siteHist": {
+      "get": {
+        "operationId": "SiteHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "siteHist"
         ]
       }
     },
