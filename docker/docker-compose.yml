@@ -18,6 +18,7 @@ services:
       - ../.env
     environment:
       - TZ=Asia/Seoul
+      - DB_HOST=mariadb
     command: pm2-runtime ecosystem.config.js --env production
     restart: always
     networks:

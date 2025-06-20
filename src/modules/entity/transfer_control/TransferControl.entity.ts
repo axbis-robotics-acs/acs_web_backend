@@ -31,16 +31,16 @@ export class TransferControl {
   destination_port_id: string;
 
   @Column({ type: 'datetime', nullable: true })
-  acquire_start_at: Date;
+  load_start_at: Date;
 
   @Column({ type: 'datetime', nullable: true })
-  acquire_end_at: Date;
+  load_end_at: Date;
 
   @Column({ type: 'datetime', nullable: true })
-  deposit_start_at: Date;
+  unload_start_at: Date;
 
   @Column({ type: 'datetime', nullable: true })
-  deposit_end_at: Date;
+  unload_end_at: Date;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

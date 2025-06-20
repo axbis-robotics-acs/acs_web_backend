@@ -77,7 +77,7 @@ export class UserService {
 
     const newUser = {
       account_id,
-      password_tx: hashedPassword, // 🔐 해시된 비밀번호 저장
+      password_tx: hashedPassword, // 🔐 해시된 비밀번호 저장l
       email_nm,
       site_cd,
     };
