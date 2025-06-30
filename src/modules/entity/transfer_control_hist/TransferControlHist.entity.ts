@@ -22,7 +22,10 @@ export class TransferControlHist {
   assigned_robot_id: string;
 
   @Column({ type: 'varchar', length: 20, nullable: true })
-  transfer_st: string;
+  transfer_status_tx: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  sub_status_tx: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
   source_port_id: string;
@@ -41,6 +44,9 @@ export class TransferControlHist {
 
   @Column({ type: 'datetime', nullable: true })
   unload_end_at: Date;
+
+  @Column({ type: 'datetime', nullable: true })
+  job_complete_at: Date;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

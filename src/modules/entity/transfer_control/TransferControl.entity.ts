@@ -19,7 +19,10 @@ export class TransferControl {
   assigned_robot_id: string;
 
   @Column({ type: 'varchar', length: 20, nullable: true, default: 'READY' })
-  transfer_st: string;
+  transfer_status_tx: string;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  sub_status_tx: string;
 
   @Column({ type: 'int', width: 5, default: 10 })
   priority_no: number;
@@ -41,6 +44,9 @@ export class TransferControl {
 
   @Column({ type: 'datetime', nullable: true })
   unload_end_at: Date;
+
+  @Column({ type: 'datetime', nullable: true })
+  job_complete_at: Date;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;

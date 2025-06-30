@@ -370,6 +370,20 @@
         ]
       }
     },
+    "/model": {
+      "get": {
+        "operationId": "ModelController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "model"
+        ]
+      }
+    },
     "/node": {
       "get": {
         "operationId": "NodeController_findAll",

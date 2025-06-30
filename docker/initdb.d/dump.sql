@@ -1046,6 +1046,46 @@ INSERT INTO `acs_port_master` VALUES ('P1-1','Muitl','RUNNING','P1','NODE_01',1,
 UNLOCK TABLES;
 
 --
+-- Table structure for table `acs_model_master`
+--
+
+DROP TABLE IF EXISTS `acs_model_master`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `acs_model_master` (
+  `model_nm` varchar(255) NOT NULL COMMENT '모델명',
+  `vendor_nm` varchar(255) NOT NULL COMMENT '제조사',
+  `protocol_tp` varchar(50) NOT NULL COMMENT '통신방식 (mqtt, rest, tcp, plc ..)',
+  `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
+  `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
+  `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
+  `prev_activity_tx` varchar(50) DEFAULT NULL COMMENT '이전 활동 내용',
+  `activity_tx` varchar(50) DEFAULT NULL COMMENT '현재 활동 내용',
+  `creator_by` varchar(50) DEFAULT NULL COMMENT '데이터 생성자',
+  `create_at` datetime DEFAULT current_timestamp() COMMENT '생성 시간',
+  `modifier_by` varchar(50) DEFAULT NULL COMMENT '데이터 수정자',
+  `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
+  `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
+  `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
+  PRIMARY KEY (`model_nm`,`vendor_nm`,`site_cd`),
+  KEY `robottype_site_cd_fk` (`site_cd`),
+  CONSTRAINT `robottype_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='robot model 정보';
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `acs_model_master`
+--
+
+LOCK TABLES `acs_model_master` WRITE;
+/*!40000 ALTER TABLE `acs_model_master` DISABLE KEYS */;
+INSERT INTO acs.acs_model_master
+(model_nm, vendor_nm, protocol_tp, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('LD_90x', 'OMRON', 'MQTT', 1, 'HU', NULL, NULL, NULL, NULL, '2025-06-27 15:27:14.000', NULL, '2025-06-27 15:27:14.000', NULL, NULL);
+/*!40000 ALTER TABLE `acs_model_master` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `acs_robot_hist`
 --
 
@@ -1122,7 +1162,9 @@ CREATE TABLE `acs_robot_master` (
   PRIMARY KEY (`robot_id`,`site_cd`),
   KEY `robot_site_cd_fk` (`site_cd`),
   KEY `robot_map_uuid_fk` (`map_uuid`),
+  KEY `robot_model_fk` (`model_nm`),
   CONSTRAINT `robot_map_uuid_fk` FOREIGN KEY (`map_uuid`) REFERENCES `acs_map_master` (`map_uuid`) ON DELETE SET NULL ON UPDATE CASCADE,
+  CONSTRAINT `robot_model_fk` FOREIGN KEY (`model_nm`) REFERENCES `acs_model_master` (`model_nm`) ON DELETE SET NULL ON UPDATE CASCADE,
   CONSTRAINT `robot_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='robot Master 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
@@ -1222,7 +1264,8 @@ CREATE TABLE `acs_transfer_control` (
   `transfer_id` varchar(255) NOT NULL COMMENT '작업 ID',
   `transfer_tp` varchar(50) DEFAULT NULL COMMENT '작업 타입',
   `assigned_robot_id` varchar(50) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
-  `transfer_st` varchar(20) DEFAULT 'READY' COMMENT '작업 상태',
+  `transfer_status_tx` varchar(20) DEFAULT 'READY' COMMENT '작업 상태',
+  `sub_status_tx` varchar(20) DEFAULT NULL COMMENT '작업 하위 상태',
   `priority_no` int(5) DEFAULT 10 COMMENT '작업 우선 순위',
   `source_port_id` varchar(50) DEFAULT NULL COMMENT '작업 대상 포트 명칭',
   `destination_port_id` varchar(50) DEFAULT NULL COMMENT '최종 목적지 예치 포트 명칭',
@@ -1230,6 +1273,7 @@ CREATE TABLE `acs_transfer_control` (
   `load_end_at` datetime DEFAULT NULL COMMENT '물품 수령 완료 시간',
   `unload_start_at` datetime DEFAULT NULL COMMENT '물품 예치 시작 시간',
   `unload_end_at` datetime DEFAULT NULL COMMENT '물품 예치 완료 시간',
+  `job_complete_at` datetime DEFAULT NULL COMMENT '작업 완료 시간',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -1245,7 +1289,7 @@ CREATE TABLE `acs_transfer_control` (
   KEY `transfer_site_cd_fk` (`site_cd`),
   KEY `transfer_source_port_id_fk` (`source_port_id`),
   KEY `transfer_destination_port_id_fk` (`destination_port_id`),
-  KEY `transfer_st_index` (`transfer_st`,`modify_at`) USING BTREE,
+  KEY `transfer_status_index` (`transfer_status_tx`,`modify_at`) USING BTREE,
   CONSTRAINT `transfer_destination_port_id_fk` FOREIGN KEY (`destination_port_id`) REFERENCES `acs_port_master` (`port_id`),
   CONSTRAINT `transfer_site_cd_fk` FOREIGN KEY (`site_cd`) REFERENCES `acs_site_master` (`site_cd`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `transfer_source_port_id_fk` FOREIGN KEY (`source_port_id`) REFERENCES `acs_port_master` (`port_id`)
@@ -1274,7 +1318,8 @@ CREATE TABLE `acs_transfer_control_hist` (
   `transfer_id` varchar(255) DEFAULT NULL COMMENT '작업 ID',
   `transfer_tp` varchar(50) DEFAULT NULL COMMENT '작업 타입',
   `assigned_robot_id` varchar(50) DEFAULT NULL COMMENT '작업 할당 로봇 ID',
-  `transfer_st` varchar(20) DEFAULT NULL COMMENT '작업 상태',
+  `transfer_status_tx` varchar(20) DEFAULT NULL COMMENT '작업 상태',
+  `sub_status_tx` varchar(20) DEFAULT NULL COMMENT '작업 하위 상태',
   `priority_no` int(5) DEFAULT 10 COMMENT '작업 우선 순위',
   `source_port_id` varchar(50) DEFAULT NULL COMMENT '작업 대상 포트 명칭',
   `destination_port_id` varchar(50) DEFAULT NULL COMMENT '최종 목적지 예치 포트 명칭',
@@ -1282,6 +1327,7 @@ CREATE TABLE `acs_transfer_control_hist` (
   `load_end_at` datetime DEFAULT NULL COMMENT '물품 수령 완료 시간',
   `unload_start_at` datetime DEFAULT NULL COMMENT '물품 예치 시작 시간',
   `unload_end_at` datetime DEFAULT NULL COMMENT '물품 예치 완료 시간',
+  `job_complete_at` datetime DEFAULT NULL COMMENT '작업 완료 시간',
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -1293,7 +1339,8 @@ CREATE TABLE `acs_transfer_control_hist` (
   `modify_at` datetime NOT NULL DEFAULT current_timestamp() COMMENT '수정 시간',
   `trans_tx` varchar(255) DEFAULT NULL COMMENT '관련 트랜잭션 ID',
   `last_event_at` datetime DEFAULT NULL COMMENT '최근 이벤트 발생 시간',
-  PRIMARY KEY (`hist_id`)
+  PRIMARY KEY (`hist_id`),
+  KEY `transfer_status_index` (`transfer_status_tx`,`modify_at`) USING BTREE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci COMMENT='transfer runtime 변경 기록 정보';
 /*!40101 SET character_set_client = @saved_cs_client */;
 

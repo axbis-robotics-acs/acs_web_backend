@@ -20,9 +20,9 @@ export class AlarmService {
     return this.queryRegistryService.select<Alarm>(Alarm, {});
   }
 
-  async findById(area_id: string): Promise<Alarm | null> {
+  async findById(alarm_cd: string): Promise<Alarm | null> {
     const results = await this.queryRegistryService.select<Alarm>(Alarm, {
-      where: { area_id: area_id },
+      where: { alarm_cd: alarm_cd },
     });
     return results.length > 0 ? results[0] : null;
   }
