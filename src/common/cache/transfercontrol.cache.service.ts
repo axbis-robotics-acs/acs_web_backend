@@ -2,17 +2,20 @@ import { Injectable } from '@nestjs/common';
 
 @Injectable()
 export class TransferStateCacheService {
-  private readonly TransferCache = new Map<string, { transfer_st: string }>();
+  private readonly TransferCache = new Map<
+    string,
+    { transfer_status_tx: string }
+  >();
 
-  add(key: string, state: { transfer_st: string }) {
+  add(key: string, state: { transfer_status_tx: string }) {
     this.TransferCache.set(key, state);
   }
 
-  get(key: string): { transfer_st: string } | null {
+  get(key: string): { transfer_status_tx: string } | null {
     return this.TransferCache.get(key) ?? null;
   }
 
-  hasTidValue(state: { transfer_st: string }): boolean {
+  hasTidValue(state: { transfer_status_tx: string }): boolean {
     return Array.from(this.TransferCache.values()).includes(state);
   }
 
@@ -24,7 +27,7 @@ export class TransferStateCacheService {
     }
   }
 
-  entries(): IterableIterator<[string, { transfer_st: string }]> {
+  entries(): IterableIterator<[string, { transfer_status_tx: string }]> {
     return this.TransferCache.entries();
   }
 }

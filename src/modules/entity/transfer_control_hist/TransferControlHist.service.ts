@@ -67,7 +67,7 @@ export class TransferControlHistService {
   }
 
   async searchTasks(
-    transfer_st: string,
+    transfer_status_tx: string,
     site_cd: string,
   ): Promise<TransferControlHist[]> {
     try {
@@ -77,12 +77,12 @@ export class TransferControlHistService {
       const params: any[] = [];
 
       if (
-        transfer_st !== '' &&
-        transfer_st !== null &&
-        transfer_st !== undefined
+        transfer_status_tx !== '' &&
+        transfer_status_tx !== null &&
+        transfer_status_tx !== undefined
       ) {
-        whereClauses.push('transfer_st = ?');
-        params.push(transfer_st);
+        whereClauses.push('transfer_status_tx = ?');
+        params.push(transfer_status_tx);
       }
 
       if (site_cd !== '' && site_cd !== null && site_cd !== undefined) {

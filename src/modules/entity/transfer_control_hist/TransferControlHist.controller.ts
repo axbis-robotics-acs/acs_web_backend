@@ -18,11 +18,11 @@ export class TransferControlHistController {
 
   @Post('search')
   async searchTasks(
-    @Body() transferDto: { transfer_st: string; site_cd: string },
+    @Body() transferDto: { transfer_status_tx: string; site_cd: string },
   ): Promise<any[]> {
     try {
       return this.transfercontrolhistService.searchTasks(
-        transferDto.transfer_st,
+        transferDto.transfer_status_tx,
         transferDto.site_cd,
       );
     } catch (error) {

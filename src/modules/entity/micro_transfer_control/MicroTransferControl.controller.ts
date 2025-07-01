@@ -51,7 +51,7 @@ export class MicroTransferControlController {
 
       if (result) {
         this.microtransferCache.add(microTransferControl.transfer_id, {
-          transfer_st: result.micro_transfer_st,
+          transfer_status_tx: result.micro_transfer_st,
         });
       }
 

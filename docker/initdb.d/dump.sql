@@ -1175,6 +1175,12 @@ CREATE TABLE `acs_robot_master` (
 
 LOCK TABLES `acs_robot_master` WRITE;
 /*!40000 ALTER TABLE `acs_robot_master` DISABLE KEYS */;
+INSERT INTO acs.acs_robot_master
+(robot_id, robot_tp, model_nm, status_tx, transfer_id, location_nm, wait_location_nm, detection_fl, battery_no, charge_rule_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('ROBOT_01', 'LIFT', 'LD_90x', 'idle', '', 'NODE_04', NULL, 0, 100.0, NULL, 123, 0, 'HU', NULL, 'saveComplete', '', NULL, '2025-06-20 12:02:52.000', NULL, '2025-06-30 15:45:55.000', '20250630154519091', '2025-06-30 15:45:55.000');
+INSERT INTO acs.acs_robot_master
+(robot_id, robot_tp, model_nm, status_tx, transfer_id, location_nm, wait_location_nm, detection_fl, battery_no, charge_rule_id, map_uuid, usable_fl, site_cd, description_tx, prev_activity_tx, activity_tx, creator_by, create_at, modifier_by, modify_at, trans_tx, last_event_at)
+VALUES('ROBOT_02', 'LIFT', 'MD_250', 'idle', '', 'NODE_03', NULL, 0, 100.0, NULL, 123, 0, 'HU', NULL, 'TaskService', '', NULL, '2025-06-27 15:54:43.000', 'ROBOT_02', '2025-07-01 09:44:51.000', '20250701094451424', '2025-07-01 09:44:51.000');
 /*!40000 ALTER TABLE `acs_robot_master` ENABLE KEYS */;
 UNLOCK TABLES;
 

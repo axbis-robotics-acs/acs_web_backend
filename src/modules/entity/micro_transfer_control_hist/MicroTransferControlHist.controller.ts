@@ -53,7 +53,7 @@ export class MicroTransferControlHistHistController {
 
       if (result) {
         this.microtransferCache.add(MicroTransferControlHist.transfer_id, {
-          transfer_st: result.micro_transfer_st,
+          transfer_status_tx: result.micro_transfer_st,
         });
       }
 

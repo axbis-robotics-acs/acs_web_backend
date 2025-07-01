@@ -22,7 +22,7 @@ export class TransferControlHist {
   assigned_robot_id: string;
 
   @Column({ type: 'varchar', length: 20, nullable: true })
-  transfer_status_tx: string;
+  transfer_status_txatus_tx: string;
 
   @Column({ type: 'varchar', length: 20, nullable: true })
   sub_status_tx: string;

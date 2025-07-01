@@ -53,7 +53,7 @@ export class TransferControlController {
         },
         dataSet: {
           transferId: transferControl.transfer_id,
-          transferSt: transferControl.transfer_st ?? 'READY',
+          transferSt: transferControl.transfer_status_tx ?? 'READY',
           transferPriority: transferControl.priority_no ?? '',
           transferRobot: transferControl.assigned_robot_id ?? '',
           transferSource: transferControl.source_port_id ?? '',
@@ -75,11 +75,11 @@ export class TransferControlController {
 
   @Post('search')
   async searchTasks(
-    @Body() transferDto: { transfer_st: string; site_cd: string },
+    @Body() transferDto: { transfer_status_tx: string; site_cd: string },
   ): Promise<any[]> {
     try {
       return this.transfercontrolService.searchTasks(
-        transferDto.transfer_st,
+        transferDto.transfer_status_tx,
         transferDto.site_cd,
       );
     } catch (error) {

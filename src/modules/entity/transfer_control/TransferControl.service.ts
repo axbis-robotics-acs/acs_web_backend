@@ -101,14 +101,14 @@ export class TransferControlService {
   }
 
   async searchTasks(
-    transfer_st: string,
+    transfer_status_tx: string,
     site_cd: string,
   ): Promise<TransferControl[]> {
     try {
-      console.log(transfer_st, site_cd);
+      console.log(transfer_status_tx, site_cd);
       return this.queryRegistryService.select<TransferControl>(
         TransferControl,
-        { transfer_st: transfer_st, site_cd: site_cd },
+        { transfer_status_tx: transfer_status_tx, site_cd: site_cd },
       );
     } catch (error) {
       console.error(
