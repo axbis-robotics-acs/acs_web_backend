@@ -27,6 +27,12 @@ export class TransferControlHist {
   @Column({ type: 'varchar', length: 20, nullable: true })
   sub_status_tx: string;
 
+  @Column({ type: 'int', width: 5, default: 10 })
+  priority_no: number;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  carrier_id: string;
+
   @Column({ type: 'varchar', length: 50, nullable: true })
   source_port_id: string;
 

@@ -28,6 +28,9 @@ export class TransferControl {
   priority_no: number;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
+  carrier_id: string;
+
+  @Column({ type: 'varchar', length: 50, nullable: true })
   source_port_id: string;
 
   @Column({ type: 'varchar', length: 50, nullable: true })
