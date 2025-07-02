@@ -6,7 +6,7 @@ import { MqttPublishService } from './mqtt.publisher.service';
 export class MqttController {
   constructor(private readonly mqttPublisher: MqttPublishService) {}
 
-  @Post('publish')
+  @Post('omron/publish')
   publishMessage(@Body() body: { topic: string; message: string }) {
     // Publish logic here
     console.log('Publishing to topic:', body.topic);
@@ -16,6 +16,19 @@ export class MqttController {
     };
 
     this.mqttPublisher.publishOmron(body.topic, message, 0);
+    return { success: true };
+  }
+
+  @Post('internal/publish')
+  publishInternalMessage(@Body() body: { topic: string; message: string }) {
+    // Publish logic here
+    console.log('Publishing to topic:', body.topic);
+    console.log('Publishing message:', body.message);
+    const message = {
+      command: body.message,
+    };
+
+    this.mqttPublisher.publishInternal(body.topic, message, 0);
     return { success: true };
   }
 }

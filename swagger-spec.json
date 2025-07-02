@@ -588,9 +588,23 @@
         ]
       }
     },
-    "/mqtt/publish": {
+    "/mqtt/omron/publish": {
       "post": {
         "operationId": "MqttController_publishMessage",
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "Mqtt"
+        ]
+      }
+    },
+    "/mqtt/internal/publish": {
+      "post": {
+        "operationId": "MqttController_publishInternalMessage",
         "parameters": [],
         "responses": {
           "201": {

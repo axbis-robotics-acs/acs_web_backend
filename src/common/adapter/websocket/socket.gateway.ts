@@ -6,12 +6,12 @@ import { Server } from 'socket.io';
     origin: '*', // CORS 설정 필요시 추가
   },
 })
-export class PositionGateway {
+export class SocketGateway {
   @WebSocketServer()
   server: Server;
 
-  broadcastPositionChange(positionData: any) {
-    console.log('[PositionGateway] Broadcasting positionChange', positionData);
-    this.server.emit('positionChange', positionData);
+  broadcastSocketEvent(topic: string, requestData: any) {
+    console.log('[SocketGateway] Broadcasting socket event', requestData);
+    this.server.emit(topic, requestData);
   }
 }

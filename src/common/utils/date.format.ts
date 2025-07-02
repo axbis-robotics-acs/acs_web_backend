@@ -54,3 +54,7 @@ export function generateTimestampId(): number {
   const precise = Math.floor((performance.now() % 1) * 1000); // 소수점 이하 ms → 0~999
   return Number(`${base}${precise.toString().padStart(3, '0')}`); // 최대 16자리
 }
+
+export function toCamelCase(str: string): string {
+  return str.toLowerCase().replace(/[_\-/](\w)/g, (_, c) => c.toUpperCase());
+}

@@ -31,7 +31,7 @@ USE acs;
 
 DROP TABLE IF EXISTS `acs_site_master`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
-/*!50503 SET character_set_client = utf8mb4 */;
+/*!50503 SET character_set_client = utf8mb4 */; 
 CREATE TABLE `acs_site_master` (
   `site_cd` varchar(50) NOT NULL COMMENT '사이트 고유 코드',
   `site_nm` varchar(255) NOT NULL COMMENT '사이트 명칭',

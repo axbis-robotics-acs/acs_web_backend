@@ -7,9 +7,10 @@ import { MqttClientService } from './mqtt.client.service';
 import { MqttController } from './mqtt.controller';
 import { HandlerModule } from 'src/common/handler/handler.module';
 import { ElasticModule } from '../elk/elastic.module';
+import { WebSocketModule } from '../websocket/socket.module';
 
 @Module({
-  imports: [CacheModule, HandlerModule, ElasticModule],
+  imports: [CacheModule, HandlerModule, ElasticModule, WebSocketModule],
   providers: [
     MqttSecuritySubService,
     MqttInternalSubService,
