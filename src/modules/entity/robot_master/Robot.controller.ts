@@ -13,4 +13,8 @@ export class RobotController {
     return this.robotService.findAll();
   }
 
+  @Get('monitoring/count')
+  async findMonitoringCount(): Promise<number> {
+    return this.robotService.findRobotMonitoringSummary();
+  }
 }

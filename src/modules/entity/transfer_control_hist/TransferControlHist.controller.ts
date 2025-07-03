@@ -16,6 +16,11 @@ export class TransferControlHistController {
     return this.transfercontrolhistService.findAll();
   }
 
+  @Get('monitoring/count')
+  async findMonitoringCount(): Promise<number> {
+    return this.transfercontrolhistService.findMonitoringSummary();
+  }
+
   @Post('search')
   async searchTasks(
     @Body() transferDto: { transfer_status_tx: string; site_cd: string },

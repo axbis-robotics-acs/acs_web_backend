@@ -9,8 +9,8 @@ export class SocketController {
   handleGenericEvent(event: string, message: any) {
     const dataSet = message?.dataSet || {};
     const header = message?.header || {};
-    const robotId = header?.requestId || 'UNKNOWN';
-    const siteId = header?.siteId;
+    const robotId = message?.requestId || 'UNKNOWN';
+    const siteId = message?.siteId;
     const eventType = toCamelCase(event);
 
     let payload: any;

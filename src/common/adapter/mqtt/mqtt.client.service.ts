@@ -52,7 +52,7 @@ export class MqttClientService implements OnModuleInit {
     const topics = [
       'web/response',
       'web/backend/connection/response',
-      'web/backend/positionchange',
+      'web/backend/event/#',
     ];
     this.internalSubscriberClient.subscribe(topics);
   }

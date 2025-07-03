@@ -454,6 +454,20 @@
         ]
       }
     },
+    "/robot/monitoring/count": {
+      "get": {
+        "operationId": "RobotController_findMonitoringCount",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "robot"
+        ]
+      }
+    },
     "/role": {
       "get": {
         "operationId": "RoleController_findAll",
@@ -629,6 +643,20 @@
     "/transfercontrolhist": {
       "get": {
         "operationId": "TransferControlHistController_findAll",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrolhist"
+        ]
+      }
+    },
+    "/transfercontrolhist/monitoring/count": {
+      "get": {
+        "operationId": "TransferControlHistController_findMonitoringCount",
         "parameters": [],
         "responses": {
           "200": {

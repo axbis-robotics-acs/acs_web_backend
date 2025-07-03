@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { Robot } from './Robot.entity';
 import {
   QueryRegistry,
@@ -13,11 +13,38 @@ export class RobotService {
   constructor(
     @InjectRepository(Robot)
     private readonly robotRepository: Repository<Robot>,
+    private readonly dataSource: DataSource,
     private readonly queryRegistryService: QueryRegistry,
   ) {}
 
   async findAll(): Promise<Robot[]> {
     return this.queryRegistryService.select<Robot>(Robot, {});
+  }
+
+  async findRobotMonitoringSummary(): Promise<any> {
+    const result = await this.dataSource.query(`
+      SELECT
+        COUNT(*) AS total_robot_count,
+        SUM(CASE WHEN status_tx  IN ('allocated','running', 'loading', 'unloading','waiting','blocking') THEN 1 ELSE 0 END) AS working_robot_count,
+        SUM(CASE WHEN status_tx  IN ('IDLE') THEN 1 ELSE 0 END) AS idle_robot_count,
+        SUM(CASE WHEN status_tx  = 'CHARGING' THEN 1 ELSE 0 END) AS charging_robot_count
+      FROM
+        acs_robot_master;
+    `);
+
+    const summary = result[0] || {
+      total_robot_count: 0,
+      working_robot_count: 0,
+      idle_robot_count: 0,
+      charging_robot_count: 0,
+    };
+
+    return {
+      total: Number(summary.total_robot_count),
+      working: Number(summary.working_robot_count),
+      idle: Number(summary.idle_robot_count),
+      charging: Number(summary.charging_robot_count),
+    };
   }
 
   async selectOne<K extends keyof Robot>(

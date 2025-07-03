@@ -24,6 +24,14 @@ export class TransferControlService {
     );
   }
 
+  async findMonitoringCount(): Promise<number> {
+    const results = await this.queryRegistryService.select<TransferControl>(
+      TransferControl,
+      {},
+    );
+    return results.length;
+  }
+
   async selectOne<K extends keyof TransferControl>(
     where: Pick<TransferControl, K>,
   ): Promise<TransferControl | null> {

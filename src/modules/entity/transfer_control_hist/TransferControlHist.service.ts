@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { Repository, DataSource } from 'typeorm';
 import { TransferControlHist } from './TransferControlHist.entity';
 import {
   QueryRegistry,
@@ -14,6 +14,7 @@ export class TransferControlHistService {
   constructor(
     @InjectRepository(TransferControlHist)
     private readonly transfercontrolhistRepository: Repository<TransferControlHist>,
+    private readonly dataSource: DataSource,  
     private readonly queryRegistryService: QueryRegistry,
   ) {}
 
@@ -22,6 +23,53 @@ export class TransferControlHistService {
       TransferControlHist,
       {},
     );
+  }
+
+  async findMonitoringSummary(): Promise<any> {
+    const result = await this.dataSource.query(`
+    WITH latest_status AS (
+      SELECT
+        h1.transfer_id,
+        h1.transfer_status_tx,
+        h1.modify_at
+      FROM
+        acs_transfer_control_hist h1
+      INNER JOIN (
+        SELECT
+          transfer_id,
+          MAX(modify_at) AS max_modify_at
+        FROM
+          acs_transfer_control_hist
+        WHERE
+          DATE(modify_at) = CURDATE()
+        GROUP BY
+          transfer_id
+      ) h2
+      ON h1.transfer_id = h2.transfer_id AND h1.modify_at = h2.max_modify_at
+    )
+    SELECT
+      COUNT(*) AS total_task_count,
+      SUM(CASE WHEN transfer_status_tx IN ('READY', 'QUEUED', 'TRANSFERRING') THEN 1 ELSE 0 END) AS running_task_count,
+      SUM(CASE WHEN transfer_status_tx = 'completed' THEN 1 ELSE 0 END) AS completed_task_count,
+      SUM(CASE WHEN transfer_status_tx IN ('canceled', 'aborted') THEN 1 ELSE 0 END) AS canceled_task_count
+    FROM
+      latest_status
+  `);
+
+    const summary = result[0] || {
+      total_task_count: 0,
+      running_task_count: 0,
+      completed_task_count: 0,
+      canceled_task_count: 0,
+    };
+
+    // 숫자형으로 변환
+    return {
+      total: Number(summary.total_task_count),
+      running: Number(summary.running_task_count),
+      completed: Number(summary.completed_task_count),
+      canceled: Number(summary.canceled_task_count),
+    };
   }
 
   async selectOne<K extends keyof TransferControlHist>(
