@@ -556,10 +556,17 @@
         "parameters": [],
         "requestBody": {
           "required": true,
+          "description": "Create a new transfer control",
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/TransferControl"
+                "example": {
+                  "priority_no": 10,
+                  "assigned_robot_id": "",
+                  "source_port_id": "P1-1",
+                  "destination_port_id": "P1-2",
+                  "site_cd": "HU"
+                }
               }
             }
           }
@@ -768,10 +775,6 @@
         "properties": {}
       },
       "MicroTransferControlHist": {
-        "type": "object",
-        "properties": {}
-      },
-      "TransferControl": {
         "type": "object",
         "properties": {}
       }

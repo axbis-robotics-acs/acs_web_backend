@@ -1,7 +1,7 @@
 import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
 import { TransferControlService } from './TransferControl.service';
 import { TransferControl } from './TransferControl.entity';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { getFormattedTimestampTID } from 'src/common/utils/date.format';
 import { TransferStateCacheService } from 'src/common/cache/transfercontrol.cache.service';
 import { MqttPublishService } from 'src/common/adapter/mqtt/mqtt.publisher.service';
@@ -25,9 +25,23 @@ export class TransferControlController {
   }
 
   @Post()
+  @ApiBody({
+    description: 'Create a new transfer control',
+    required: true,
+    schema: {
+      example: {
+        priority_no: 10,
+        assigned_robot_id: '',
+        source_port_id: 'P1-1',
+        destination_port_id: 'P1-2',
+        site_cd: 'HU',
+      },
+    },
+  })
   async create(
     @Body() transferControl: TransferControl,
   ): Promise<string | TransferControl> {
+    console.log('Received transfer control:', transferControl);
     try {
       for (const key in transferControl) {
         if (transferControl[key] === undefined || transferControl[key] === '') {
