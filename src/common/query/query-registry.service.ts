@@ -101,6 +101,7 @@ export class QueryRegistry {
     data: DeepPartial<T>,
     hist: boolean,
   ): Promise<T> {
+    console.log('create', entity, data, hist);
     const result = await this.em.getRepository(entity).save(data);
     if (hist) {
       await this.tryInsertHist(entity, {
