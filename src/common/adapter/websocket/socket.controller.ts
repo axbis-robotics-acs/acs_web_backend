@@ -9,8 +9,8 @@ export class SocketController {
   handleGenericEvent(event: string, message: any) {
     const dataSet = message?.dataSet || {};
     const header = message?.header || {};
-    const robotId = message?.requestId || 'UNKNOWN';
-    const siteId = message?.siteId;
+    const robotId = dataSet?.robotId || 'UNKNOWN';
+    const siteId = dataSet?.siteId;
     const eventType = toCamelCase(event);
 
     let payload: any;
@@ -21,18 +21,25 @@ export class SocketController {
           robotId,
           x: dataSet?.x,
           y: dataSet?.y,
-          theta: dataSet?.deg,
+          theta: dataSet?.theta,
           siteId,
         };
         break;
       case 'stateChange':
-        payload = { robotId, state: dataSet?.state, siteId };
+        payload = {
+          robotId,
+          robotModel: dataSet?.robotModel,
+          robotState: dataSet?.state,
+          goalPort: dataSet?.goalPort,
+          carrierId: dataSet?.carrierId,
+          transferId: dataSet?.transferId,
+          siteId,
+        };
         break;
       case 'locationChange':
         payload = {
           robotId,
-          last_node: dataSet?.last_node,
-          goal_node: dataSet?.goal_node,
+          currentLocation: dataSet?.currentLocation,
           siteId,
         };
         break;

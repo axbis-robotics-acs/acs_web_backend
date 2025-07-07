@@ -32,7 +32,7 @@ export class TransferControlController {
       example: {
         transfer_id: '',
         transfer_status_tx: 'READY',
-        transfer_tp: 'TRANSFER',
+        transfer_type: 'TRANSFER',
         priority_no: 10,
         assigned_robot_id: '',
         source_port_id: 'P1-1',
@@ -84,7 +84,7 @@ export class TransferControlController {
       //   dataSet: {
       //     transferId: transferControl.transfer_id ?? transactionId,
       //     transferSt: transferControl.transfer_status_tx ?? 'READY',
-      //     transferTp: transferControl.transfer_tp ?? 'TRANSFER',
+      //     transferType: transferControl.transfer_tp ?? 'TRANSFER',
       //     transferPriority: transferControl.priority_no ?? '',
       //     transferRobot: transferControl.assigned_robot_id ?? '',
       //     transferSource: transferControl.source_port_id ?? '',
