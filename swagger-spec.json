@@ -577,7 +577,7 @@
                 "example": {
                   "transfer_id": "",
                   "transfer_status_tx": "READY",
-                  "transfer_tp": "TRANSFER",
+                  "transfer_type": "TRANSFER",
                   "priority_no": 10,
                   "assigned_robot_id": "",
                   "source_port_id": "P1-1",

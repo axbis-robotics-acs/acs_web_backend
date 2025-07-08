@@ -29,7 +29,7 @@ export class SocketController {
         payload = {
           robotId,
           robotModel: dataSet?.robotModel,
-          robotState: dataSet?.state,
+          robotState: dataSet?.robotState,
           goalPort: dataSet?.goalPort,
           carrierId: dataSet?.carrierId,
           transferId: dataSet?.transferId,
