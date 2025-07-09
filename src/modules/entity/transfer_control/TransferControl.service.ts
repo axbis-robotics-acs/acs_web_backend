@@ -109,14 +109,25 @@ export class TransferControlService {
   }
 
   async searchTasks(
+    transfer_id: string,
+    transfer_tp: string,
+    transfer_source_port: string,
+    transfer_dest_port: string,
     transfer_status_tx: string,
     site_cd: string,
   ): Promise<TransferControl[]> {
     try {
-      console.log(transfer_status_tx, site_cd);
+      console.log(transfer_tp);
       return this.queryRegistryService.select<TransferControl>(
         TransferControl,
-        { transfer_status_tx: transfer_status_tx, site_cd: site_cd },
+        {
+          transfer_id: transfer_id,
+          transfer_tp: transfer_tp,
+          source_port_id: transfer_source_port,
+          destination_port_id: transfer_dest_port,
+          transfer_status_tx: transfer_status_tx,
+          site_cd: site_cd,
+        },
       );
     } catch (error) {
       console.error(

@@ -426,6 +426,58 @@
         ]
       }
     },
+    "/port/source": {
+      "get": {
+        "description": "site_cd를 기준으로 LOAD, BOTH 타입의 포트 목록을 조회합니다.",
+        "operationId": "PortController_getSourcePorts",
+        "parameters": [
+          {
+            "name": "site_cd",
+            "required": true,
+            "in": "query",
+            "description": "Site 코드 (예: HU)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Source Port 목록 조회",
+        "tags": [
+          "port"
+        ]
+      }
+    },
+    "/port/destination": {
+      "get": {
+        "description": "site_cd를 기준으로 UNLOAD, BOTH 타입의 포트 목록을 조회합니다.",
+        "operationId": "PortController_getDestinationPorts",
+        "parameters": [
+          {
+            "name": "site_cd",
+            "required": true,
+            "in": "query",
+            "description": "Site 코드 (예: HU)",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "summary": "Destination Port 목록 조회",
+        "tags": [
+          "port"
+        ]
+      }
+    },
     "/robothist": {
       "get": {
         "operationId": "RobotHistController_findAll",
@@ -602,6 +654,24 @@
       "post": {
         "operationId": "TransferControlController_searchTasks",
         "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Search tasks based on transfer status and Login LocalStorage Keeping site code",
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": {
+                  "transfer_id": "",
+                  "transfer_type": "TRANSFER",
+                  "transfer_source_port": "P1-1",
+                  "transfer_dest_port": "P1-2",
+                  "transfer_status_tx": "READY",
+                  "site_cd": "HU"
+                }
+              }
+            }
+          }
+        },
         "responses": {
           "201": {
             "description": ""

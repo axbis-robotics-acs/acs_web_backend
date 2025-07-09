@@ -43,4 +43,19 @@ export class PortService {
   ): Promise<DeleteResult> {
     return this.queryRegistryService.delete<Port>(Port, where, true);
   }
+
+  async getSourcePorts(site_cd: string): Promise<Port[]> {
+    var result = this.queryRegistryService.select<Port>(Port, {
+      site_cd: site_cd,
+      port_tp: ['LOAD', 'BOTH'], // 아래에서 처리
+    });
+    return result;
+  }
+
+  async getDestinationPorts(site_cd: string): Promise<Port[]> {
+    return this.queryRegistryService.select<Port>(Port, {
+      site_cd: site_cd,
+      port_tp: ['UNLOAD', 'BOTH'], // 아래에서 처리
+    });
+  }
 }

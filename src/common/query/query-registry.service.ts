@@ -72,17 +72,23 @@ export class QueryRegistry {
 
     let index = 0;
     for (const [field, value] of Object.entries(conditions)) {
-      if (
-        value === '' ||
-        value === '' ||
-        value === undefined ||
-        value === null
-      ) {
+      if (value === '' || value === undefined || value === null) {
         continue; // 빈 문자열, undefined, null은 조건에서 제외
       }
 
       const paramName = `param${index++}`;
-      qb.andWhere(`${alias}.${field} = :${paramName}`, { [paramName]: value });
+
+      if (Array.isArray(value)) {
+        // ✅ 배열이면 IN 조건으로 처리
+        qb.andWhere(`${alias}.${field} IN (:...${paramName})`, {
+          [paramName]: value,
+        });
+      } else {
+        // ✅ 단일 값이면 기존대로 =
+        qb.andWhere(`${alias}.${field} = :${paramName}`, {
+          [paramName]: value,
+        });
+      }
     }
 
     return qb.getMany();

@@ -65,9 +65,9 @@ export class TransferControlController {
       transferControl.priority_no = transferControl.priority_no ?? 10;
       transferControl.assigned_robot_id =
         transferControl.assigned_robot_id ?? '';
-      transferControl.source_port_id = transferControl.source_port_id ?? '';
+      transferControl.source_port_id = transferControl.source_port_id ?? null;
       transferControl.destination_port_id =
-        transferControl.destination_port_id ?? '';
+        transferControl.destination_port_id ?? ''; // 에러처리용 ( 빈 값 )
 
       const result = await this.transfercontrolService.create(transferControl);
 
@@ -107,11 +107,39 @@ export class TransferControlController {
   }
 
   @Post('search')
+  @ApiBody({
+    description:
+      'Search tasks based on transfer status and Login LocalStorage Keeping site code',
+    required: true,
+    schema: {
+      example: {
+        transfer_id: '',
+        transfer_type: 'TRANSFER',
+        transfer_source_port: 'P1-1',
+        transfer_dest_port: 'P1-2',
+        transfer_status_tx: 'READY',
+        site_cd: 'HU',
+      },
+    },
+  })
   async searchTasks(
-    @Body() transferDto: { transfer_status_tx: string; site_cd: string },
+    @Body()
+    transferDto: {
+      transfer_id: string;
+      transfer_tp: string;
+      transfer_source_port: string;
+      transfer_dest_port: string;
+      transfer_status_tx: string;
+      site_cd: string;
+    },
   ): Promise<any[]> {
+    console.log('Received search request:', transferDto);
     try {
       return this.transfercontrolService.searchTasks(
+        transferDto.transfer_id,
+        transferDto.transfer_tp,
+        transferDto.transfer_source_port,
+        transferDto.transfer_dest_port,
         transferDto.transfer_status_tx,
         transferDto.site_cd,
       );
