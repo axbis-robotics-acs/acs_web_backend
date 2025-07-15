@@ -23,7 +23,6 @@ export class MicroTransferControlHistHistController {
   async create(
     @Body() MicroTransferControlHist: MicroTransferControlHist,
   ): Promise<MicroTransferControlHist> {
-    try {
       for (const key in MicroTransferControlHist) {
         if (
           MicroTransferControlHist[key] === undefined ||
@@ -58,12 +57,6 @@ export class MicroTransferControlHistHistController {
       }
 
       return createresult;
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while creating transfer control',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
     }
   }
 
@@ -71,17 +64,9 @@ export class MicroTransferControlHistHistController {
   async searchTasks(
     @Body() transferDto: { transfer_st: string; site_cd: string },
   ): Promise<any[]> {
-    try {
       return this.MicroTransferControlHistService.searchTasks(
         transferDto.transfer_st,
         transferDto.site_cd,
       );
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while searching tasks',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
   }
 }
