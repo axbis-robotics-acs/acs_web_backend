@@ -46,9 +46,14 @@ export class UserService {
   }
 
   // ✅ 사용자 검증 (로그인)
-  async validateUser(account_id: string, password: string): Promise<boolean> {
+  async validateUser(
+    account_id: string,
+    password: string,
+    site_cd: string,
+  ): Promise<boolean> {
     const user = await this.queryRegistryService.selectOne<User>(User, {
       account_id,
+      site_cd,
     });
 
     if (user && (await bcrypt.compare(password, user.password_tx))) {

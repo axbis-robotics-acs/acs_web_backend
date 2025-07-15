@@ -1,7 +1,8 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { MenuService } from './Menu.service';
 import { Menu } from './Menu.entity';
 import { ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 @ApiTags('menu')
 @Controller('menu')
@@ -9,7 +10,8 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Get()
-  async findAll(): Promise<Menu[]> {
+  async findAll(@Req() req: Request): Promise<Menu[]> {
+    const user = req.session.user; // 세션에 저장된 사용자 정보
     return this.menuService.findAll();
   }
 

@@ -8,5 +8,6 @@ import { ConstController } from './Const.controller';
   imports: [TypeOrmModule.forFeature([Const])],
   providers: [ConstService],
   controllers: [ConstController],
+  exports: [ConstService],
 })
 export class ConstModule {}

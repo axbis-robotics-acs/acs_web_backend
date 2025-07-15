@@ -9,7 +9,7 @@ import { ApiDefault } from 'src/common/decorators/swggerAPIDecorators';
 export class LangController {
   constructor(private readonly langService: LangService) {}
 
-  @Post('getAll')
+  @Post('login_getAll')
   @ApiDefault({
     summary: '다국어 조회',
     params: [],

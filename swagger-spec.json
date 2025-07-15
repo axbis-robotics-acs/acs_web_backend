@@ -155,7 +155,7 @@
         ]
       }
     },
-    "/lang/getAll": {
+    "/lang/login_getAll": {
       "post": {
         "operationId": "LangController_getAll",
         "parameters": [],
@@ -590,15 +590,26 @@
         ]
       }
     },
-    "/site": {
-      "get": {
-        "operationId": "SiteController_findAll",
+    "/site/login_getAll": {
+      "post": {
+        "operationId": "SiteController_getAll",
         "parameters": [],
         "responses": {
           "200": {
-            "description": ""
+            "description": "성공",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Site"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "잘못된 요청"
           }
         },
+        "summary": "다국어 조회",
         "tags": [
           "site"
         ]
@@ -876,6 +887,10 @@
         "properties": {}
       },
       "MicroTransferControlHist": {
+        "type": "object",
+        "properties": {}
+      },
+      "Site": {
         "type": "object",
         "properties": {}
       }

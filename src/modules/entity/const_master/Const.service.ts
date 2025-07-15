@@ -48,4 +48,12 @@ export class ConstService {
   ): Promise<DeleteResult> {
     return this.queryRegistryService.delete<Const>(Const, where, true);
   }
+
+  async getValueByCode(code: string, site_cd: string): Promise<string | null> {
+    const result = await this.selectOne({
+      constant_cd: code,
+      site_cd: site_cd,
+    });
+    return result ? result.constant_val : null;
+  }
 }

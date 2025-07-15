@@ -2,12 +2,15 @@ import {
   Controller,
   Post,
   Body,
+  Req,
   HttpException,
   HttpStatus,
 } from '@nestjs/common';
-import { UserService } from './User.service';
+import { Request } from 'express';
 import { ApiTags } from '@nestjs/swagger';
+import { UserService } from './User.service';
 import { LoginHistService } from '../login_hist/LoginHist.service';
+import { ConstService } from '../const_master/Const.service';
 import { generateTimestampId } from 'src/common/utils/date.format';
 import {
   CommonCriteria,
@@ -20,18 +23,33 @@ export class UserController {
   constructor(
     private readonly userService: UserService,
     private readonly loginHistService: LoginHistService,
+    private readonly constService: ConstService,
   ) {}
 
   @Post('login')
-  async login(@Body() loginDto: { account_id: string; password: string }) {
-    const { account_id, password } = loginDto;
-    const isValid = await this.userService.validateUser(account_id, password);
+  async login(
+    @Req() req: Request,
+    @Body()
+    loginDto: {
+      account_id: string;
+      password: string;
+      site_cd: string;
+      lang_cd: string;
+    },
+  ) {
+    const { account_id, password, site_cd } = loginDto;
+    const isValid = await this.userService.validateUser(
+      account_id,
+      password,
+      site_cd,
+    );
     const userInfo = await this.userService.selectOne({
       account_id,
+      site_cd,
     });
     if (isValid && userInfo) {
       const criteria = CommonCriteriaHistInput.build(
-        userInfo.site_cd,
+        site_cd,
         'Login Successful',
         'Login',
         'system',
@@ -45,8 +63,25 @@ export class UserController {
         ...(criteria as Required<CommonCriteria>), // 👈 해결 포인트
       };
 
+      const sessionTimeoutStr = await this.constService.getValueByCode(
+        'SESSION_TIMEOUT',
+        site_cd,
+      );
+      const timeoutMin = Number(sessionTimeoutStr) || 60;
+
+      req.session.user = {
+        ...userInfo,
+      };
+
+      req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
+
       await this.loginHistService.create(loginHist);
-      return { message: 'Login successful', status: 'ok' };
+      return {
+        message: 'Login successful',
+        status: 200,
+        session_id: req.sessionID, // 세션 ID 반환
+        expiresAt: req.session.cookie.maxAge,
+      };
     } else {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);
     }

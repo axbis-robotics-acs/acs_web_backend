@@ -1,11 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as express from 'express';
-import { join } from 'path';
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 import { AllExceptionsFilter } from './common/filter/custom.filter';
 import { writeFileSync } from 'fs';
 import * as dotenv from 'dotenv';
+import * as session from 'express-session';
+import { SessionIdInterceptor } from './common/interceptor/SessionInterceptor';
 
 dotenv.config();
 
@@ -16,13 +16,27 @@ async function bootstrap() {
   app.enableCors({
     origin: 'http://localhost:3000', // 프론트엔드 주소
     credentials: true,
-    methods: 'GET,POST,PUT,DELETE',
-    allowedHeaders: 'Content-Type, Authorization',
+    methods: 'GET,POST,PUT,DELETE,OPTIONS',
+    allowedHeaders: 'Content-Type, Authorization, session_id',
   });
 
   // ✅ 정적 파일 제공 (변환된 glTF 파일 접근 가능)
-  app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
+  // app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
   app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new SessionIdInterceptor());
+
+  app.use(
+    session({
+      secret: process.env.SESSION_SECRET || 'default_secret',
+      resave: false,
+      saveUninitialized: false,
+      rolling: true, // 세션 갱신
+      cookie: {
+        maxAge: 1000 * 60 * 60, // 1시간
+        httpOnly: true,
+      },
+    }),
+  );
 
   // ✅ Swagger 설정
   const config = new DocumentBuilder()
