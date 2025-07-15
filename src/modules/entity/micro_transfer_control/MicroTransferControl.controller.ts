@@ -23,7 +23,6 @@ export class MicroTransferControlController {
   async create(
     @Body() microTransferControl: MicroTransferControl,
   ): Promise<MicroTransferControl> {
-    try {
       for (const key in microTransferControl) {
         if (
           microTransferControl[key] === undefined ||
@@ -56,30 +55,16 @@ export class MicroTransferControlController {
       }
 
       return createresult;
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while creating transfer control',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
+    
   }
 
   @Post('search')
   async searchTasks(
     @Body() transferDto: { transfer_st: string; site_cd: string },
   ): Promise<any[]> {
-    try {
       return this.microtransfercontrolService.searchTasks(
         transferDto.transfer_st,
         transferDto.site_cd,
       );
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while searching tasks',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
   }
 }

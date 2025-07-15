@@ -38,29 +38,19 @@ export class MicroTransferControlService {
   async create(
     MicrotransferControl: MicroTransferControl,
   ): Promise<MicroTransferControl> {
-    try {
       const result =
         await this.queryRegistryService.create<MicroTransferControl>(
           MicroTransferControl,
           MicrotransferControl,
           true,
         );
-      console.log('저장 결과:', result);
       return result;
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while creating transfer control',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
   }
 
   async update<K extends keyof MicroTransferControl>(
     where: Pick<MicroTransferControl, K>,
     MicrotransferControlData: MicroTransferControl,
   ): Promise<UpdateResult> {
-    try {
       const result =
         await this.queryRegistryService.update<MicroTransferControl>(
           MicroTransferControl,
@@ -68,36 +58,19 @@ export class MicroTransferControlService {
           MicrotransferControlData,
           true,
         );
-      console.log('업데이트 결과:', result);
       return result;
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while updating transfer control',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
   }
 
   async delete<K extends keyof MicroTransferControl>(
     where: Pick<MicroTransferControl, K>,
   ): Promise<DeleteResult> {
-    try {
       const result =
         await this.queryRegistryService.delete<MicroTransferControl>(
           MicroTransferControl,
           where,
           true,
         );
-      console.log('삭제 결과:', result);
       return result;
-    } catch (error) {
-      throw new BaseException({
-        message: 'Error occurred while deleting transfer control',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
   }
 
   async findByTransferid(transfer_id: string): Promise<MicroTransferControl[]> {
@@ -113,22 +86,10 @@ export class MicroTransferControlService {
     transfer_st: string,
     site_cd: string,
   ): Promise<MicroTransferControl[]> {
-    try {
       console.log(transfer_st, site_cd);
       return this.queryRegistryService.select<MicroTransferControl>(
         MicroTransferControl,
         { transfer_st: transfer_st, site_cd: site_cd },
       );
-    } catch (error) {
-      console.error(
-        'Error occurred while processing search conditions:',
-        error,
-      );
-      throw new BaseException({
-        message: 'Error occurred while processing search conditions',
-        statusCode: 500,
-        debugMessage: error.message,
-      });
-    }
   }
 }
