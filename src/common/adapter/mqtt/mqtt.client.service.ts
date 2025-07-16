@@ -46,7 +46,6 @@ export class MqttClientService implements OnModuleInit {
     );
     this.setupEvents(this.internalSubscriberClient, 'internal-sub');
     this.internalSubscriberClient.on('message', (topic, payload) => {
-      // TODO: 메시지 처리
       this.internalSubService.handleMessage(topic, payload);
     });
     const topics = [
@@ -66,7 +65,6 @@ export class MqttClientService implements OnModuleInit {
     this.omronSubscriberClient = connect(mqttsUrl, mqttOmronSubscribeOptions);
     this.setupEvents(this.omronSubscriberClient, 'omron-sub');
     this.omronSubscriberClient.on('message', (topic, payload) => {
-      // TODO: 메시지 처리
       this.omronSubService.handleMessage(topic, payload);
     });
     this.omronSubscriberClient.subscribe('itk/#');

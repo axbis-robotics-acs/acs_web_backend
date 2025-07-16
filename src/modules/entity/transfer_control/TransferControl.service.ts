@@ -48,6 +48,7 @@ export class TransferControlService {
       transferControl,
       true,
     );
+
     return result;
   }
 
@@ -55,29 +56,29 @@ export class TransferControlService {
     where: Pick<TransferControl, K>,
     transferControlData: TransferControl,
   ): Promise<UpdateResult> {
-      const result = await this.queryRegistryService.update<TransferControl>(
-        TransferControl,
-        where,
-        transferControlData,
-        true,
-      );
-      return result;
+    const result = await this.queryRegistryService.update<TransferControl>(
+      TransferControl,
+      where,
+      transferControlData,
+      true,
+    );
+    return result;
   }
 
   async delete<K extends keyof TransferControl>(
     where: Pick<TransferControl, K>,
   ): Promise<DeleteResult> {
-      const result = await this.queryRegistryService.delete<TransferControl>(
-        TransferControl,
-        where,
-        true,
-      );
-      return result;
+    const result = await this.queryRegistryService.delete<TransferControl>(
+      TransferControl,
+      where,
+      true,
+    );
+    return result;
   }
 
   async findByTransferid(transfer_id: string): Promise<TransferControl[]> {
     return this.queryRegistryService.select<TransferControl>(TransferControl, {
-      where: { transfer_id },
+      transfer_id,
     });
   }
 
@@ -89,16 +90,13 @@ export class TransferControlService {
     transfer_status_tx: string,
     site_cd: string,
   ): Promise<TransferControl[]> {
-    return this.queryRegistryService.select<TransferControl>(
-      TransferControl,
-      {
-        transfer_id: transfer_id,
-        transfer_tp: transfer_tp,
-        source_port_id: transfer_source_port,
-        destination_port_id: transfer_dest_port,
-        transfer_status_tx: transfer_status_tx,
-        site_cd: site_cd,
-      },
-    );
+    return this.queryRegistryService.select<TransferControl>(TransferControl, {
+      transfer_id: transfer_id,
+      transfer_tp: transfer_tp,
+      source_port_id: transfer_source_port,
+      destination_port_id: transfer_dest_port,
+      transfer_status_tx: transfer_status_tx,
+      site_cd: site_cd,
+    });
   }
 }

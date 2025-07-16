@@ -4,15 +4,15 @@ import { TransferControl } from './TransferControl.entity';
 import { TransferControlService } from './TransferControl.service';
 import { TransferControlController } from './TransferControl.controller';
 import { CacheModule } from 'src/common/cache/cache.module';
-import { MqttModule } from 'src/common/adapter/mqtt/mqtt.module';
-import { HandlerModule } from 'src/common/handler/handler.module';
+import { WriterModule } from 'src/common/writer/writer.module';
+import { ResponseModule } from 'src/common/handler/response.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TransferControl]),
     CacheModule,
-    MqttModule,
-    HandlerModule,
+    ResponseModule,
+    WriterModule,
   ],
   providers: [TransferControlService],
   controllers: [TransferControlController],

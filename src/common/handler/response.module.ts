@@ -6,4 +6,4 @@ import { ResponseManager } from './response.manager';
   providers: [ResponseManager],
   exports: [ResponseManager],
 })
-export class HandlerModule {}
+export class ResponseModule {}

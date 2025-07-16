@@ -23,48 +23,47 @@ export class MicroTransferControlController {
   async create(
     @Body() microTransferControl: MicroTransferControl,
   ): Promise<MicroTransferControl> {
-      for (const key in microTransferControl) {
-        if (
-          microTransferControl[key] === undefined ||
-          microTransferControl[key] === ''
-        ) {
-          microTransferControl[key] = null;
-        }
+    for (const key in microTransferControl) {
+      if (
+        microTransferControl[key] === undefined ||
+        microTransferControl[key] === ''
+      ) {
+        microTransferControl[key] = null;
       }
+    }
 
-      microTransferControl.micro_transfer_id =
-        microTransferControl.micro_transfer_id || getFormattedTimestampTID();
+    microTransferControl.micro_transfer_id =
+      microTransferControl.micro_transfer_id || getFormattedTimestampTID();
 
-      microTransferControl.priority_no = parseInt(
-        microTransferControl.priority_no.toString(),
-        10,
-      );
+    microTransferControl.priority_no = parseInt(
+      microTransferControl.priority_no.toString(),
+      10,
+    );
 
-      const createresult =
-        await this.microtransfercontrolService.create(microTransferControl);
-      const result = await this.microtransfercontrolService.selectOne({
-        transfer_id: microTransferControl.transfer_id,
+    const createresult =
+      await this.microtransfercontrolService.create(microTransferControl);
+    const result = await this.microtransfercontrolService.selectOne({
+      transfer_id: microTransferControl.transfer_id,
+    });
+
+    console.log('result', result);
+
+    if (result) {
+      this.microtransferCache.add(microTransferControl.transfer_id, {
+        transfer_status_tx: result.micro_transfer_st,
       });
+    }
 
-      console.log('result', result);
-
-      if (result) {
-        this.microtransferCache.add(microTransferControl.transfer_id, {
-          transfer_status_tx: result.micro_transfer_st,
-        });
-      }
-
-      return createresult;
-    
+    return createresult;
   }
 
   @Post('search')
   async searchTasks(
     @Body() transferDto: { transfer_st: string; site_cd: string },
   ): Promise<any[]> {
-      return this.microtransfercontrolService.searchTasks(
-        transferDto.transfer_st,
-        transferDto.site_cd,
-      );
+    return this.microtransfercontrolService.searchTasks(
+      transferDto.transfer_st,
+      transferDto.site_cd,
+    );
   }
 }
