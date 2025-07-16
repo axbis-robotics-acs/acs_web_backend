@@ -661,6 +661,80 @@
         ]
       }
     },
+    "/transfercontrol/abort": {
+      "get": {
+        "operationId": "TransferControlController_abortTransfer",
+        "parameters": [
+          {
+            "name": "transfer_id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrol"
+        ]
+      }
+    },
+    "/transfercontrol/cancel": {
+      "get": {
+        "operationId": "TransferControlController_cancelTransfer",
+        "parameters": [
+          {
+            "name": "transfer_id",
+            "required": true,
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrol"
+        ]
+      }
+    },
+    "/transfercontrol/priority_update": {
+      "post": {
+        "operationId": "TransferControlController_updatePriority",
+        "parameters": [],
+        "requestBody": {
+          "required": true,
+          "description": "Update the priority of a transfer control",
+          "content": {
+            "application/json": {
+              "schema": {
+                "example": {
+                  "transfer_id": "TID1234567890",
+                  "priority_no": 5
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": ""
+          }
+        },
+        "tags": [
+          "transfercontrol"
+        ]
+      }
+    },
     "/transfercontrol/search": {
       "post": {
         "operationId": "TransferControlController_searchTasks",

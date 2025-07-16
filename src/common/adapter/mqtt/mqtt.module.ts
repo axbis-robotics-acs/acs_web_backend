@@ -5,12 +5,12 @@ import { MqttSecuritySubService } from './mqtt.security.subscribe.service';
 import { MqttInternalSubService } from './mqtt.internal.subscribe.service';
 import { MqttClientService } from './mqtt.client.service';
 import { MqttController } from './mqtt.controller';
-import { HandlerModule } from 'src/common/handler/handler.module';
 import { ElasticModule } from '../elk/elastic.module';
 import { WebSocketModule } from '../websocket/socket.module';
+import { ResponseModule } from 'src/common/handler/response.module';
 
 @Module({
-  imports: [CacheModule, HandlerModule, ElasticModule, WebSocketModule],
+  imports: [CacheModule, ResponseModule, ElasticModule, WebSocketModule],
   providers: [
     MqttSecuritySubService,
     MqttInternalSubService,

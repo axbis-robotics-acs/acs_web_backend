@@ -1,13 +1,12 @@
-import { Body, Controller, Get, Param, Post, Query } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Query, Req } from '@nestjs/common';
 import { TransferControlService } from './TransferControl.service';
 import { TransferControl } from './TransferControl.entity';
 import { ApiBody, ApiTags } from '@nestjs/swagger';
 import { getFormattedTimestampTID } from 'src/common/utils/date.format';
 import { TransferStateCacheService } from 'src/common/cache/transfercontrol.cache.service';
-import { MqttPublishService } from 'src/common/adapter/mqtt/mqtt.publisher.service';
-import { buildSuccessMessageFromJson } from 'src/common/utils/message.format';
 import { BaseException } from 'src/common/exceptions/base.exception';
 import { ResponseManager } from 'src/common/handler/response.manager';
+import { WriterService } from 'src/common/writer/writer.service';
 
 @ApiTags('transfercontrol')
 @Controller('transfercontrol')
@@ -15,8 +14,8 @@ export class TransferControlController {
   constructor(
     private readonly transfercontrolService: TransferControlService,
     private readonly transferCache: TransferStateCacheService,
-    private readonly mqttPublisher: MqttPublishService,
     private readonly responseManager: ResponseManager,
+    private readonly writerService: WriterService,
   ) {}
 
   @Get()
@@ -55,14 +54,12 @@ export class TransferControlController {
       10,
     );
 
-    transferControl.transfer_id =
-      transferControl.transfer_id ?? transactionId;
+    transferControl.transfer_id = transferControl.transfer_id ?? transactionId;
     transferControl.transfer_status_tx =
       transferControl.transfer_status_tx ?? 'READY';
     transferControl.transfer_tp = transferControl.transfer_tp ?? 'TRANSFER';
     transferControl.priority_no = transferControl.priority_no ?? 10;
-    transferControl.assigned_robot_id =
-      transferControl.assigned_robot_id ?? '';
+    transferControl.assigned_robot_id = transferControl.assigned_robot_id ?? '';
     transferControl.source_port_id = transferControl.source_port_id ?? null;
     transferControl.destination_port_id =
       transferControl.destination_port_id ?? ''; // 에러처리용 ( 빈 값 )
@@ -96,6 +93,100 @@ export class TransferControlController {
     return result;
   }
 
+  //추후에 계정정보기준으로 session 값 추가 예정 ( site , user )
+  @Get('abort')
+  async abortTransfer(@Query('transfer_id') transferId: string): Promise<any> {
+    const transactionId = getFormattedTimestampTID();
+    const transferControls =
+      await this.transfercontrolService.findByTransferid(transferId);
+    if (transferControls.length === 0) {
+      throw new BaseException({
+        message: `Transfer with ID ${transferId} not found.`,
+        statusCode: 400,
+        debugMessage: `No transfer control found for ID ${transferId}`,
+      });
+    }
+
+    this.writerService.publishTransferControl(
+      'abort_transfer_control',
+      transactionId,
+      'HU',
+      'administrator',
+      {
+        transferId: transferId,
+      },
+    );
+    const result = await this.responseManager.waitFor(transactionId);
+    return result;
+  }
+
+  @Get('cancel')
+  async cancelTransfer(@Query('transfer_id') transferId: string): Promise<any> {
+    const transactionId = getFormattedTimestampTID();
+    const transferControls =
+      await this.transfercontrolService.findByTransferid(transferId);
+    if (transferControls.length === 0) {
+      throw new BaseException({
+        message: `Transfer with ID ${transferId} not found.`,
+        statusCode: 400,
+        debugMessage: `No transfer control found for ID ${transferId}`,
+      });
+    }
+
+    this.writerService.publishTransferControl(
+      'cancel_transfer_control',
+      transactionId,
+      'HU',
+      'administrator',
+      {
+        transferId: transferId,
+      },
+    );
+    const result = await this.responseManager.waitFor(transactionId);
+    return result;
+  }
+
+  @Post('priority_update')
+  @ApiBody({
+    description: 'Update the priority of a transfer control',
+    required: true,
+    schema: {
+      example: {
+        transfer_id: 'TID1234567890',
+        priority_no: 5,
+      },
+    },
+  })
+  async updatePriority(
+    @Body() updateData: { transfer_id: string; priority_no: number },
+  ): Promise<TransferControl> {
+    const { transfer_id, priority_no } = updateData;
+
+    if (!transfer_id || priority_no === undefined) {
+      throw new BaseException({
+        message: 'Transfer ID and priority number are required.',
+        statusCode: 400,
+        debugMessage: 'Invalid input data for priority update.',
+      });
+    }
+
+    const transferControl = await this.transfercontrolService.selectOne({
+      transfer_id,
+    });
+
+    if (!transferControl) {
+      throw new BaseException({
+        message: `Transfer with ID ${transfer_id} not found.`,
+        statusCode: 400,
+      });
+    }
+    transferControl.priority_no = priority_no;
+
+    await this.transfercontrolService.update({ transfer_id }, transferControl);
+
+    return transferControl;
+  }
+
   @Post('search')
   @ApiBody({
     description:
@@ -124,13 +215,15 @@ export class TransferControlController {
     },
   ): Promise<any[]> {
     console.log('Received search request:', transferDto);
-      return this.transfercontrolService.searchTasks(
-        transferDto.transfer_id,
-        transferDto.transfer_tp,
-        transferDto.transfer_source_port,
-        transferDto.transfer_dest_port,
-        transferDto.transfer_status_tx,
-        transferDto.site_cd,
-      );
+    return this.transfercontrolService.searchTasks(
+      transferDto.transfer_id,
+      transferDto.transfer_tp,
+      transferDto.transfer_source_port,
+      transferDto.transfer_dest_port,
+      transferDto.transfer_status_tx,
+      transferDto.site_cd,
+    );
   }
+
+  //TODO: ABORT , CANCEL, PRIORITY UPDATES // 단일선택
 }

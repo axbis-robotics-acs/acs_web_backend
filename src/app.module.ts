@@ -14,10 +14,11 @@ import { CommonScheduleModule } from './modules/scheduler/scheduler.module';
 import { CacheModule } from './common/cache/cache.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
-import { HandlerModule } from './common/handler/handler.module';
 import { ElasticModule } from './common/adapter/elk/elastic.module';
 import { MapParserModule } from './modules/map/map.parser.module';
 import { WebSocketModule } from './common/adapter/websocket/socket.module';
+import { WriterModule } from './common/writer/writer.module';
+import { ResponseModule } from './common/handler/response.module';
 
 dotenv.config();
 
@@ -122,10 +123,11 @@ function loadProvidersAndControllers() {
     QueryRegistryModule,
     CommonScheduleModule,
     ScheduleModule.forRoot(),
-    HandlerModule,
+    ResponseModule,
     ElasticModule,
     MapParserModule,
     WebSocketModule,
+    WriterModule,
   ],
   providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
   controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가

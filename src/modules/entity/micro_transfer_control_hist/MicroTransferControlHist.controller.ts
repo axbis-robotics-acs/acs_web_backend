@@ -23,50 +23,48 @@ export class MicroTransferControlHistHistController {
   async create(
     @Body() MicroTransferControlHist: MicroTransferControlHist,
   ): Promise<MicroTransferControlHist> {
-      for (const key in MicroTransferControlHist) {
-        if (
-          MicroTransferControlHist[key] === undefined ||
-          MicroTransferControlHist[key] === ''
-        ) {
-          MicroTransferControlHist[key] = null;
-        }
+    for (const key in MicroTransferControlHist) {
+      if (
+        MicroTransferControlHist[key] === undefined ||
+        MicroTransferControlHist[key] === ''
+      ) {
+        MicroTransferControlHist[key] = null;
       }
-
-      MicroTransferControlHist.micro_transfer_id =
-        MicroTransferControlHist.micro_transfer_id ||
-        getFormattedTimestampTID();
-
-      MicroTransferControlHist.priority_no = parseInt(
-        MicroTransferControlHist.priority_no.toString(),
-        10,
-      );
-
-      const createresult = await this.MicroTransferControlHistService.create(
-        MicroTransferControlHist,
-      );
-      const result = await this.MicroTransferControlHistService.selectOne({
-        transfer_id: MicroTransferControlHist.transfer_id,
-      });
-
-      console.log('result', result);
-
-      if (result) {
-        this.microtransferCache.add(MicroTransferControlHist.transfer_id, {
-          transfer_status_tx: result.micro_transfer_st,
-        });
-      }
-
-      return createresult;
     }
+
+    MicroTransferControlHist.micro_transfer_id =
+      MicroTransferControlHist.micro_transfer_id || getFormattedTimestampTID();
+
+    MicroTransferControlHist.priority_no = parseInt(
+      MicroTransferControlHist.priority_no.toString(),
+      10,
+    );
+
+    const createresult = await this.MicroTransferControlHistService.create(
+      MicroTransferControlHist,
+    );
+    const result = await this.MicroTransferControlHistService.selectOne({
+      transfer_id: MicroTransferControlHist.transfer_id,
+    });
+
+    console.log('result', result);
+
+    if (result) {
+      this.microtransferCache.add(MicroTransferControlHist.transfer_id, {
+        transfer_status_tx: result.micro_transfer_st,
+      });
+    }
+
+    return createresult;
   }
 
   @Post('search')
   async searchTasks(
     @Body() transferDto: { transfer_st: string; site_cd: string },
   ): Promise<any[]> {
-      return this.MicroTransferControlHistService.searchTasks(
-        transferDto.transfer_st,
-        transferDto.site_cd,
-      );
+    return this.MicroTransferControlHistService.searchTasks(
+      transferDto.transfer_st,
+      transferDto.site_cd,
+    );
   }
 }
