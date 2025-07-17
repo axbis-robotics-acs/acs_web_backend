@@ -21,7 +21,7 @@ export class Const {
   @Column({ type: 'varchar', length: 255, nullable: false })
   constant_val: string;
 
-  @Column({ type: 'varchar', length: 50, nullable: false })
+  @Column({ type: 'varchar', length: 50, nullable: true })
   unit_tx: string;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
