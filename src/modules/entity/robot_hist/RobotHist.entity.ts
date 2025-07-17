@@ -39,8 +39,11 @@ export class RobotHist {
   @Column({ type: 'varchar', length: 255, nullable: true })
   charge_rule_id: string;
 
-  @Column({ nullable: true })
+  @Column({ nullable: false })
   map_uuid: number;
+
+  @Column({ type: 'varchar', length: 20, nullable: true })
+  dest_node_id: string;
 
   @Column({ type: 'tinyint', width: 1, nullable: false, default: 1 })
   usable_fl: number;
