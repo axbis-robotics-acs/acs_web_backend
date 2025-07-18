@@ -47,8 +47,6 @@ export class MicroTransferControlHistHistController {
       transfer_id: MicroTransferControlHist.transfer_id,
     });
 
-    console.log('result', result);
-
     if (result) {
       this.microtransferCache.add(MicroTransferControlHist.transfer_id, {
         transfer_status_tx: result.micro_transfer_st,
