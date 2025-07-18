@@ -427,11 +427,7 @@ CREATE TABLE `acs_const_master` (
   `constant_tp` varchar(255) NOT NULL COMMENT '상수 타입',
   `constant_nm` varchar(255) NOT NULL COMMENT '상수 명칭',
   `constant_val` varchar(255) NOT NULL COMMENT '상수 값',
-<<<<<<< HEAD
-  `unit_tx` varchar(50) NOT NULL COMMENT '단위',
-=======
   `unit_tx` varchar(50) DEFAULT NULL COMMENT '단위',
->>>>>>> e100cd5 (dump entity 수정)
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
@@ -473,11 +469,6 @@ CREATE TABLE `acs_const_hist` (
   `constant_tp` varchar(255) NOT NULL COMMENT '상수 타입',
   `constant_nm` varchar(255) NOT NULL COMMENT '상수 명칭',
   `constant_val` varchar(255) NOT NULL COMMENT '상수 값',
-<<<<<<< HEAD
-  `unit_tx` varchar(50) NOT NULL COMMENT '단위',
-=======
-  `unit_tx` varchar(50) DEFAULT NULL COMMENT '단위',
->>>>>>> e100cd5 (dump entity 수정)
   `usable_fl` tinyint(1) NOT NULL DEFAULT 1 COMMENT '데이터 사용 가능 여부',
   `site_cd` varchar(50) NOT NULL COMMENT 'SITE 정보',
   `description_tx` varchar(255) DEFAULT NULL COMMENT '데이터에 대한 설명',
