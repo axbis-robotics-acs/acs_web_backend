@@ -32,7 +32,6 @@ export class NodeService {
   }
 
   async createAll(nodeData: Node[]): Promise<void> {
-    console.log('Creating nodes:', nodeData);
     await this.nodeRepository.save<Node>(nodeData);
   }
 

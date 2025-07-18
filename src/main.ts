@@ -23,7 +23,7 @@ async function bootstrap() {
   // ✅ 정적 파일 제공 (변환된 glTF 파일 접근 가능)
   // app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
   app.useGlobalFilters(new AllExceptionsFilter());
-  app.useGlobalInterceptors(new SessionIdInterceptor());
+  // app.useGlobalInterceptors(new SessionIdInterceptor());
 
   app.use(
     session({

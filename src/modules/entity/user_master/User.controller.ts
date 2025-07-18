@@ -28,7 +28,6 @@ export class UserController {
 
   @Post('login')
   async login(
-    @Req() req: Request,
     @Body()
     loginDto: {
       account_id: string;
@@ -69,18 +68,18 @@ export class UserController {
       );
       const timeoutMin = Number(sessionTimeoutStr) || 60;
 
-      req.session.user = {
-        ...userInfo,
-      };
+      // req.session.user = {
+      //   ...userInfo,
+      // };
 
-      req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
+      // req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
 
-      await this.loginHistService.create(loginHist);
+      // await this.loginHistService.create(loginHist);
       return {
         message: 'Login successful',
         status: 200,
-        session_id: req.sessionID, // 세션 ID 반환
-        expiresAt: req.session.cookie.maxAge,
+        // session_id: req.sessionID, // 세션 ID 반환
+        // expiresAt: req.session.cookie.maxAge,
       };
     } else {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);

@@ -214,7 +214,6 @@ export class TransferControlController {
       site_cd: string;
     },
   ): Promise<any[]> {
-    console.log('Received search request:', transferDto);
     return this.transfercontrolService.searchTasks(
       transferDto.transfer_id,
       transferDto.transfer_tp,

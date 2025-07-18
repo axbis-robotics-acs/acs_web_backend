@@ -10,8 +10,7 @@ export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
   @Get()
-  async findAll(@Req() req: Request): Promise<Menu[]> {
-    const user = req.session.user; // 세션에 저장된 사용자 정보
+  async findAll(): Promise<Menu[]> {
     return this.menuService.findAll();
   }
 

@@ -38,39 +38,36 @@ export class MicroTransferControlService {
   async create(
     MicrotransferControl: MicroTransferControl,
   ): Promise<MicroTransferControl> {
-      const result =
-        await this.queryRegistryService.create<MicroTransferControl>(
-          MicroTransferControl,
-          MicrotransferControl,
-          true,
-        );
-      return result;
+    const result = await this.queryRegistryService.create<MicroTransferControl>(
+      MicroTransferControl,
+      MicrotransferControl,
+      true,
+    );
+    return result;
   }
 
   async update<K extends keyof MicroTransferControl>(
     where: Pick<MicroTransferControl, K>,
     MicrotransferControlData: MicroTransferControl,
   ): Promise<UpdateResult> {
-      const result =
-        await this.queryRegistryService.update<MicroTransferControl>(
-          MicroTransferControl,
-          where,
-          MicrotransferControlData,
-          true,
-        );
-      return result;
+    const result = await this.queryRegistryService.update<MicroTransferControl>(
+      MicroTransferControl,
+      where,
+      MicrotransferControlData,
+      true,
+    );
+    return result;
   }
 
   async delete<K extends keyof MicroTransferControl>(
     where: Pick<MicroTransferControl, K>,
   ): Promise<DeleteResult> {
-      const result =
-        await this.queryRegistryService.delete<MicroTransferControl>(
-          MicroTransferControl,
-          where,
-          true,
-        );
-      return result;
+    const result = await this.queryRegistryService.delete<MicroTransferControl>(
+      MicroTransferControl,
+      where,
+      true,
+    );
+    return result;
   }
 
   async findByTransferid(transfer_id: string): Promise<MicroTransferControl[]> {
@@ -86,10 +83,9 @@ export class MicroTransferControlService {
     transfer_st: string,
     site_cd: string,
   ): Promise<MicroTransferControl[]> {
-      console.log(transfer_st, site_cd);
-      return this.queryRegistryService.select<MicroTransferControl>(
-        MicroTransferControl,
-        { transfer_st: transfer_st, site_cd: site_cd },
-      );
+    return this.queryRegistryService.select<MicroTransferControl>(
+      MicroTransferControl,
+      { transfer_st: transfer_st, site_cd: site_cd },
+    );
   }
 }
