@@ -18,12 +18,8 @@ export class PortController {
     summary: 'Source Port 목록 조회',
     description: 'site_cd를 기준으로 LOAD, BOTH 타입의 포트 목록을 조회합니다.',
   })
-  @ApiQuery({
-    name: 'site_cd',
-    required: true,
-    description: 'Site 코드 (예: HU)',
-  })
   async getSourcePorts(@Query('site_cd') site_cd: string): Promise<Port[]> {
+    console.log(site_cd);
     return this.portService.getSourcePorts(site_cd);
   }
 
@@ -33,14 +29,10 @@ export class PortController {
     description:
       'site_cd를 기준으로 UNLOAD, BOTH 타입의 포트 목록을 조회합니다.',
   })
-  @ApiQuery({
-    name: 'site_cd',
-    required: true,
-    description: 'Site 코드 (예: HU)',
-  })
   async getDestinationPorts(
     @Query('site_cd') site_cd: string,
   ): Promise<Port[]> {
+    console.log(site_cd);
     return this.portService.getDestinationPorts(site_cd);
   }
 }

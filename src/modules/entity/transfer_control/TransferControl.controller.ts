@@ -95,7 +95,7 @@ export class TransferControlController {
 
   //추후에 계정정보기준으로 session 값 추가 예정 ( site , user )
   @Get('abort')
-  async abortTransfer(@Query('transfer_id') transferId: string): Promise<any> {
+  async abortTransfer(@Query('transferId') transferId: string): Promise<any> {
     const transactionId = getFormattedTimestampTID();
     const transferControls =
       await this.transfercontrolService.findByTransferid(transferId);
@@ -121,7 +121,7 @@ export class TransferControlController {
   }
 
   @Get('cancel')
-  async cancelTransfer(@Query('transfer_id') transferId: string): Promise<any> {
+  async cancelTransfer(@Query('transferId') transferId: string): Promise<any> {
     const transactionId = getFormattedTimestampTID();
     const transferControls =
       await this.transfercontrolService.findByTransferid(transferId);
@@ -224,6 +224,4 @@ export class TransferControlController {
       transferDto.site_cd,
     );
   }
-
-  //TODO: ABORT , CANCEL, PRIORITY UPDATES // 단일선택
 }

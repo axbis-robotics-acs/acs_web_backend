@@ -435,7 +435,6 @@
             "name": "site_cd",
             "required": true,
             "in": "query",
-            "description": "Site 코드 (예: HU)",
             "schema": {
               "type": "string"
             }
@@ -461,7 +460,6 @@
             "name": "site_cd",
             "required": true,
             "in": "query",
-            "description": "Site 코드 (예: HU)",
             "schema": {
               "type": "string"
             }
@@ -666,7 +664,7 @@
         "operationId": "TransferControlController_abortTransfer",
         "parameters": [
           {
-            "name": "transfer_id",
+            "name": "transferId",
             "required": true,
             "in": "query",
             "schema": {
@@ -689,7 +687,7 @@
         "operationId": "TransferControlController_cancelTransfer",
         "parameters": [
           {
-            "name": "transfer_id",
+            "name": "transferId",
             "required": true,
             "in": "query",
             "schema": {
