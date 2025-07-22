@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Req } from '@nestjs/common';
 import { RobotService } from './Robot.service';
 import { Robot } from './Robot.entity';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,12 +9,20 @@ export class RobotController {
   constructor(private readonly robotService: RobotService) {}
 
   @Get()
-  async findAll(): Promise<Robot[]> {
-    return this.robotService.findAll();
+  async findAll(@Req() req: any): Promise<Robot[]> {
+    const user = req.session.user;
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+    return this.robotService.findRobotBySite(user.site_cd);
   }
 
   @Get('monitoring/count')
-  async findMonitoringCount(): Promise<number> {
-    return this.robotService.findRobotMonitoringSummary();
+  async findMonitoringCount(@Req() req: any): Promise<number> {
+    const user = req.session.user;
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+    return this.robotService.findRobotMonitoringSummary(user.site_cd);
   }
 }

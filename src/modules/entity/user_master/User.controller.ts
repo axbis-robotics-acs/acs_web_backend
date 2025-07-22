@@ -35,6 +35,7 @@ export class UserController {
       site_cd: string;
       lang_cd: string;
     },
+    @Req() req: Request,
   ) {
     const { account_id, password, site_cd } = loginDto;
     const isValid = await this.userService.validateUser(
@@ -46,6 +47,9 @@ export class UserController {
       account_id,
       site_cd,
     });
+
+    console.log(`User Info: ${JSON.stringify(userInfo)}`);
+
     if (isValid && userInfo) {
       const criteria = CommonCriteriaHistInput.build(
         site_cd,
@@ -59,7 +63,7 @@ export class UserController {
         user_nm: account_id,
         role_cd: userInfo.role_cd,
         access_by: new Date(),
-        ...(criteria as Required<CommonCriteria>), // 👈 해결 포인트
+        ...(criteria as Required<CommonCriteria>),
       };
 
       const sessionTimeoutStr = await this.constService.getValueByCode(
@@ -68,18 +72,18 @@ export class UserController {
       );
       const timeoutMin = Number(sessionTimeoutStr) || 60;
 
-      // req.session.user = {
-      //   ...userInfo,
-      // };
+      req.session.user = {
+        ...userInfo,
+      };
 
-      // req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
+      req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
 
-      // await this.loginHistService.create(loginHist);
+      await this.loginHistService.create(loginHist);
       return {
         message: 'Login successful',
         status: 200,
-        // session_id: req.sessionID, // 세션 ID 반환
-        // expiresAt: req.session.cookie.maxAge,
+        session_id: req.sessionID, // 세션 ID 반환
+        expiresAt: req.session.cookie.maxAge,
       };
     } else {
       throw new HttpException('Invalid credentials', HttpStatus.UNAUTHORIZED);

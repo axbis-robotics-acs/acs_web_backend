@@ -1,8 +1,7 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, Post, Req } from '@nestjs/common';
 import { TransferControlHistService } from './TransferControlHist.service';
 import { TransferControlHist } from './TransferControlHist.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { BaseException } from 'src/common/exceptions/base.exception';
 
 @ApiTags('transfercontrolhist')
 @Controller('transfercontrolhist')
@@ -12,13 +11,18 @@ export class TransferControlHistController {
   ) {}
 
   @Get()
-  async findAll(): Promise<TransferControlHist[]> {
-    return this.transfercontrolhistService.findAll();
+  async findAll(@Req() req:any): Promise<TransferControlHist[]> {
+    const user = req.session.user;
+    return this.transfercontrolhistService.findTransferBySite(user.site_cd);
   }
 
   @Get('monitoring/count')
-  async findMonitoringCount(): Promise<number> {
-    return this.transfercontrolhistService.findMonitoringSummary();
+  async findMonitoringCount(@Req() req:any): Promise<number> {
+    const user = req.session.user;
+    if (!user) {
+      throw new Error('User not authenticated');
+    }
+    return this.transfercontrolhistService.findMonitoringSummary(user.site_cd);
   }
 
   @Post('search')

@@ -25,7 +25,14 @@ export class TransferControlHistService {
     );
   }
 
-  async findMonitoringSummary(): Promise<any> {
+  async findTransferBySite(site_cd:string): Promise<TransferControlHist[]> {
+    return this.queryRegistryService.select<TransferControlHist>(
+      TransferControlHist,
+      { site_cd: site_cd },
+    );
+  } 
+
+  async findMonitoringSummary(site_cd : string): Promise<any> {
     const result = await this.dataSource.query(`
     WITH latest_status AS (
       SELECT
@@ -42,6 +49,7 @@ export class TransferControlHistService {
           acs_transfer_control_hist
         WHERE
           DATE(modify_at) = CURDATE()
+          AND site_cd = ?
         GROUP BY
           transfer_id
       ) h2
@@ -54,7 +62,7 @@ export class TransferControlHistService {
       SUM(CASE WHEN transfer_status_tx IN ('canceled', 'aborted') THEN 1 ELSE 0 END) AS canceled_task_count
     FROM
       latest_status
-  `);
+  `, [site_cd]);
 
     const summary = result[0] || {
       total_task_count: 0,

@@ -4,64 +4,44 @@ import {
   ExecutionContext,
   CallHandler,
 } from '@nestjs/common';
-import { Observable } from 'rxjs';
+import { Observable, throwError } from 'rxjs';
 import { BaseException } from '../exceptions/base.exception';
 
 @Injectable()
 export class SessionIdInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
     const req = context.switchToHttp().getRequest();
+    const res = context.switchToHttp().getResponse();
 
-    if (req.path.includes('login')) {
+    // 예외 처리 제외 경로
+    const skipPaths = ['login', 'site', 'language'];
+    if (skipPaths.some(path => req.path.includes(path))) {
       return next.handle();
     }
 
-    // ✅ 1. Header에서 session_id 추출
-    const sessionId = req.headers['session_id'];
+    // 세션 ID 및 store
+    const sessionId = req.headers['session_id'] as string;
 
-    console.log(`Session ID: ${sessionId}`);
+    // 응답 상태 로깅
+    res.on('finish', () => {
+      console.log(`✅ [res.finish] ${req.method} ${req.url}`);
+    });
 
-    if (!sessionId) {
-      throw new BaseException({
-        message: '세션이 존재하지 않습니다.',
-        statusCode: 401,
-        errorCode: 'SESSION_NOT_FOUND',
-        debugMessage: 'Header에 session_id가 없음',
-      });
+    res.on('close', () => {
+      console.warn(`⚠️ [res.close] ${req.method} ${req.url} → 클라이언트가 연결 끊음`);
+    });
+
+    // 세션 ID가 없을 경우
+    if (!sessionId || !req.session) {
+      return throwError(() =>
+        new BaseException({
+          message: '세션이 존재하지 않거나 만료되었습니다.',
+          statusCode: 401,
+          errorCode: 'SESSION_NOT_FOUND',
+        }),
+      );
     }
 
-    // ✅ 2. 세션 ID를 express-session과 연동
-    const store = req.sessionStore;
-
-    return new Promise((resolve, reject) => {
-      store.get(sessionId, (err, sessionData) => {
-        if (err) {
-          return reject(
-            new BaseException({
-              message: '세션 조회 중 오류가 발생했습니다.',
-              statusCode: 401,
-              errorCode: 'SESSION_LOOKUP_ERROR',
-              debugMessage: err.message,
-            }),
-          );
-        }
-        if (!sessionData || !sessionData.user) {
-          return reject(
-            new BaseException({
-              message: '세션이 만료되었거나 유효하지 않습니다.',
-              statusCode: 401,
-              errorCode: 'SESSION_INVALID',
-              debugMessage: JSON.stringify(sessionData),
-            }),
-          );
-        }
-
-        // ✅ 3. 세션에서 사용자 정보 꺼내서 req에 할당
-        req.session = sessionData;
-        req.sessionID = sessionId;
-
-        resolve(next.handle());
-      });
-    }) as unknown as Observable<any>;
+    return next.handle();
   }
 }

@@ -7,6 +7,7 @@ import {
   UpdateResult,
   DeleteResult,
 } from '../../../common/query/query-registry.service';
+import { BaseException } from 'src/common/exceptions/base.exception';
 
 @Injectable()
 export class MenuService {
@@ -15,6 +16,35 @@ export class MenuService {
     private readonly menuRepository: Repository<Menu>,
     private readonly queryRegistryService: QueryRegistry,
   ) {}
+
+
+async findBySite_Role(user: any): Promise<Menu[]> {
+  try {
+    console.log('✅ findBySite_Role 호출됨, 사용자 정보:', user.site_cd, user.role_cd);
+    return await this.menuRepository
+      .createQueryBuilder('menu')
+      .innerJoin(
+        'acs_menu_role_rel',
+        'rel',
+        'menu.menu_cd = rel.menu_cd AND menu.site_cd = rel.site_cd'
+      )
+      .where('menu.site_cd = :site_cd', { site_cd: user.site_cd })
+      .andWhere('rel.role_cd = :role_cd', { role_cd: user.role_cd })
+      .andWhere('menu.usable_fl = :usable', { usable: '1' })
+      .andWhere('rel.usable_fl = :usable', { usable: '1' })
+      .orderBy('menu.menu_depth', 'ASC')
+      .addOrderBy('menu.menu_seq', 'ASC')
+      .getMany();
+  } catch (err) {
+    console.error('❌ 메뉴 조회 실패:', err);
+    throw new BaseException({
+      message: '메뉴 조회 중 오류가 발생했습니다.',
+      debugMessage: err?.message,
+      statusCode: 500,
+    });
+  }
+}
+
 
   async findAll(): Promise<Menu[]> {
     return this.queryRegistryService.select<Menu>(Menu, {});

@@ -2,21 +2,28 @@ import { Controller, Get, Post, Body, Req } from '@nestjs/common';
 import { MenuService } from './Menu.service';
 import { Menu } from './Menu.entity';
 import { ApiTags } from '@nestjs/swagger';
-import { Request } from 'express';
 
 @ApiTags('menu')
 @Controller('menu')
 export class MenuController {
   constructor(private readonly menuService: MenuService) {}
 
-  @Get()
-  async findAll(): Promise<Menu[]> {
-    return this.menuService.findAll();
+@Get()
+async findAll(@Req() req: any): Promise<Menu[]> {
+  const user = req.session?.user;
+  const result = await this.menuService.findBySite_Role(user);
+
+  if (!result || result.length === 0) {
+    console.log('✅ 반환할 메뉴가 없습니다.'); 
+    return []; 
   }
+  return result; 
+}
+
 
   @Post('getMenu')
   async findMenuId(
-    @Body('menu_cd') menu_cd: string, // ✅ 배열 처리
+    @Body('menu_cd') menu_cd: string,
     @Body('site_cd') site_cd: string,
   ) {
     const menuCdArray = menu_cd

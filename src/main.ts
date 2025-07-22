@@ -22,9 +22,7 @@ async function bootstrap() {
 
   // ✅ 정적 파일 제공 (변환된 glTF 파일 접근 가능)
   // app.use('/uploads', express.static(join(__dirname, '..', 'uploads')));
-  app.useGlobalFilters(new AllExceptionsFilter());
-  // app.useGlobalInterceptors(new SessionIdInterceptor());
-
+  
   app.use(
     session({
       secret: process.env.SESSION_SECRET || 'default_secret',
@@ -34,9 +32,15 @@ async function bootstrap() {
       cookie: {
         maxAge: 1000 * 60 * 60, // 1시간
         httpOnly: true,
+              secure: false,           // ⚠️ 로컬에서 HTTPS 안 쓰면 false로!
+      sameSite: 'lax',         // 또는 'none' (⚠️ none이면 secure: true 필요)
       },
     }),
   );
+  
+  app.useGlobalFilters(new AllExceptionsFilter());
+  app.useGlobalInterceptors(new SessionIdInterceptor());
+
 
   // ✅ Swagger 설정
   const config = new DocumentBuilder()

@@ -20,8 +20,13 @@ export class RobotService {
   async findAll(): Promise<Robot[]> {
     return this.queryRegistryService.select<Robot>(Robot, {});
   }
+  async findRobotBySite(site_cd: string): Promise<Robot[]> {
+    return this.queryRegistryService.select<Robot>(Robot, {
+      site_cd: site_cd,
+    });
+  }
 
-  async findRobotMonitoringSummary(): Promise<any> {
+  async findRobotMonitoringSummary(site_cd : string): Promise<any> {
     const result = await this.dataSource.query(`
       SELECT
         COUNT(*) AS total_robot_count,
@@ -29,8 +34,10 @@ export class RobotService {
         SUM(CASE WHEN status_tx  IN ('IDLE') THEN 1 ELSE 0 END) AS idle_robot_count,
         SUM(CASE WHEN status_tx  = 'CHARGING' THEN 1 ELSE 0 END) AS charging_robot_count
       FROM
-        acs_robot_master;
-    `);
+        acs_robot_master
+      WHERE
+        site_cd = ?;
+    `, [site_cd]);
 
     const summary = result[0] || {
       total_robot_count: 0,
