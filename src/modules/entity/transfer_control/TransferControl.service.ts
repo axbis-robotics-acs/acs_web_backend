@@ -17,10 +17,10 @@ export class TransferControlService {
     private readonly queryRegistryService: QueryRegistry,
   ) {}
 
-  async findAll(): Promise<TransferControl[]> {
+  async findAll(site_cd : string): Promise<TransferControl[]> {
     return this.queryRegistryService.select<TransferControl>(
       TransferControl,
-      {},
+      { site_cd : site_cd },
     );
   }
 
@@ -76,9 +76,10 @@ export class TransferControlService {
     return result;
   }
 
-  async findByTransferid(transfer_id: string): Promise<TransferControl[]> {
+  async findByTransferid(transfer_id: string, site_cd : string): Promise<TransferControl[]> {
     return this.queryRegistryService.select<TransferControl>(TransferControl, {
       transfer_id,
+      site_cd
     });
   }
 

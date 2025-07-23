@@ -16,8 +16,8 @@ export class PortService {
     private readonly queryRegistryService: QueryRegistry,
   ) {}
 
-  async findAll(): Promise<Port[]> {
-    return this.queryRegistryService.select<Port>(Port, {});
+  async findAll(site_cd : string): Promise<Port[]> {
+    return this.queryRegistryService.select<Port>(Port, { site_cd : site_cd });
   }
 
   async selectOne<K extends keyof Port>(

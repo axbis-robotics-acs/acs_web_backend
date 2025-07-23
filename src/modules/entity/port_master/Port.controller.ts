@@ -1,4 +1,4 @@
-import { Controller, Get, Param, Query } from '@nestjs/common';
+import { Controller, Get, Param, Query, Req } from '@nestjs/common';
 import { PortService } from './Port.service';
 import { Port } from './Port.entity';
 import { ApiOperation, ApiQuery, ApiTags } from '@nestjs/swagger';
@@ -9,8 +9,9 @@ export class PortController {
   constructor(private readonly portService: PortService) {}
 
   @Get()
-  async findAll(): Promise<Port[]> {
-    return this.portService.findAll();
+  async findAll(@Req() req:any): Promise<Port[]> {
+    const user = req.session.user;
+    return this.portService.findAll(user.site_cd);
   }
 
   @Get('source')
@@ -18,8 +19,9 @@ export class PortController {
     summary: 'Source Port 목록 조회',
     description: 'site_cd를 기준으로 LOAD, BOTH 타입의 포트 목록을 조회합니다.',
   })
-  async getSourcePorts(@Query('site_cd') site_cd: string): Promise<Port[]> {
-    return this.portService.getSourcePorts(site_cd);
+  async getSourcePorts(@Req() req:any): Promise<Port[]> {
+    const user = req.session.user;
+    return this.portService.getSourcePorts(user.site_cd);
   }
 
   @Get('destination')
@@ -29,8 +31,9 @@ export class PortController {
       'site_cd를 기준으로 UNLOAD, BOTH 타입의 포트 목록을 조회합니다.',
   })
   async getDestinationPorts(
-    @Query('site_cd') site_cd: string,
+    @Req() req:any
   ): Promise<Port[]> {
-    return this.portService.getDestinationPorts(site_cd);
+    const user = req.session.user;
+    return this.portService.getDestinationPorts(user.site_cd);
   }
 }

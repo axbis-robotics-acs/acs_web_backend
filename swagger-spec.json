@@ -430,16 +430,7 @@
       "get": {
         "description": "site_cd를 기준으로 LOAD, BOTH 타입의 포트 목록을 조회합니다.",
         "operationId": "PortController_getSourcePorts",
-        "parameters": [
-          {
-            "name": "site_cd",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": ""
@@ -455,16 +446,7 @@
       "get": {
         "description": "site_cd를 기준으로 UNLOAD, BOTH 타입의 포트 목록을 조회합니다.",
         "operationId": "PortController_getDestinationPorts",
-        "parameters": [
-          {
-            "name": "site_cd",
-            "required": true,
-            "in": "query",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
+        "parameters": [],
         "responses": {
           "200": {
             "description": ""

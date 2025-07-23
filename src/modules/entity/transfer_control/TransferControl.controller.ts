@@ -19,8 +19,9 @@ export class TransferControlController {
   ) {}
 
   @Get()
-  async findAll(): Promise<TransferControl[]> {
-    return this.transfercontrolService.findAll();
+  async findAll(@Req() req : any): Promise<TransferControl[]> {
+    const user = req.session.user;
+    return this.transfercontrolService.findAll(user.site_cd);
   }
 
   @Post()
@@ -41,8 +42,10 @@ export class TransferControlController {
     },
   })
   async create(
+    @Req() req: any,
     @Body() transferControl: TransferControl,
   ): Promise<string | TransferControl> {
+    const user = req.session.user;
     for (const key in transferControl) {
       if (transferControl[key] === undefined || transferControl[key] === '') {
         transferControl[key] = null;
@@ -63,42 +66,21 @@ export class TransferControlController {
     transferControl.source_port_id = transferControl.source_port_id ?? null;
     transferControl.destination_port_id =
       transferControl.destination_port_id ?? ''; // 에러처리용 ( 빈 값 )
+    transferControl.site_cd = user.site_cd;
+    transferControl.creator_by = user.user_nm;
+      
 
     const result = await this.transfercontrolService.create(transferControl);
-
-    // 백엔드 통신용
-
-    // const message = buildSuccessMessageFromJson({
-    //   header: {
-    //     requestId: 'ui',
-    //     workId: 'create_transfer_control',
-    //     transactionId: transactionId,
-    //     siteId: transferControl.site_cd ?? 'HU',
-    //     userId: 'administrator',
-    //   },
-    //   dataSet: {
-    //     transferId: transferControl.transfer_id ?? transactionId,
-    //     transferSt: transferControl.transfer_status_tx ?? 'READY',
-    //     transferType: transferControl.transfer_tp ?? 'TRANSFER',
-    //     transferPriority: transferControl.priority_no ?? '',
-    //     transferRobot: transferControl.assigned_robot_id ?? '',
-    //     transferSource: transferControl.source_port_id ?? '',
-    //     transferDestination: transferControl.destination_port_id ?? '',
-    //   },
-    // });
-
-    // this.mqttPublisher.publishInternal('web/transfercontrol', message, 0);
-
-    // const result = await this.responseManager.waitFor(transactionId);
     return result;
   }
 
   //추후에 계정정보기준으로 session 값 추가 예정 ( site , user )
   @Get('abort')
-  async abortTransfer(@Query('transferId') transferId: string): Promise<any> {
+  async abortTransfer(@Req() req: any, @Query('transferId') transferId: string): Promise<any> {
+    const user = req.session.user;
     const transactionId = getFormattedTimestampTID();
     const transferControls =
-      await this.transfercontrolService.findByTransferid(transferId);
+      await this.transfercontrolService.findByTransferid(transferId, user.site_cd);
     if (transferControls.length === 0) {
       throw new BaseException({
         message: `Transfer with ID ${transferId} not found.`,
@@ -110,8 +92,8 @@ export class TransferControlController {
     this.writerService.publishTransferControl(
       'abort_transfer_control',
       transactionId,
-      'HU',
-      'administrator',
+      user.site_cd,
+      user.user_nm,
       {
         transferId: transferId,
       },
@@ -121,10 +103,11 @@ export class TransferControlController {
   }
 
   @Get('cancel')
-  async cancelTransfer(@Query('transferId') transferId: string): Promise<any> {
+  async cancelTransfer(@Req() req: any, @Query('transferId') transferId: string): Promise<any> {
+    const user = req.session.user;
     const transactionId = getFormattedTimestampTID();
     const transferControls =
-      await this.transfercontrolService.findByTransferid(transferId);
+      await this.transfercontrolService.findByTransferid(transferId, user.site_cd);
     if (transferControls.length === 0) {
       throw new BaseException({
         message: `Transfer with ID ${transferId} not found.`,
@@ -136,8 +119,8 @@ export class TransferControlController {
     this.writerService.publishTransferControl(
       'cancel_transfer_control',
       transactionId,
-      'HU',
-      'administrator',
+      user.site_cd,
+      user.user_nm,
       {
         transferId: transferId,
       },
@@ -158,8 +141,10 @@ export class TransferControlController {
     },
   })
   async updatePriority(
+    @Req() req: any,
     @Body() updateData: { transfer_id: string; priority_no: number },
   ): Promise<TransferControl> {
+    const user = req.session.user;
     const { transfer_id, priority_no } = updateData;
 
     if (!transfer_id || priority_no === undefined) {
@@ -171,7 +156,8 @@ export class TransferControlController {
     }
 
     const transferControl = await this.transfercontrolService.selectOne({
-      transfer_id,
+      transfer_id : transfer_id,
+      site_cd: user.site_cd
     });
 
     if (!transferControl) {
