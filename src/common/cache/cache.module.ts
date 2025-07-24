@@ -12,5 +12,5 @@ import { MqttCacheService } from './mqtt.cache.service';
   ],
   exports: [HeartbeatCacheService, TransferStateCacheService, MqttCacheService], // ✅ 다른 모듈에서 사용 가능하도록 export
 })
-export class CacheModule {}
+export class LocalCacheModule {}
 // src/common/utils/cache/heartbeat.cache.service.ts

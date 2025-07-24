@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { CacheModule } from '../../cache/cache.module';
+import { LocalCacheModule } from '../../cache/cache.module';
 import { MqttPublishService } from './mqtt.publisher.service';
 import { MqttSecuritySubService } from './mqtt.security.subscribe.service';
 import { MqttInternalSubService } from './mqtt.internal.subscribe.service';
@@ -10,7 +10,7 @@ import { WebSocketModule } from '../websocket/socket.module';
 import { ResponseModule } from 'src/common/handler/response.module';
 
 @Module({
-  imports: [CacheModule, ResponseModule, ElasticModule, WebSocketModule],
+  imports: [LocalCacheModule, ResponseModule, ElasticModule, WebSocketModule],
   providers: [
     MqttSecuritySubService,
     MqttInternalSubService,
