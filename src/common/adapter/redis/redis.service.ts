@@ -14,7 +14,7 @@ export class RedisService implements OnModuleInit {
         registerRedisEvents(this.client);
         await this.client.connect();
 
-        console.log('✅ RedisService 연결 완료');
+        console.log('[REDIS] ✅ RedisService 연결 완료');
     }
 
     getClient() {
@@ -28,7 +28,7 @@ export class RedisService implements OnModuleInit {
     }
 
     async getSessionUser(sessionId: string): Promise<any | null> {
-        const key = `session:${sessionId}`;
+        const key = `sess:${sessionId}`;
         const data = await this.client.get(key);
         if (data) {
             await this.client.expire(key, 3600); // TTL 연장
@@ -38,6 +38,6 @@ export class RedisService implements OnModuleInit {
     }
 
     async deleteSessionUser(sessionId: string) {
-        await this.client.del(`session:${sessionId}`);
+        await this.client.del(`sess:${sessionId}`);
     }
 }

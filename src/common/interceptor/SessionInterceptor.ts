@@ -67,11 +67,11 @@ import { switchMap } from 'rxjs/operators';
 @Injectable()
 export class SessionIdInterceptor implements NestInterceptor {
   constructor(private readonly redisService: RedisService) {
-    console.log('🟢 SessionIdInterceptor 생성됨');
+    // console.log('🟢 SessionIdInterceptor 생성됨');
   }
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
-    console.log('🟡 Interceptor 호출됨');
+    // console.log('🟡 Interceptor 호출됨');
 
     return from(this.validateSession(context)).pipe(
       switchMap(() => next.handle()),
@@ -82,14 +82,14 @@ export class SessionIdInterceptor implements NestInterceptor {
     const req = context.switchToHttp().getRequest();
     const res = context.switchToHttp().getResponse();
 
-    console.log(`🔍 [req.start] ${req.method} ${req.url}`);
+    // console.log(`🔍 [req.start] ${req.method} ${req.url}`);
 
     res.on('finish', () => {
-      console.log(`✅ [res.finish] ${req.method} ${req.url}`);
+      // console.log(`✅ [res.finish] ${req.method} ${req.url}`);
     });
 
     res.on('close', () => {
-      console.warn(`⚠️ [res.close] ${req.method} ${req.url} → 클라이언트가 연결 끊음`);
+      // console.warn(`⚠️ [res.close] ${req.method} ${req.url} → 클라이언트가 연결 끊음`);
     });
 
     const skipPaths = ['login', 'site', 'language'];

@@ -77,11 +77,8 @@ export class UserController {
       req.session.user = {
         ...userInfo,
       };
-
-
-
-      req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
-      await this.redisService.setSessionUser(req.sessionID, userInfo, timeoutMin * 60 * 1000);
+      req.session.cookie.maxAge = (timeoutMin || 30) * 60 * 1000;
+      // await this.redisService.setSessionUser(req.sessionID, userInfo, timeoutMin * 60 * 1000);
 
       await this.loginHistService.create(loginHist);
       return {

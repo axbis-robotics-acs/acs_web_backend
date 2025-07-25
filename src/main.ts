@@ -38,10 +38,10 @@ async function bootstrap() {
       saveUninitialized: false,
       rolling: true, // 세션 갱신
       cookie: {
-        maxAge: 1000 * 60 * 60, // 1시간
+        maxAge: 1000 * 60 * 30, // 1시간
         httpOnly: true,
-        secure: false,           // ⚠️ 로컬에서 HTTPS 안 쓰면 false로!
-        sameSite: 'lax',         // 또는 'none' (⚠️ none이면 secure: true 필요)
+        secure: false,
+        sameSite: 'lax',
       },
     }),
   );

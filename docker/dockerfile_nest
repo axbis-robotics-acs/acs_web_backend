@@ -9,7 +9,7 @@ COPY ecosystem.config.js ./
 COPY .env ./
 
 # ✅ 의존성 설치
-RUN npm install
+RUN npm install --force --legacy-peer-deps
 
 # PM2 설치만 (앱 소스는 volume으로 주입됨)
 RUN npm install -g pm2

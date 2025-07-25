@@ -15,12 +15,12 @@ export class TransferControlService {
     @InjectRepository(TransferControl)
     private readonly transfercontrolRepository: Repository<TransferControl>,
     private readonly queryRegistryService: QueryRegistry,
-  ) {}
+  ) { }
 
-  async findAll(site_cd : string): Promise<TransferControl[]> {
+  async findAll(site_cd: string): Promise<TransferControl[]> {
     return this.queryRegistryService.select<TransferControl>(
       TransferControl,
-      { site_cd : site_cd },
+      { site_cd: site_cd },
     );
   }
 
@@ -76,7 +76,7 @@ export class TransferControlService {
     return result;
   }
 
-  async findByTransferid(transfer_id: string, site_cd : string): Promise<TransferControl[]> {
+  async findByTransferid(transfer_id: string, site_cd: string): Promise<TransferControl[]> {
     return this.queryRegistryService.select<TransferControl>(TransferControl, {
       transfer_id,
       site_cd
@@ -85,7 +85,7 @@ export class TransferControlService {
 
   async searchTasks(
     transfer_id: string,
-    transfer_tp: string,
+    transfer_type: string,
     transfer_source_port: string,
     transfer_dest_port: string,
     transfer_status_tx: string,
@@ -93,7 +93,7 @@ export class TransferControlService {
   ): Promise<TransferControl[]> {
     return this.queryRegistryService.select<TransferControl>(TransferControl, {
       transfer_id: transfer_id,
-      transfer_tp: transfer_tp,
+      transfer_tp: transfer_type,
       source_port_id: transfer_source_port,
       destination_port_id: transfer_dest_port,
       transfer_status_tx: transfer_status_tx,

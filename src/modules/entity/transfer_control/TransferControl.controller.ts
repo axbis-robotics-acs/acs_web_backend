@@ -16,10 +16,10 @@ export class TransferControlController {
     private readonly transferCache: TransferStateCacheService,
     private readonly responseManager: ResponseManager,
     private readonly writerService: WriterService,
-  ) {}
+  ) { }
 
   @Get()
-  async findAll(@Req() req : any): Promise<TransferControl[]> {
+  async findAll(@Req() req: any): Promise<TransferControl[]> {
     const user = req.session.user;
     return this.transfercontrolService.findAll(user.site_cd);
   }
@@ -68,7 +68,7 @@ export class TransferControlController {
       transferControl.destination_port_id ?? ''; // 에러처리용 ( 빈 값 )
     transferControl.site_cd = user.site_cd;
     transferControl.creator_by = user.user_nm;
-      
+
 
     const result = await this.transfercontrolService.create(transferControl);
     return result;
@@ -156,7 +156,7 @@ export class TransferControlController {
     }
 
     const transferControl = await this.transfercontrolService.selectOne({
-      transfer_id : transfer_id,
+      transfer_id: transfer_id,
       site_cd: user.site_cd
     });
 
@@ -193,20 +193,22 @@ export class TransferControlController {
     @Body()
     transferDto: {
       transfer_id: string;
-      transfer_tp: string;
+      transfer_type: string;
       transfer_source_port: string;
       transfer_dest_port: string;
       transfer_status_tx: string;
       site_cd: string;
     },
+    @Req() req: any,
   ): Promise<any[]> {
+    const user = req.session.user;
     return this.transfercontrolService.searchTasks(
       transferDto.transfer_id,
-      transferDto.transfer_tp,
+      transferDto.transfer_type,
       transferDto.transfer_source_port,
       transferDto.transfer_dest_port,
       transferDto.transfer_status_tx,
-      transferDto.site_cd,
+      user.site_cd,
     );
   }
 }
