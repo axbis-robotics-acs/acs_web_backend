@@ -35,6 +35,40 @@
 
 This repository contains the ACS web backend server, built with the [Nest.js](https://nestjs.com/) framework. It uses **Docker Compose** to run the application, database, and all other services together in a containerized environment.
 
+### 📘 API Documentation
+
+Once the server is running, access the Swagger UI for API documentation at: [swagger](http://localhost:4000/api)
+
+### 📁 Project Structure
+```bash
+src/
+├── common/                  # Shared utilities and core components
+│   ├── adapter/             # Adapters for external services (e.g., Redis, MQTT)
+│   ├── cache/               # Cache managers and Redis-related logic
+│   ├── decorators/          # Custom decorators (e.g., @SiteCd, @Lang)
+│   ├── exceptions/          # Global exception classes and handlers
+│   ├── filter/              # Global filters (e.g., HTTP exception filter)
+│   ├── handler/             # Task processors and business logic handlers
+│   ├── interceptor/         # Request/response interceptors
+│   ├── query/               # Reusable query logic and utilities (e.g., QueryRegistry)
+│   ├── utils/               # Common utility functions (date/time, converters, etc.)
+│   └── writer/              # Message formatter and MQTT message composition
+
+├── modules/                 # Domain-specific business logic modules
+│   ├── entity/              # TypeORM entity definitions and DB schemas
+│   ├── map/                 # Map-related logic (nodes, goals, coordinates, etc.)
+│   ├── scheduler/           # Scheduled or recurring job modules
+│   └── statemanager/        # State tracking for transfers, robots, etc.
+
+├── types/                  
+│   └── express-session.d.ts # Extended type definitions for Express session
+
+├── main.ts                  # Application entry point
+└── app.module.ts            # Root module of the NestJS application
+
+```
+
+
 ## Prerequisites
 
 To run this project, the following must be installed on your system:
