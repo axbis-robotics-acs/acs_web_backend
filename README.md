@@ -41,6 +41,7 @@ Once the server is running, access the Swagger UI for API documentation at: [swa
 
 ### 📁 Project Structure
 ```bash
+dist                         # docker Volume mount build directory
 src/
 ├── common/                  # Shared utilities and core components
 │   ├── adapter/             # Adapters for external services (e.g., Redis, MQTT)
@@ -110,8 +111,6 @@ When the Docker containers are running, you can update the application with your
 # To apply local file changes to the container
 $ npm run build
 ```
-
-## 💻 Local Development (without Docker)
 
 If you prefer to develop directly on your local machine, follow these steps. Note: you will need to install and run external services like databases separately.
 
