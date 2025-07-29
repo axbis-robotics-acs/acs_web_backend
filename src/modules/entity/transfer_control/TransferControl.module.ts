@@ -3,14 +3,14 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { TransferControl } from './TransferControl.entity';
 import { TransferControlService } from './TransferControl.service';
 import { TransferControlController } from './TransferControl.controller';
-import { CacheModule } from 'src/common/cache/cache.module';
+import { LocalCacheModule } from 'src/common/cache/cache.module';
 import { WriterModule } from 'src/common/writer/writer.module';
 import { ResponseModule } from 'src/common/handler/response.module';
 
 @Module({
   imports: [
     TypeOrmModule.forFeature([TransferControl]),
-    CacheModule,
+    LocalCacheModule,
     ResponseModule,
     WriterModule,
   ],

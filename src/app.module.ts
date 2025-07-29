@@ -3,6 +3,7 @@ import {
   MiddlewareConsumer,
   NestModule,
   DynamicModule,
+  Type,
 } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import * as fs from 'fs';
@@ -11,7 +12,7 @@ import { StatusModule } from './modules/statemanager/status.module';
 import { MqttModule } from './common/adapter/mqtt/mqtt.module';
 import { QueryRegistryModule } from './common/query/query-registry.module';
 import { CommonScheduleModule } from './modules/scheduler/scheduler.module';
-import { CacheModule } from './common/cache/cache.module';
+import { LocalCacheModule } from './common/cache/cache.module';
 import { ScheduleModule } from '@nestjs/schedule';
 import * as dotenv from 'dotenv';
 import { ElasticModule } from './common/adapter/elk/elastic.module';
@@ -19,88 +20,83 @@ import { MapParserModule } from './modules/map/map.parser.module';
 import { WebSocketModule } from './common/adapter/websocket/socket.module';
 import { WriterModule } from './common/writer/writer.module';
 import { ResponseModule } from './common/handler/response.module';
+import { RedisModule } from './common/adapter/redis/redis.module';
 
 dotenv.config();
 
+function toPascalCase(str: string): string {
+  return str
+    .replace(/_master$/, '')
+    .split('_')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join('');
+}
 // **동적으로 `src/modules/` 내부의 모든 모듈, 서비스, 컨트롤러를 로드하는 함수**
-function loadModules(): DynamicModule[] {
+// function loadModules(): DynamicModule[] {
+//   const modulesPath = path.join(__dirname, 'modules', 'entity');
+//   console.log(modulesPath);
+
+//   return fs
+//     .readdirSync(modulesPath)
+//     .filter((dir) => fs.statSync(path.join(modulesPath, dir)).isDirectory()) // 폴더만 선택
+//     .map((dir) => {
+//       try {
+//         const dirUpper = dir
+//           .replace('_master', '')
+//           .split('_')
+//           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+//           .join('');
+//         const modulePath = path.join(modulesPath, dir, `${dirUpper}.module`);
+//         const importedModule = require(modulePath);
+//         const moduleName = Object.keys(importedModule)[0]; // 첫 번째 export된 모듈을 가져옴
+//         return importedModule[moduleName];
+//       } catch (error) {
+//         console.error(`❌ Failed to import module: ${dir}`, error);
+//         return null;
+//       }
+//     })
+//     .filter((mod): mod is DynamicModule => mod !== null);
+// }
+
+function loadModules(): Type<any>[] {
   const modulesPath = path.join(__dirname, 'modules', 'entity');
-  console.log(modulesPath);
+  const loadedModules: string[] = [];
 
   return fs
     .readdirSync(modulesPath)
-    .filter((dir) => fs.statSync(path.join(modulesPath, dir)).isDirectory()) // 폴더만 선택
+    .filter((dir) => fs.statSync(path.join(modulesPath, dir)).isDirectory())
     .map((dir) => {
+      const dirUpper = toPascalCase(dir);
+      const moduleFileName = `${dirUpper}.module`;
+      const possiblePaths = [
+        path.join(modulesPath, dir, `${moduleFileName}.ts`),
+        path.join(modulesPath, dir, `${moduleFileName}.js`),
+      ];
+
+      const modulePath = possiblePaths.find((p) => fs.existsSync(p));
+      if (!modulePath) {
+        console.warn(`⚠️ Module file not found for: ${dir}`);
+        return null;
+      }
+
       try {
-        const dirUpper = dir
-          .replace('_master', '')
-          .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join('');
-        const modulePath = path.join(modulesPath, dir, `${dirUpper}.module`);
-        const importedModule = require(modulePath);
-        const moduleName = Object.keys(importedModule)[0]; // 첫 번째 export된 모듈을 가져옴
-        return importedModule[moduleName];
+        const imported = require(modulePath);
+        const exportedModule = Object.values(imported).find(
+          (exp) => typeof exp === 'function'
+        );
+        if (exportedModule) {
+          loadedModules.push(exportedModule.name);
+          return exportedModule as Type<any>;
+        } else {
+          console.warn(`⚠️ No valid module exported in ${modulePath}`);
+          return null;
+        }
       } catch (error) {
-        console.error(`❌ Failed to import module: ${dir}`, error);
+        console.error(`❌ Failed to import module from ${modulePath}`, error);
         return null;
       }
     })
-    .filter((mod): mod is DynamicModule => mod !== null);
-}
-
-// **동적으로 `Providers`, `Controllers`를 로드하는 함수**
-function loadProvidersAndControllers() {
-  const modulesPath = path.join(__dirname, 'modules');
-  const providers: any[] = [];
-  const controllers: any[] = [];
-
-  fs.readdirSync(modulesPath)
-    .filter((dir) => fs.statSync(path.join(modulesPath, dir)).isDirectory())
-    .forEach((dir) => {
-      try {
-        const dirUpper = dir
-          .replace('_master', '')
-          .split('_')
-          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-          .join('');
-        const servicePath = path.join(modulesPath, dir, `${dirUpper}.service`);
-        const controllerPath = path.join(
-          modulesPath,
-          dir,
-          `${dirUpper}.controller`,
-        );
-
-        // 서비스 로드
-        if (
-          fs.existsSync(path.join(modulesPath, dir, `${dirUpper}.service.ts`))
-        ) {
-          const importedService = require(servicePath);
-          Object.values(importedService).forEach((service) =>
-            providers.push(service),
-          );
-        }
-
-        // 컨트롤러 로드
-        if (
-          fs.existsSync(
-            path.join(modulesPath, dir, `${dirUpper}.controller.ts`),
-          )
-        ) {
-          const importedController = require(controllerPath);
-          Object.values(importedController).forEach((controller) =>
-            controllers.push(controller),
-          );
-        }
-      } catch (error) {
-        console.error(
-          `❌ Failed to import services/controllers from: ${dir}`,
-          error,
-        );
-      }
-    });
-
-  return { providers, controllers };
+    .filter((mod): mod is Type<any> => mod !== null);
 }
 
 @Module({
@@ -119,7 +115,7 @@ function loadProvidersAndControllers() {
     ...loadModules(), // ✅ 자동으로 `modules/` 내부의 모든 모듈 추가
     StatusModule,
     MqttModule,
-    CacheModule,
+    LocalCacheModule,
     QueryRegistryModule,
     CommonScheduleModule,
     ScheduleModule.forRoot(),
@@ -128,9 +124,8 @@ function loadProvidersAndControllers() {
     MapParserModule,
     WebSocketModule,
     WriterModule,
+    RedisModule,
   ],
-  providers: [...loadProvidersAndControllers().providers], // ✅ 자동으로 서비스 추가
-  controllers: [...loadProvidersAndControllers().controllers], // ✅ 자동으로 컨트롤러 추가
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

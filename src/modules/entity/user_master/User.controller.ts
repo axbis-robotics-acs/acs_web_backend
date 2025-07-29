@@ -16,6 +16,7 @@ import {
   CommonCriteria,
   CommonCriteriaHistInput,
 } from 'src/common/query/common.criteria';
+import { RedisService } from 'src/common/adapter/redis/redis.service';
 
 @ApiTags('user')
 @Controller('user')
@@ -24,7 +25,8 @@ export class UserController {
     private readonly userService: UserService,
     private readonly loginHistService: LoginHistService,
     private readonly constService: ConstService,
-  ) {}
+    private readonly redisService: RedisService,
+  ) { }
 
   @Post('login')
   async login(
@@ -75,8 +77,8 @@ export class UserController {
       req.session.user = {
         ...userInfo,
       };
-
-      req.session.cookie.maxAge = (timeoutMin || 60) * 60 * 1000;
+      req.session.cookie.maxAge = (timeoutMin || 30) * 60 * 1000;
+      // await this.redisService.setSessionUser(req.sessionID, userInfo, timeoutMin * 60 * 1000);
 
       await this.loginHistService.create(loginHist);
       return {

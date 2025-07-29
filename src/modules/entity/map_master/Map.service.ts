@@ -14,10 +14,10 @@ export class MapService {
     @InjectRepository(Map)
     private readonly mapRepository: Repository<Map>,
     private readonly queryRegistryService: QueryRegistry,
-  ) {}
+  ) { }
 
-  async findAll(): Promise<Map[]> {
-    return this.queryRegistryService.select<Map>(Map, {});
+  async findAll(site_cd: string): Promise<Map[]> {
+    return this.queryRegistryService.select<Map>(Map, { site_cd: site_cd });
   }
 
   async selectOne<K extends keyof Map>(

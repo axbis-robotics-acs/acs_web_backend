@@ -25,27 +25,35 @@ export class AllExceptionsFilter implements ExceptionFilter {
     }
   }
 
-private handleHttpException(exception: unknown, host: ArgumentsHost) {
-  const ctx = host.switchToHttp();
-  const res = ctx.getResponse<Response>();
-  const req = ctx.getRequest<Request>();
+  private handleHttpException(exception: unknown, host: ArgumentsHost) {
+    const ctx = host.switchToHttp();
+    const res = ctx.getResponse<Response>();
+    const req = ctx.getRequest<Request>();
 
-  const isHttp = exception instanceof HttpException;
-  const status = isHttp ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
-  const response = isHttp ? exception.getResponse() : { message: 'Internal server error' };
+    console.error('📛 [handleHttpException] exception:', exception);
 
-  const payload = {
-    success: false,
-    timestamp: new Date().toISOString(),
-    path: req.url,
-    method: req.method,
-    statusCode: status,
-    ...this.normalizeResponse(response),
-  };
 
-  // ✅ 명시적으로 종료 시킴 (중요)
-  res.status(status).json(payload).end();
-}
+    if (res.headersSent) {
+      console.warn(`[ExceptionFilter] 응답 이미 전송됨. ${req.method} ${req.url}`);
+      return;
+    }
+
+    const isHttp = exception instanceof HttpException;
+    const status = isHttp ? exception.getStatus() : HttpStatus.INTERNAL_SERVER_ERROR;
+    const response = isHttp ? exception.getResponse() : { message: 'Internal server error' };
+
+    const payload = {
+      success: false,
+      timestamp: new Date().toISOString(),
+      path: req.url,
+      method: req.method,
+      statusCode: status,
+      ...this.normalizeResponse(response),
+    };
+
+    // ✅ 명시적으로 종료 시킴 (중요)
+    res.status(status).json(payload).end();
+  }
 
   private handleRpcException(exception: unknown, host: ArgumentsHost) {
     const isHttp = exception instanceof HttpException;
@@ -78,20 +86,25 @@ private handleHttpException(exception: unknown, host: ArgumentsHost) {
 
   private handleUnknownException(exception: unknown, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
-  const res = ctx.getResponse<Response>();
-  const req = ctx.getRequest<Request>();
+    const res = ctx.getResponse<Response>();
+    const req = ctx.getRequest<Request>();
 
-  console.error('Unknown transport exception:', exception);
+    console.error('Unknown transport exception:', exception);
 
-  res.status(500).json({
-    success: false,
-    timestamp: new Date().toISOString(),
-    path: req.url,
-    method: req.method,
-    statusCode: 500,
-    message: 'Unknown error occurred',
-    error: exception instanceof Error ? exception.message : String(exception),
-  });
+    if (res.headersSent) {
+      console.warn(`[ExceptionFilter] Unknown 예외지만 응답 이미 전송됨. ${req.method} ${req.url}`);
+      return;
+    }
+
+    res.status(500).json({
+      success: false,
+      timestamp: new Date().toISOString(),
+      path: req.url,
+      method: req.method,
+      statusCode: 500,
+      message: 'Unknown error occurred',
+      error: exception instanceof Error ? exception.message : String(exception),
+    });
 
   }
 
