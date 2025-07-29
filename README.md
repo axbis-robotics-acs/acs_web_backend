@@ -15,9 +15,8 @@
 ![Node.js](https://img.shields.io/badge/Node.js-22-339933?style=flat-square&logo=nodedotjs&logoColor=white)
 ![TypeORM](https://img.shields.io/badge/TypeORM-E83823?style=flat-square)
 ![Socket.io](https://img.shields.io/badge/Socket.io-010101?style=flat-square&logo=socketdotio&logoColor=white)
-![MQTT](https://img.shields.io/badge/MQTT-660066?style=flat-square&logo=eclipsemosquitto&logoColor=white)
-![Swagger](https://img.shields.io/badge/Swagger-85EA2D?style=flat-square&logo=swagger&logoColor=black)
-![Jest](https://img.shields.io/badge/Jest-C21325?style=flat-square&logo=jest&logoColor=white)
+![MQTT](https://img.shields.io/badge/MQTT-5.1.3-660066?style=flat-square&logo=eclipsemosquitto&logoColor=white)
+![Swagger](https://img.shields.io/badge/Swagger-11.1.1-85EA2D?style=flat-square&logo=swagger&logoColor=black)
 ![PM2](https://img.shields.io/badge/PM2-2B037A?style=flat-square&logo=pm2&logoColor=white)
 
 ### 💾 Database & Cache
