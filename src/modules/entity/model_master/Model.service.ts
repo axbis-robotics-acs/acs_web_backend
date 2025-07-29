@@ -14,10 +14,10 @@ export class ModelService {
     @InjectRepository(Model)
     private readonly ModelRepository: Repository<Model>,
     private readonly queryRegistryService: QueryRegistry,
-  ) {}
+  ) { }
 
-  async findAll(): Promise<Model[]> {
-    return this.queryRegistryService.select<Model>(Model, {});
+  async findAll(site_cd: string): Promise<Model[]> {
+    return this.queryRegistryService.select<Model>(Model, { site_cd: site_cd });
   }
 
   async findById(model_nm: string): Promise<Model | null> {

@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param, Req } from '@nestjs/common';
 import { MapService } from './Map.service';
 import { Map } from './Map.entity';
 import { ApiTags } from '@nestjs/swagger';
@@ -9,8 +9,9 @@ export class MapController {
   constructor(private readonly mapService: MapService) {}
 
   @Get()
-  async findAll(): Promise<Map[]> {
-    return this.mapService.findAll();
+  async findAll(@Req() req: any): Promise<Map[]> {
+    const user = req.session.user;
+    return this.mapService.findAll(user.site_cd);
   }
 
 }
