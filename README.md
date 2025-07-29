@@ -116,7 +116,7 @@ $ npm run build
 If you prefer to develop directly on your local machine, follow these steps. Note: you will need to install and run external services like databases separately.
 
 ## Prerequisites
--    [Node.js](https://nodejs.org/) (v18.x 이상 권장)
+-    [Node.js](https://nodejs.org/) (v18.x or later recommended)
 -    [npm](https://www.npmjs.com/)
 
 2.  **Install dependencies**
