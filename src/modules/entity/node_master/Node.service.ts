@@ -14,10 +14,10 @@ export class NodeService {
     @InjectRepository(Node)
     private readonly nodeRepository: Repository<Node>,
     private readonly queryRegistryService: QueryRegistry,
-  ) {}
+  ) { }
 
-  async findAll(): Promise<Node[]> {
-    return this.queryRegistryService.select<Node>(Node, {});
+  async findAll(site_cd: string): Promise<Node[]> {
+    return this.queryRegistryService.select<Node>(Node, { site_cd });
   }
 
   async selectOne<K extends keyof Node>(

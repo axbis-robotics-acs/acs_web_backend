@@ -15,6 +15,9 @@ export class Node {
   @Column({ type: 'varchar', length: 50, nullable: true })
   node_nm: string;
 
+  @Column({ type: 'varchar', length: 50, nullable: true })
+  node_tp: string;
+
   @Column({ type: 'varchar', length: 255, nullable: true })
   pos_x_val: string;
 

@@ -927,7 +927,8 @@ DROP TABLE IF EXISTS `acs_node_master`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `acs_node_master` (
   `node_id` varchar(20) NOT NULL COMMENT '노드 ID',
-  `node_nm` varchar(255) DEFAULT NULL COMMENT '노드 명칭',
+  `node_nm` varchar(50) DEFAULT NULL COMMENT '노드 명칭',
+  `node_tp` varchar(50) NOT NULL DEFAULT 'NORMAL' COMMENT '노드 타입',
   `pos_x_val` varchar(255) DEFAULT NULL COMMENT 'X 좌표',
   `pos_y_val` varchar(255) DEFAULT NULL COMMENT 'Y 좌표',
   `degree_val` varchar(255) DEFAULT NULL COMMENT '정위치 회전 각도',
