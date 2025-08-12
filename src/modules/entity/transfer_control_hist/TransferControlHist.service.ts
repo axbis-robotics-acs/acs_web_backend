@@ -14,9 +14,9 @@ export class TransferControlHistService {
   constructor(
     @InjectRepository(TransferControlHist)
     private readonly transfercontrolhistRepository: Repository<TransferControlHist>,
-    private readonly dataSource: DataSource,  
+    private readonly dataSource: DataSource,
     private readonly queryRegistryService: QueryRegistry,
-  ) {}
+  ) { }
 
   async findAll(): Promise<TransferControlHist[]> {
     return this.queryRegistryService.select<TransferControlHist>(
@@ -25,43 +25,38 @@ export class TransferControlHistService {
     );
   }
 
-  async findTransferBySite(site_cd:string): Promise<TransferControlHist[]> {
+  async findTransferBySite(site_cd: string): Promise<TransferControlHist[]> {
     return this.queryRegistryService.select<TransferControlHist>(
       TransferControlHist,
       { site_cd: site_cd },
     );
-  } 
+  }
 
-  async findMonitoringSummary(site_cd : string): Promise<any> {
+  async findMonitoringSummary(site_cd: string): Promise<any> {
     const result = await this.dataSource.query(`
-    WITH latest_status AS (
+    WITH ranked AS (
       SELECT
-        h1.transfer_id,
-        h1.transfer_status_tx,
-        h1.modify_at
-      FROM
-        acs_transfer_control_hist h1
-      INNER JOIN (
-        SELECT
-          transfer_id,
-          MAX(modify_at) AS max_modify_at
-        FROM
-          acs_transfer_control_hist
-        WHERE
-          DATE(modify_at) = CURDATE()
-          AND site_cd = ?
-        GROUP BY
-          transfer_id
-      ) h2
-      ON h1.transfer_id = h2.transfer_id AND h1.modify_at = h2.max_modify_at
+        h.transfer_id,
+        h.transfer_status_tx,
+        ROW_NUMBER() OVER (PARTITION BY h.transfer_id ORDER BY h.modify_at DESC) AS rn
+      FROM acs_transfer_control_hist h
+      WHERE
+        h.site_cd = ?
+        AND h.modify_at >= CURRENT_DATE()          
+        AND h.modify_at <  CURRENT_DATE() + INTERVAL 1 DAY  
+    ),
+    latest_status AS (
+      SELECT transfer_id, transfer_status_tx
+      FROM ranked
+      WHERE rn = 1
     )
     SELECT
       COUNT(*) AS total_task_count,
-      SUM(CASE WHEN transfer_status_tx IN ('READY', 'QUEUED', 'TRANSFERRING') THEN 1 ELSE 0 END) AS running_task_count,
-      SUM(CASE WHEN transfer_status_tx = 'completed' THEN 1 ELSE 0 END) AS completed_task_count,
-      SUM(CASE WHEN transfer_status_tx IN ('canceled', 'aborted') THEN 1 ELSE 0 END) AS canceled_task_count
-    FROM
-      latest_status
+      COUNT(CASE WHEN UPPER(transfer_status_tx) IN ('READY','QUEUED','TRANSFERRING') THEN 1 END) AS running_task_count,
+      COUNT(CASE WHEN UPPER(transfer_status_tx) = 'COMPLETED' THEN 1 END) AS completed_task_count,
+      COUNT(CASE WHEN UPPER(transfer_status_tx) IN ('CANCELED','ABORTED') THEN 1 END) AS canceled_task_count
+    FROM latest_status
+
   `, [site_cd]);
 
     const summary = result[0] || {
